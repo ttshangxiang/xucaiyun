@@ -1,0 +1,23 @@
+{
+  "shell": "output/start-lit-element.js",
+  "entrypoint": "index.html",
+  "fragments": ["output/lazy-element.js"],
+  "npm": true,
+  "moduleResolution": "node",
+  "sources": ["output/start-lit-element.js", "manifest/**", "manifest.json", "package.json"],
+  "extraDependencies": [
+    "robots.txt",
+    "node_modules/@webcomponents/webcomponentsjs/**"
+  ],
+  "builds": [{
+    "name": "production",
+    "bundle": true,
+    "js": { 
+      "minify": true,
+      "compile": "es5",
+      "transformModulesToAmd": true
+    },
+    "addServiceWorker": true,
+    "addPushManifest": true
+  }]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "xucaiyun",
+  "version": "1.0.0",
+  "description": "lit-element,lit-html,typescript,polymer-cli",
+  "main": "privite",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "tsc -w & polymer serve",
+    "build": "polymer build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttshangxiang/xucaiyun.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ttshangxiang/xucaiyun/issues"
+  },
+  "homepage": "https://github.com/ttshangxiang/xucaiyun#readme",
+  "dependencies": {
+    "@polymer/lit-element": "^0.6.5",
+    "@webcomponents/webcomponentsjs": "^2.2.1"
+  }
+}
