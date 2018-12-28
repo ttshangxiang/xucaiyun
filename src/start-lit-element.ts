@@ -12,6 +12,8 @@
 // Import LitElement base class and html helper function
 import { LitElement, html } from '@polymer/lit-element';
 
+import { MDCRipple } from '@material/ripple/index'
+
 export class StartLitElement extends LitElement {
   /**
    * Define properties. Properties defined here will be automatically 
@@ -47,11 +49,16 @@ export class StartLitElement extends LitElement {
    */
   render(){
     return html`
+      <link rel="stylesheet" href="/assets/test.css">
       <style>
         :host { display: block; }
         :host([hidden]) { display: none; }
       </style>
 
+      <button class="mdc-button">
+        Button
+      </button>
+      <div>xxxx</div>
       <h1>Start LitElement!</h1>
       <p>${this.message}</p>
 
@@ -76,6 +83,10 @@ export class StartLitElement extends LitElement {
 
     const myInput = this.shadowRoot.getElementById('myinput');
     myInput.focus();
+  }
+  
+  updated () {
+    const buttonRipple = new MDCRipple(this.shadowRoot.querySelector('.mdc-button'));
   }
 
   /**
@@ -107,3 +118,18 @@ export class StartLitElement extends LitElement {
 
 // Register the element with the browser
 customElements.define('start-lit-element', StartLitElement);
+
+// `
+//   <start-lit-element>
+//   <!-- Placeholders to improve time to first paint -->
+//   <h1>Start LitElement!</h1>
+//   <p>Hello World from LitElement</p>
+//   <!-- Check for JavaScript -->
+//   <p id="jsyes"></p>
+//   <script type="text/javascript">
+//     document.getElementById('jsyes').innerHTML='Loading...';
+//   </script>
+//   <noscript>
+//     Could not render the custom element. Check that JavaScript is enabled.
+//   </noscript>
+//   </start-lit-element>`

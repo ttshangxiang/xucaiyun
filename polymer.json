@@ -1,10 +1,10 @@
 {
-  "shell": "output/start-lit-element.js",
+  "shell": "assets/main.js",
   "entrypoint": "index.html",
-  "fragments": ["output/lazy-element.js"],
+  "fragments": ["assets/lazy-element.js"],
   "npm": true,
   "moduleResolution": "node",
-  "sources": ["output/start-lit-element.js", "manifest/**", "manifest.json", "package.json"],
+  "sources": ["assets/**", "manifest/**", "manifest.json", "package.json"],
   "extraDependencies": [
     "robots.txt",
     "node_modules/@webcomponents/webcomponentsjs/**"

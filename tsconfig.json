@@ -4,8 +4,8 @@
     "target": "esnext",
     "noImplicitAny": true,
     "sourceMap": true,
-    "outDir": "output",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "experimentalDecorators": true
   },
   "include": [
     "src/**/*"
