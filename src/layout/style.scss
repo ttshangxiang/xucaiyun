@@ -1,0 +1,39 @@
+@import "@material/ripple/mdc-ripple";
+@import "@material/drawer/mdc-drawer";
+@import "@material/list/mdc-list";
+@import "@material/top-app-bar/mdc-top-app-bar";
+
+.material-icons {
+  width: 48px;
+  height: 48px;
+}
+
+.mdc-drawer-app-content {
+  flex: auto;
+  overflow: auto;
+  position: relative;
+}
+
+.main-content {
+  overflow: auto;
+  height: 100%;
+}
+
+.mdc-drawer--open ~ .mdc-drawer-scrim-fake {
+  display: block;
+}
+
+.mdc-drawer--modal ~ .mdc-drawer-scrim-fake {
+  background-color: rgba(0, 0, 0, 0.32);
+}
+.mdc-drawer-scrim-fake {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 8;
+}

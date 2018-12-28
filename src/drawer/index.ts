@@ -1,5 +1,5 @@
 import { LitElement, html, property, customElement } from '@polymer/lit-element';
-import c from '../base/c';
+import c, {setIns} from '../base/c';
 
 import {MDCList} from '@material/list/index';
 import {MDCDrawer} from '@material/drawer/index';
@@ -19,7 +19,7 @@ export class Drawer extends LitElement {
 
   constructor () {
     super();
-
+    setIns(this, this.id);
     this.resize();
     window.onresize = () => {
       this.resize()
@@ -39,18 +39,24 @@ export class Drawer extends LitElement {
         </div>
         <div class="mdc-drawer__content">
           <nav class="mdc-list">
-            <c-route class="mdc-list-item mdc-list-item--activated" href="/what" aria-selected="true">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-              <span class="mdc-list-item__text">Inbox</span>
-            </c-route>
-            <c-route class="mdc-list-item" href="/jj">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-              <span class="mdc-list-item__text">Outgoing</span>
-            </c-route>
-            <c-route class="mdc-list-item" href="/photos">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo</i>
-              <span class="mdc-list-item__text">我的相册</span>
-            </c-route>
+            <a href="javascript:;">
+              <c-route class="mdc-list-item " href="/what" aria-selected="true">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
+                <span class="mdc-list-item__text">Inbox</span>
+              </c-route>
+            </a>
+            <a href="javascript:;">
+              <c-route class="mdc-list-item" href="/jj">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
+                <span class="mdc-list-item__text">Outgoing</span>
+              </c-route>
+            </a>
+            <a href="javascript:;">
+              <c-route class="mdc-list-item" href="/photos">
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo</i>
+                <span class="mdc-list-item__text">我的相册</span>
+              </c-route>
+            </a>
           </nav>
         </div>
       </aside>
@@ -60,7 +66,7 @@ export class Drawer extends LitElement {
           <div class="mdc-drawer-scrim-fake" @click=${() => c.drawer.open = false}></div>` : ''}
       <!-- end -->
       <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
-        <main class="main-content" id="main-content">
+        <main class="main-content">
           <slot></slot>
         </main>
       </div>

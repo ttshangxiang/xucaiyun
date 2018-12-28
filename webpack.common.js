@@ -91,7 +91,9 @@ module.exports = {
       template: './src/index.html'
     }),
     new CopyWebpackPlugin([
-      {from: 'node_modules/@webcomponents/webcomponentsjs/*.js', to: dist}
+      {from: 'node_modules/@webcomponents/webcomponentsjs/*.js', to: dist},
+      {from: 'manifest.json', to: dist},
+      {from: 'manifest/*', to: dist},
     ]),
     new ProgressBarPlugin()
   ]

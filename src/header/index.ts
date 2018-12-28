@@ -45,6 +45,5 @@ export class Header extends LitElement {
 
   drawer () {
     c.drawer.open = !c.drawer.open;
-    console.log('xxx')
   }
 }
