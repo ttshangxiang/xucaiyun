@@ -32,7 +32,7 @@ export class Drawer extends LitElement {
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <div>
       <aside class="mdc-drawer mdc-drawer--dismissible ${classMap[this.mode]}"
-        style="${this.mode === 'modal' && 'z-index: 9;'}">
+        style="position: fixed${this.mode === 'modal' ? ';z-index: 9;': ';'}">
         <div class="mdc-drawer__header">
           <h3 class="mdc-drawer__title">Mail</h3>
           <h6 class="mdc-drawer__subtitle">email@material.io</h6>
@@ -40,19 +40,19 @@ export class Drawer extends LitElement {
         <div class="mdc-drawer__content">
           <nav class="mdc-list">
             <a href="javascript:;">
-              <c-route class="mdc-list-item " href="/what" aria-selected="true">
+              <c-route class="mdc-list-item " href="/what"  role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
                 <span class="mdc-list-item__text">Inbox</span>
               </c-route>
             </a>
             <a href="javascript:;">
-              <c-route class="mdc-list-item" href="/jj">
+              <c-route class="mdc-list-item" href="/jj" role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
                 <span class="mdc-list-item__text">Outgoing</span>
               </c-route>
             </a>
             <a href="javascript:;">
-              <c-route class="mdc-list-item" href="/photos">
+              <c-route class="mdc-list-item" href="/albums" role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo</i>
                 <span class="mdc-list-item__text">我的相册</span>
               </c-route>

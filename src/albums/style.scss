@@ -1,0 +1,52 @@
+@import "@material/image-list/mdc-image-list";
+@import "@material/fab/mdc-fab";
+
+
+.my-image-list {
+  @include mdc-image-list-standard-columns(4, 8px);
+  max-width: 960px;
+  .mdc-image-list__image-aspect-container {
+    padding-bottom: 66.66667%;
+  }
+}
+
+.my-masonry-image-list {
+  max-width: 960px;
+  @include mdc-image-list-masonry-columns(4);
+}
+
+@media (max-width: 1024px) {
+  .my-image-list {
+    @include mdc-image-list-standard-columns(3, 8px);
+  }
+  .my-masonry-image-list {
+    @include mdc-image-list-masonry-columns(3);
+  }
+}
+
+@media (max-width: 599px) {
+  .my-image-list {
+    @include mdc-image-list-standard-columns(2, 8px);
+  }
+  .my-masonry-image-list {
+    @include mdc-image-list-masonry-columns(2);
+  }
+}
+
+.my-mdc-image-detail {
+  max-width: 960px;
+  @include mdc-image-list-standard-columns(1, 2px);
+}
+
+.app-fab--absolute {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+@media(min-width: 1024px) {
+   .app-fab--absolute {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}

@@ -73,12 +73,13 @@ export class Router {
     }
     if (typeof matchRoute.component === 'function') {
       matchRoute.component();
-      ins.innerHTML = matchRoute.tag;
+      ins.innerHTML = `<${matchRoute.tag}></${matchRoute.tag}>`;
     } else {
       ins.innerHTML = matchRoute.component;
     }
     // 路由选中状态修改
-      this.routes.forEach(o => {
+    this.routes.forEach(o => {
+      if (o.getAttribute('role') !== 'nav') return;
       if (pathname === o.href || pathname !== '/' && pathname.includes(o.href)) {
         o.classList.add('mdc-list-item--activated');
         o.setAttribute('aria-selected', 'true');
@@ -95,6 +96,7 @@ export class Router {
   private static match (): route {
     const {routes} = this.conf;
     let route;
+    // 重量，模糊匹配0.99，普通的1
     let count = 0;
     this.params = {};
     routes.forEach(o => {
