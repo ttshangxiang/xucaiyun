@@ -73,7 +73,7 @@ export class Router {
     }
     if (typeof matchRoute.component === 'function') {
       matchRoute.component();
-      ins.innerHTML = `<${matchRoute.tag}></${matchRoute.tag}>`;
+      ins.innerHTML = `<${matchRoute.tag} hidden></${matchRoute.tag}>`;
     } else {
       ins.innerHTML = matchRoute.component;
     }

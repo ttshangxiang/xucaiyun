@@ -1,6 +1,7 @@
 
 import { LitElement, html, customElement } from '@polymer/lit-element';
 import './style';
+import '../base/icon';
 
 import '../drawer';
 import '../header';
@@ -17,8 +18,8 @@ export class Layout extends LitElement {
         }
       </style>
       <link rel="stylesheet" href="/layout/style.css">
-      <c-header></c-header>
-      <c-drawer id="c-drawer"></c-drawer>
+      <c-header hidden></c-header>
+      <c-drawer id="c-drawer" hidden></c-drawer>
     `;
   }
 }

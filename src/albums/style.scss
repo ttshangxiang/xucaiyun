@@ -1,6 +1,11 @@
+@import url('/base/icon.css');
+
 @import "@material/image-list/mdc-image-list";
 @import "@material/fab/mdc-fab";
 
+:host {
+  display: block;
+}
 
 .my-image-list {
   @include mdc-image-list-standard-columns(4, 8px);

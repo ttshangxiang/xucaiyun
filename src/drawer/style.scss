@@ -1,6 +1,12 @@
+@import url('/base/icon.css');
+
 @import "@material/drawer/mdc-drawer";
 @import "@material/list/mdc-list";
 @import "@material/top-app-bar/mdc-top-app-bar";
+
+:host {
+  display: block;
+}
 
 .mdc-drawer-app-content {
   flex: auto;
