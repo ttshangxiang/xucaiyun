@@ -18,7 +18,6 @@ export class Albums extends LitElement {
       i++;
     }
     return html `
-      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
       <link rel="stylesheet" href="/albums/style.css">
       <div style="padding: 8px; position: relative;">
         <ul class="mdc-image-list my-image-list mdc-image-list--with-text-protection">
@@ -47,7 +46,7 @@ export class Albums extends LitElement {
 
   /**新增相册 */
   enterAddAlbum () {
-    Router.push(`/albums/addAlbum`);
+    Router.push(`/albums/add`);
   }
 
   updated () {

@@ -96,7 +96,6 @@ export class Router {
   private static match (): route {
     const {routes} = this.conf;
     let route;
-    // 重量，模糊匹配0.99，普通的1
     let count = 0;
     this.params = {};
     routes.forEach(o => {
@@ -104,16 +103,23 @@ export class Router {
       if (p.length > this.paths.length) {
         return;
       }
+      // 重量，模糊匹配0.99，普通的1
+      let heavy = 0;
       const result = p.every((s, i) => {
         if (s[0] === ':') {
           this.params[s.slice(1)] = this.paths[i];
+          heavy += 0.99;
           return true;
         }
-        return s === this.paths[i];
+        if (s === this.paths[i]) {
+          heavy += 1;
+          return true;
+        }
+        return false;
       });
-      if (result && count < p.length) {
+      if (result && count < heavy) {
         route = o;
-        count = p.length;
+        count = heavy;
       }
     });
     return route;

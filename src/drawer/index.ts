@@ -29,7 +29,6 @@ export class Drawer extends LitElement {
   render(){
     return html `
     <link rel="stylesheet" href="/drawer/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <div>
       <aside class="mdc-drawer mdc-drawer--dismissible ${classMap[this.mode]}"
         style="position: fixed${this.mode === 'modal' ? ';z-index: 9;': ';'}">
