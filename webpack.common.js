@@ -26,10 +26,21 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules\/(?!(@webcomponents\/shadycss|lit-html|@polymer|@vaadin)\/).*/,
+        use: ['babel-loader']
+      },
       // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
       {
-        test: /\.tsx?$/,
-        loaders: 'ts-loader'
+        test: /\.ts$/,
+        exclude: /node_modules\/(?!(@webcomponents\/shadycss|lit-html|@polymer|@vaadin)\/).*/,
+        use: [
+          {
+            loader: 'babel-loader'
+          },
+          'ts-loader'
+        ]
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.

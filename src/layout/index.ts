@@ -6,7 +6,7 @@ import '../base/icon';
 import '../drawer';
 import '../header';
 
-@customElement('c-layout')
+// @customElement('c-layout')
 export class Layout extends LitElement {
 
   render(){
@@ -23,3 +23,5 @@ export class Layout extends LitElement {
     `;
   }
 }
+
+window.customElements.define('c-layout', Layout);
