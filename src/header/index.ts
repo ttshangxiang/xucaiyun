@@ -2,28 +2,16 @@ import { LitElement, html, customElement } from '@polymer/lit-element';
 import { MDCTopAppBar } from '@material/top-app-bar/index';
 import c from '../base/c';
 
-import './style';
-
 @customElement('c-header')
 export class Header extends LitElement {
 
   render(){
     return html `
-    <style>
-      .material-icons {
-        width: 48px;
-        height: 48px;
-      }
-      :host {
-        position: absolute;
-        z-index: 7;
-      }
-    </style>
-    <link rel="stylesheet" href="/header/style.css">
+    ${this.myStyles}
     <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <a href="javascript:;" class="material-icons mdc-top-app-bar__navigation-icon" @click=${this.drawer}>menu</a>
+          <a href="javascript:;" class="material-icons mdc-top-app-bar__navigation-icon" style="--mdc-ripple-fg-size: 28px;" @click=${this.drawer}>menu</a>
           <span class="mdc-top-app-bar__title">Title</span>
         </section>
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
@@ -44,5 +32,21 @@ export class Header extends LitElement {
 
   drawer () {
     c.drawer.open = !c.drawer.open;
+  }
+
+  get myStyles () {
+    return html `
+      <style>
+        :host {
+          position: absolute;
+          z-index: 7;
+          display: block;
+        }
+      </style>
+      <style>
+        @import url(/base/icon.css); 
+        @import url(/base/material.css);
+      </style>
+    `
   }
 }

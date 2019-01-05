@@ -4,8 +4,6 @@ import c, {setIns} from '../base/c';
 import {MDCList} from '@material/list/index';
 import {MDCDrawer} from '@material/drawer/index';
 
-import './style';
-
 const classMap: any = {
   fixed: 'mdc-top-app-bar--fixed-adjust mdc-drawer--open',
   modal: 'mdc-drawer--modal'
@@ -28,7 +26,7 @@ export class Drawer extends LitElement {
 
   render(){
     return html `
-    <link rel="stylesheet" href="/drawer/style.css">
+    ${this.myStyles}
     <div>
       <aside class="mdc-drawer mdc-drawer--dismissible ${classMap[this.mode]}"
         style="position: fixed${this.mode === 'modal' ? ';z-index: 9;': ';'}">
@@ -89,4 +87,45 @@ export class Drawer extends LitElement {
     }
   }
   
+  get myStyles () {
+    return html `
+      <style>
+        @import url('/base/icon.css'); 
+        @import url('/base/material.css'); 
+        :host {
+          display: block;
+        }
+
+        .mdc-drawer-app-content {
+          flex: auto;
+          overflow: auto;
+          position: relative;
+        }
+
+        .main-content {
+          overflow: auto;
+          height: 100%;
+        }
+
+        .mdc-drawer--open ~ .mdc-drawer-scrim-fake {
+          display: block;
+        }
+
+        .mdc-drawer--modal ~ .mdc-drawer-scrim-fake {
+          background-color: rgba(0, 0, 0, 0.32);
+        }
+        .mdc-drawer-scrim-fake {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          transition-property: opacity;
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 8;
+        }
+      </style>
+    `;
+  }
 }

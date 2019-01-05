@@ -4,12 +4,22 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const src = path.resolve(__dirname, './src');
-const dist = path.resolve(__dirname, './dist');
+const resolve = path.resolve;
+
+const src = resolve('./src');
+const dist = resolve('./dist');
+
+const babelLoader = {
+  loader: 'polymer-babel-loader',
+  options: {
+    minify: false,
+    compile: 'es5'
+  }
+}
 
 module.exports = {
   entry: {
-    app: './src/main.ts'
+    load: './src/load.ts'
   },
   output: {
     filename: '[name].bundle.js',
@@ -24,21 +34,32 @@ module.exports = {
       src: src
     }
   },
+  resolveLoader:{
+    // 去哪些目录下寻找 Loader，有先后顺序之分
+    modules: ['node_modules','utils'],
+  },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules\/(?!(@webcomponents\/shadycss|lit-html|@polymer|@vaadin)\/).*/,
-        use: ['babel-loader']
+        // exclude: /node_modules\/(?!(@webcomponents\/shadycss|lit-html|@polymer|@vaadin|@material)\/).*/,
+        use: [babelLoader],
+        include: [
+          resolve('src'),
+          resolve('node_modules/@webcomponents/shadycss'),
+          resolve('node_modules/lit-html'),
+          resolve('node_modules/@polymer'),
+          resolve('node_modules/@material'),
+          resolve('node_modules/query-string'),
+          resolve('node_modules/strict-uri-encode')
+        ]
       },
       // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
       {
         test: /\.ts$/,
-        exclude: /node_modules\/(?!(@webcomponents\/shadycss|lit-html|@polymer|@vaadin)\/).*/,
+        exclude: /node_modules/,
         use: [
-          {
-            loader: 'babel-loader'
-          },
+          babelLoader,
           'ts-loader'
         ]
       },
@@ -102,7 +123,7 @@ module.exports = {
       template: './src/index.html'
     }),
     new CopyWebpackPlugin([
-      {from: 'node_modules/@webcomponents/webcomponentsjs/*.js', to: dist},
+      {from: 'node_modules/@webcomponents/webcomponentsjs/**/*', to: dist},
       {from: 'src/assets', to: path.resolve(dist, 'assets'), toType: 'dir'},
       {from: 'manifest', to: path.resolve(dist, 'manifest'), toType: 'dir'},
       {from: 'manifest.json', to: dist},
