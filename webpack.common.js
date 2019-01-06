@@ -4,18 +4,21 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const resolve = path.resolve;
+// const resolve = path.resolve;
+
+const resolve = function (s) {
+  return path.resolve(__dirname, s);
+}
 
 const src = resolve('./src');
 const dist = resolve('./dist');
 
 const babelLoader = {
-  loader: 'polymer-babel-loader',
+  loader: 'babel-loader',
   options: {
-    minify: false,
-    compile: 'es5'
+    configFile: resolve('babel.config.js')
   }
-}
+};
 
 module.exports = {
   entry: {
@@ -46,22 +49,16 @@ module.exports = {
         use: [babelLoader],
         include: [
           resolve('src'),
-          resolve('node_modules/@webcomponents/shadycss'),
           resolve('node_modules/lit-html'),
           resolve('node_modules/@polymer'),
-          resolve('node_modules/@material'),
-          resolve('node_modules/query-string'),
-          resolve('node_modules/strict-uri-encode')
+          resolve('node_modules/@material')
         ]
       },
       // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: [
-          babelLoader,
-          'ts-loader'
-        ]
+        use: [babelLoader]
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.

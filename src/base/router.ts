@@ -1,6 +1,24 @@
 
-import * as queryString from 'query-string';
 import {getIns} from './c';
+
+function queryString (s: string) {
+  const result: any = {};
+  if (!s) {
+    return result;
+  }
+  s = s.replace(/[\#\?]/g, '');
+  s.split('&').forEach(a => {
+    const r = a.split('=');
+    const k = r[0];
+    const v = r[1] || '';
+    if (result[k]) {
+      result[k] = [].concat(result[k]).concat(v);
+    } else {
+      result[k] = v;
+    }
+  });
+  return result;
+}
 
 import { LitElement, html, property, customElement } from '@polymer/lit-element';
 
@@ -62,7 +80,7 @@ export class Router {
     const {search, pathname} = window.location;
     this.oldPath = pathname;
     this.path = pathname;
-    this.query = queryString.parse(search);
+    this.query = queryString(search);
     this.paths = this.splitPath(pathname);
     const matchRoute = this.match();
     const ins = getIns('c-drawer');

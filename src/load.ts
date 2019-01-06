@@ -15,3 +15,8 @@ WebComponents.waitFor(async () => {
   import('./main');
 });
 
+class test {
+  get a () {
+    return 'ca';
+  }
+}
