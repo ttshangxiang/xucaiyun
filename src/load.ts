@@ -1,3 +1,5 @@
+import './base/base.css';
+
 interface WebComponents {
   waitFor: any
 }
@@ -14,9 +16,3 @@ window.WebComponents = window.WebComponents || {
 WebComponents.waitFor(async () => { 
   import('./main');
 });
-
-class test {
-  get a () {
-    return 'ca';
-  }
-}

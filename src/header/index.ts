@@ -2,6 +2,8 @@ import { LitElement, html, customElement } from '@polymer/lit-element';
 import { MDCTopAppBar } from '@material/top-app-bar/index';
 import c from '../base/c';
 
+const style = require('./style').toString();
+
 @customElement('c-header')
 export class Header extends LitElement {
 
@@ -35,18 +37,6 @@ export class Header extends LitElement {
   }
 
   get myStyles () {
-    return html `
-      <style>
-        :host {
-          position: absolute;
-          z-index: 7;
-          display: block;
-        }
-      </style>
-      <style>
-        @import url(/base/icon.css); 
-        @import url(/base/material.css);
-      </style>
-    `
+    return html`<style>${style}</style>`;
   }
 }

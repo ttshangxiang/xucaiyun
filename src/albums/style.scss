@@ -1,5 +1,5 @@
-@import url('/base/icon.css');
 
+@import "../base/common.scss";
 @import "@material/image-list/mdc-image-list";
 @import "@material/fab/mdc-fab";
 
@@ -18,6 +18,8 @@
 .my-masonry-image-list {
   max-width: 960px;
   @include mdc-image-list-masonry-columns(4);
+  -moz-column-count: 4;
+  -moz-column-gap: 16px;
 }
 
 @media (max-width: 1024px) {

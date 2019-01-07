@@ -3,6 +3,8 @@ import { LitElement, html, property, customElement } from '@polymer/lit-element'
 import {MDCRipple} from '@material/ripple/index';
 import { Router } from '../base/router';
 
+const style = require('./style').toString();
+
 @customElement('c-albums')
 export class Albums extends LitElement {
 
@@ -17,7 +19,7 @@ export class Albums extends LitElement {
       i++;
     }
     return html `
-      <link rel="stylesheet" href="/albums/style.css">
+      ${this.myStyles}
       <div style="padding: 8px; position: relative;">
         <ul class="mdc-image-list my-image-list mdc-image-list--with-text-protection">
           ${data.map((o, i) => html `
@@ -32,9 +34,9 @@ export class Albums extends LitElement {
           `)}
         </ul>
       </div>
-      <button class="mdc-fab app-fab--absolute" aria-label="Add" @click="${this.enterAddAlbum}">
+      <a class="mdc-fab app-fab--absolute" href="javascript:;" aria-label="Add" @click="${this.enterAddAlbum}">
         <span class="mdc-fab__icon material-icons">add</span>
-      </button>
+      </a>
     `;
   }
 
@@ -50,6 +52,10 @@ export class Albums extends LitElement {
 
   updated () {
     new MDCRipple(this.shadowRoot.querySelector('.mdc-fab'));
+  }
+
+  get myStyles () {
+    return html`<style>${style}</style>`;
   }
 }
 
@@ -67,7 +73,7 @@ export class Album extends LitElement {
       i++;
     }
     return html `
-      <link rel="stylesheet" href="/albums/style.css">
+      ${this.myStyles}
       <div style="padding: 8px; position: relative;">
         <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
           ${data.map((o, i) => {
@@ -90,6 +96,10 @@ export class Album extends LitElement {
     const {albumId} = Router.params;
     Router.push(`/albums/${albumId}/${i}`);
   }
+
+  get myStyles () {
+    return html`<style>${style}</style>`;
+  }
 }
 
 @customElement('c-photo')
@@ -102,7 +112,7 @@ export class Photo extends LitElement {
     const {photoId} = Router.params;
     const src = `/assets/imgs/photos/${photoId}.jpg`;
     return html `
-      <link rel="stylesheet" href="/albums/style.css">
+      ${this.myStyles}
       <div style="padding: 8px; position: relative;">
         <ul class="mdc-image-list my-mdc-image-detail">
           <li class="mdc-image-list__item">
@@ -114,5 +124,9 @@ export class Photo extends LitElement {
         </ul>
       </div>
     `;
+  }
+
+  get myStyles () {
+    return html`<style>${style}</style>`;
   }
 }

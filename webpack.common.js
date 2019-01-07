@@ -67,18 +67,24 @@ module.exports = {
         test: /\.js$/,
         loader: 'source-map-loader'
       },
+      // css
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader']
+      },
       // scss
       {
         test: /\.scss$/,
         use: [
           { loader: 'to-string-loader' },
           { loader: 'css-loader' },
+          { loader: 'postcss-loader' },
           {
             loader: 'sass-loader',
             options: {
               includePaths: ['./node_modules'],
             }
-          },
+          }
         ]
       },
       // images
