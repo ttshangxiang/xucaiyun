@@ -1,7 +1,22 @@
 @import "../base/common.scss";
-@import "@material/form-field/mdc-form-field";
-@import "@material/checkbox/mdc-checkbox";
+@import "@material/textfield/mdc-text-field";
+@import "@material/textfield/helper-text/mdc-text-field-helper-text";
+@import "@material/notched-outline/mdc-notched-outline";
+@import "@material/fab/mdc-fab";
 
-a {
-  color: '#fff';
+.text-field-row {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.text-field-container {
+  padding: 0 12px 12px;
+}
+
+.button-group {
+  text-align: right;
+  & > a {
+    margin-left: 20px;
+  }
 }

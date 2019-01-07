@@ -1,14 +1,10 @@
 
-// import './base/style.scss';
-// import './base/icon.scss';
-// import './base/material.scss';
-
 import {Router} from './base/router';
 
 /**路由 */
 Router.init({
   routes: [
-    {path: '/what', component: '<what></what>'},
+    {path: '/', component: '首页'},
     {path: '/jj', component: 'jj'},
     {path: '/albums',component: () => import('./albums'), tag: 'c-albums'},
     {path: '/albums/:albumId', component: () => import('./albums'), tag: 'c-album'},
