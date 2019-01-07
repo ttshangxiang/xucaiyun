@@ -3,6 +3,7 @@ import { LitElement, html, customElement } from '@polymer/lit-element';
 
 import '../drawer';
 import '../header';
+const style = require('./style').toString();
 
 @customElement('c-layout')
 export class Layout extends LitElement {
@@ -16,13 +17,6 @@ export class Layout extends LitElement {
   }
 
   get myStyles () {
-    return html `
-      <style>
-        :host {
-          display: block;
-          width: 100%;
-        }
-      </style> 
-    `
+    return html`<style>${style}</style>`;
   }
 }

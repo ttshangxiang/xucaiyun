@@ -1,7 +1,7 @@
 
-import './base/style.scss';
-import './base/icon.scss';
-import './base/material.scss';
+// import './base/style.scss';
+// import './base/icon.scss';
+// import './base/material.scss';
 
 import {Router} from './base/router';
 

@@ -67,24 +67,11 @@ module.exports = {
         test: /\.js$/,
         loader: 'source-map-loader'
       },
-
-      // Style
-      {
-        test: /\.css$/,
-        use: ['style-loader/url', 'css-loader']
-      },
+      // scss
       {
         test: /\.scss$/,
         use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: function (file) {
-                return path.relative(src, file).replace('scss', 'css');
-              }
-            }
-          },
-          { loader: 'extract-loader' },
+          { loader: 'to-string-loader' },
           { loader: 'css-loader' },
           {
             loader: 'sass-loader',
@@ -94,7 +81,6 @@ module.exports = {
           },
         ]
       },
-
       // images
       {
         test: /\.(?:png|jpe?g|gif|ico)$/,

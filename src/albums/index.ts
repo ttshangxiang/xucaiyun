@@ -1,7 +1,6 @@
 
 import { LitElement, html, property, customElement } from '@polymer/lit-element';
 import {MDCRipple} from '@material/ripple/index';
-import './style';
 import { Router } from '../base/router';
 
 @customElement('c-albums')

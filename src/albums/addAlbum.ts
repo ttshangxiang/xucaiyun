@@ -3,8 +3,6 @@ import { LitElement, html, property, customElement } from '@polymer/lit-element'
 import {MDCFormField} from '@material/form-field/index';
 import {MDCCheckbox} from '@material/checkbox/index';
 
-import './addAlbum.scss';
-
 @customElement('c-album-add')
 export class AddAlbum extends LitElement {
   render () {
