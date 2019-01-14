@@ -1,40 +1,60 @@
 
-import { LitElement, html, property, customElement } from '@polymer/lit-element';
+import { LitElement, html, property, customElement } from 'lit-element';
 import {MDCRipple} from '@material/ripple/index';
 import { Router } from '../base/router';
 import axios from '../base/axios';
+import { getIns } from '../base/c';
 
 const style = require('./style').toString();
+
+interface album {
+  ctime: string
+  description: string
+  status: number
+  title: string
+  utime: string
+  _id: string
+}
 
 @customElement('xcy-albums')
 export class Albums extends LitElement {
 
-  list: string[] | Error;
+  list: album[];
+  error: string;
+  pedding: boolean;
   constructor () {
     super();
+    this.error = 'caaa'
+    this.list = [];
+    this.pedding = false;
   }
   render () {
-    const data = [];
-    let i = 1;
-    while (i <= 15) {
-      data.push(`/assets/imgs/albums/${i}.jpg`);
-      i++;
+    if (this.pedding) {
+      // getIns('linear-progress').setAttribute('show', 'true');
+      return html ``;
     }
+    // getIns('linear-progress').setAttribute('show', 'false');
     return html `
       ${this.myStyles}
       <div style="padding: 8px; position: relative;">
-        <ul class="mdc-image-list my-image-list mdc-image-list--with-text-protection">
-          ${data.map((o, i) => html `
-            <li class="mdc-image-list__item" @click=${() => this.enterAlbum(i + 1)}>
-              <div class="mdc-image-list__image-aspect-container">
-                <img class="mdc-image-list__image" src="${o}">
-              </div>
-              <div class="mdc-image-list__supporting">
-                <span class="mdc-image-list__label">Text label</span>
-              </div>
-            </li>
-          `)}
-        </ul>
+        ${this.error ? 
+        html `
+          ${this.error}
+        ` :
+        html `
+          <ul class="mdc-image-list my-image-list mdc-image-list--with-text-protection">
+            ${this.list.map((o, i) => html `
+              <li class="mdc-image-list__item" @click=${() => this.enterAlbum(o._id)}>
+                <div class="mdc-image-list__image-aspect-container">
+                  <img class="mdc-image-list__image" src="${o}">
+                </div>
+                <div class="mdc-image-list__supporting">
+                  <span class="mdc-image-list__label">${o.title}</span>
+                </div>
+              </li>
+            `)}
+          </ul>
+        `}
       </div>
       <a class="mdc-fab app-fab--absolute" href="javascript:;" aria-label="Add" @click="${this.enterAddAlbum}">
         <span class="mdc-fab__icon material-icons">add</span>
@@ -42,16 +62,16 @@ export class Albums extends LitElement {
     `;
   }
 
-  async initialize () {
+  async firstUpdated () {
     try {
-      console.log(await this.loadAlbums());
-    } catch (error) {
-      console.log(error);
+      this.list = await this.loadAlbums();
+    } catch (err) {
+      this.error = err.message;
     }
   }
 
   updated () {
-    new MDCRipple(this.shadowRoot.querySelector('.mdc-fab'));
+    // new MDCRipple(this.shadowRoot.querySelector('.mdc-fab'));
   }
 
   get myStyles () {
@@ -78,14 +98,16 @@ export class Albums extends LitElement {
    */
   async loadAlbums () {
     return axios({
-      url: '/albumss'
+      url: '/albums'
     })
-    // .then(response => {
-    //   console.log(response)
-    // })
-    .catch(err => {
-      throw err;
-    });
+    .then(res => {
+      const { data = {} } = res;
+      if (data.code === 0) {
+        return data.data || [];
+      } else {
+        throw Error(data.msg);
+      }
+    })
   }
 }
 

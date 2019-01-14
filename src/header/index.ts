@@ -1,4 +1,4 @@
-import { LitElement, html, customElement } from '@polymer/lit-element';
+import { LitElement, html, customElement } from 'lit-element';
 import { MDCTopAppBar } from '@material/top-app-bar/index';
 import c from '../base/c';
 

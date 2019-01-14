@@ -1,5 +1,5 @@
 
-import { LitElement, html, property, customElement } from '@polymer/lit-element';
+import { LitElement, html, property, customElement } from 'lit-element';
 import {MDCTextField} from '@material/textfield/index';
 import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
 import {MDCNotchedOutline} from '@material/notched-outline/index';
@@ -87,7 +87,7 @@ export class AddAlbum extends LitElement {
     }
     axios({
       method: 'post',
-      url: '/t2/xucaiyun/albums',
+      url: '/albums',
       data: data
     })
     .then(response => {

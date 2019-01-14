@@ -1,5 +1,5 @@
 
-import { LitElement, html, customElement } from '@polymer/lit-element';
+import { LitElement, html, customElement } from 'lit-element';
 
 import '../drawer';
 import '../header';

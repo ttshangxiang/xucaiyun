@@ -20,7 +20,7 @@ function queryString (s: string) {
   return result;
 }
 
-import { LitElement, html, property, customElement } from '@polymer/lit-element';
+import { LitElement, html, property, customElement } from 'lit-element';
 
 /**路由静态方法 */
 interface route {

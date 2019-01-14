@@ -1,6 +1,8 @@
-import { LitElement, html, property, customElement } from '@polymer/lit-element';
+import { LitElement, html, property, customElement } from 'lit-element';
 import c, {setIns} from '../base/c';
 
+
+import '../common/linear-progress'
 import {MDCList} from '@material/list/index';
 import {MDCDrawer} from '@material/drawer/index';
 
@@ -66,6 +68,7 @@ export class Drawer extends LitElement {
       <!-- end -->
       <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
         <main class="main-content">
+          <xcy-linear-progress id="linear-progress"></xcy-linear-progress>
           <slot></slot>
         </main>
       </div>
