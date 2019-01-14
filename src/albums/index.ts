@@ -2,12 +2,14 @@
 import { LitElement, html, property, customElement } from '@polymer/lit-element';
 import {MDCRipple} from '@material/ripple/index';
 import { Router } from '../base/router';
+import axios from '../base/axios';
 
 const style = require('./style').toString();
 
-@customElement('c-albums')
+@customElement('xcy-albums')
 export class Albums extends LitElement {
 
+  list: string[] | Error;
   constructor () {
     super();
   }
@@ -40,14 +42,12 @@ export class Albums extends LitElement {
     `;
   }
 
-  /**进入相册 */
-  enterAlbum (i: any) {
-    Router.push(`/albums/${i}`);
-  }
-
-  /**新增相册 */
-  enterAddAlbum () {
-    Router.push(`/albums/add`);
+  async initialize () {
+    try {
+      console.log(await this.loadAlbums());
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   updated () {
@@ -57,9 +57,39 @@ export class Albums extends LitElement {
   get myStyles () {
     return html`<style>${style}</style>`;
   }
+
+  /**
+   * 进入相册
+   * @param i id
+   */
+  enterAlbum (i: any) {
+    Router.push(`/albums/${i}`);
+  }
+
+  /**
+   * 进入新增相册页面
+   */
+  enterAddAlbum () {
+    Router.push(`/albums/add`);
+  }
+
+  /**
+   * 加载相册
+   */
+  async loadAlbums () {
+    return axios({
+      url: '/albumss'
+    })
+    // .then(response => {
+    //   console.log(response)
+    // })
+    .catch(err => {
+      throw err;
+    });
+  }
 }
 
-@customElement('c-album')
+@customElement('xcy-album')
 export class Album extends LitElement {
 
   constructor () {
@@ -102,7 +132,7 @@ export class Album extends LitElement {
   }
 }
 
-@customElement('c-photo')
+@customElement('xcy-photo')
 export class Photo extends LitElement {
 
   constructor () {

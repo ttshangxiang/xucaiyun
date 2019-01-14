@@ -4,7 +4,7 @@ import c from '../base/c';
 
 const style = require('./style').toString();
 
-@customElement('c-header')
+@customElement('xcy-header')
 export class Header extends LitElement {
 
   render(){

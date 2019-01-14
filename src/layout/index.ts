@@ -5,14 +5,14 @@ import '../drawer';
 import '../header';
 const style = require('./style').toString();
 
-@customElement('c-layout')
+@customElement('xcy-layout')
 export class Layout extends LitElement {
 
   render(){
     return html `
       ${this.myStyles}
-      <c-header hidden></c-header>
-      <c-drawer id="c-drawer" hidden></c-drawer>
+      <xcy-header hidden></xcy-header>
+      <xcy-drawer id="xcy-drawer" hidden></xcy-drawer>
     `;
   }
 

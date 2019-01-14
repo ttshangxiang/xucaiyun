@@ -83,7 +83,7 @@ export class Router {
     this.query = queryString(search);
     this.paths = this.splitPath(pathname);
     const matchRoute = this.match();
-    const ins = getIns('c-drawer');
+    const ins = getIns('xcy-drawer');
     if (!matchRoute) {
       console.log('路由错误');
       ins.innerHTML = '路由错误';
@@ -145,7 +145,7 @@ export class Router {
 }
 
 /**路由标签 */
-@customElement('c-route')
+@customElement('xcy-route')
 export class Route extends LitElement {
 
   @property({type: String}) href = '/';

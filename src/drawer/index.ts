@@ -11,7 +11,7 @@ const classMap: any = {
   modal: 'mdc-drawer--modal'
 }
 
-@customElement('c-drawer')
+@customElement('xcy-drawer')
 export class Drawer extends LitElement {
 
   @property()
@@ -39,22 +39,22 @@ export class Drawer extends LitElement {
         <div class="mdc-drawer__content">
           <nav class="mdc-list">
             <a href="javascript:;">
-              <c-route class="mdc-list-item " href="/what"  role="nav">
+              <xcy-route class="mdc-list-item " href="/what"  role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
                 <span class="mdc-list-item__text">Inbox</span>
-              </c-route>
+              </xcy-route>
             </a>
             <a href="javascript:;">
-              <c-route class="mdc-list-item" href="/jj" role="nav">
+              <xcy-route class="mdc-list-item" href="/jj" role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
                 <span class="mdc-list-item__text">Outgoing</span>
-              </c-route>
+              </xcy-route>
             </a>
             <a href="javascript:;">
-              <c-route class="mdc-list-item" href="/albums" role="nav">
+              <xcy-route class="mdc-list-item" href="/albums" role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo</i>
                 <span class="mdc-list-item__text">我的相册</span>
-              </c-route>
+              </xcy-route>
             </a>
           </nav>
         </div>
