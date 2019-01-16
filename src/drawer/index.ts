@@ -44,7 +44,7 @@ export class Drawer extends LitElement {
         <div class="mdc-drawer__content">
           <nav class="mdc-list">
             <a href="javascript:;">
-              <xcy-route class="mdc-list-item " href="/what"  role="nav">
+              <xcy-route class="mdc-list-item " href="/"  role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
                 <span class="mdc-list-item__text">Inbox</span>
               </xcy-route>

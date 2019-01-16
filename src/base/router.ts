@@ -110,8 +110,9 @@ export class Router {
     this.title = matchRoute.title;
     getIns('xcy-header').setAttribute('button', matchRoute.button || 'menu');
     if (typeof matchRoute.component === 'function') {
-      matchRoute.component();
-      ins.innerHTML = `<${matchRoute.tag} hidden></${matchRoute.tag}>`;
+      matchRoute.component().then(() => {
+        ins.innerHTML = `<${matchRoute.tag} hidden></${matchRoute.tag}>`;
+      });
     } else {
       ins.innerHTML = matchRoute.component;
     }
