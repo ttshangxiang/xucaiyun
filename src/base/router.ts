@@ -176,11 +176,13 @@ export class Route extends LitElement {
     super();
     Router.routes.push(this);
     this.addEventListener('click', e => {
-      const event = document.createEvent('mouseevents');
-      event.initEvent("click", true, true);
-      getIns('xcy-drawer').shadowRoot
-        .querySelector('.mdc-drawer-scrim-fake')
-        .dispatchEvent(event);
+      const scrim = getIns('xcy-drawer').shadowRoot
+      .querySelector('.mdc-drawer-scrim-fake');
+      if (scrim) {
+        const event = document.createEvent('mouseevents');
+        event.initEvent("click", true, true);
+        scrim.dispatchEvent(event);
+      }
       Router.push(this.href, this.title);
     });
   }
