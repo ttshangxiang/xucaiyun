@@ -50,7 +50,7 @@ module.exports = {
         include: [
           resolve('src'),
           resolve('node_modules/lit-html'),
-          resolve('node_modules/@polymer'),
+          resolve('node_modules/lit-element'),
           resolve('node_modules/@material')
         ]
       },
