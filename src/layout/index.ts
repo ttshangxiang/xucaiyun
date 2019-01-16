@@ -11,7 +11,7 @@ export class Layout extends LitElement {
   render(){
     return html `
       ${this.myStyles}
-      <xcy-header hidden></xcy-header>
+      <xcy-header id="xcy-header" hidden></xcy-header>
       <xcy-drawer id="xcy-drawer" hidden></xcy-drawer>
     `;
   }

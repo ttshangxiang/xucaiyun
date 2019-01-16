@@ -26,7 +26,9 @@ import { LitElement, html, property, customElement } from 'lit-element';
 interface route {
   path: string,
   component: any,
-  tag?: string
+  title: string
+  tag?: string,
+  button?: ('menu' | 'back')
 }
 interface conf {
   routes: route[]
@@ -47,6 +49,15 @@ export class Router {
   private static conf: conf;
   /**oldPath */
   static oldPath: string;
+  /**title */
+  private static _title: string;
+  static set title (title: string) {
+    getIns('xcy-header').setAttribute('mytitle', title);
+    this._title = title;
+  }
+  static get title () {
+    return this._title;
+  }
 
   /**初始化 */
   static init (conf: conf) {
@@ -64,6 +75,13 @@ export class Router {
   static push (path: string, title: string = '') {
     if (path === this.path) return;
     window.history.pushState(null, title, path);
+    this.render();
+  }
+
+  /**覆盖路由 */
+  static replace (path: string, title: string = '') {
+    if (path === this.path) return;
+    window.history.replaceState(null, title, path);
     this.render();
   }
 
@@ -89,6 +107,8 @@ export class Router {
       ins.innerHTML = '路由错误';
       return;
     }
+    this.title = matchRoute.title;
+    getIns('xcy-header').setAttribute('button', matchRoute.button || 'menu');
     if (typeof matchRoute.component === 'function') {
       matchRoute.component();
       ins.innerHTML = `<${matchRoute.tag} hidden></${matchRoute.tag}>`;
@@ -98,7 +118,8 @@ export class Router {
     // 路由选中状态修改
     this.routes.forEach(o => {
       if (o.getAttribute('role') !== 'nav') return;
-      if (pathname === o.href || pathname !== '/' && pathname.includes(o.href)) {
+      const n = o.href.length;
+      if (pathname === o.href || (o.href !== '/' && pathname.slice(0, n) === o.href)) {
         o.classList.add('mdc-list-item--activated');
         o.setAttribute('aria-selected', 'true');
         o.focus();
@@ -154,6 +175,11 @@ export class Route extends LitElement {
     super();
     Router.routes.push(this);
     this.addEventListener('click', e => {
+      const event = document.createEvent('mouseevents');
+      event.initEvent("click", true, true);
+      getIns('xcy-drawer').shadowRoot
+        .querySelector('.mdc-drawer-scrim-fake')
+        .dispatchEvent(event);
       Router.push(this.href, this.title);
     });
   }

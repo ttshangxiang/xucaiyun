@@ -50,6 +50,8 @@
     "lodash": "^4.17.11",
     "postcss-loader": "^3.0.0",
     "to-string-loader": "^1.1.5",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.2.2",
     "url-parse": "^1.4.4"
   },
   "devDependencies": {

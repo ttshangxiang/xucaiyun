@@ -58,7 +58,7 @@ module.exports = {
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: [babelLoader]
+        use: [babelLoader, 'ts-loader']
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.

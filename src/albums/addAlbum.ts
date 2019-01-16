@@ -1,16 +1,25 @@
 
 import { LitElement, html, property, customElement } from 'lit-element';
-import {MDCTextField} from '@material/textfield/index';
-import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
-import {MDCNotchedOutline} from '@material/notched-outline/index';
-import {MDCRipple} from '@material/ripple/index';
+import { MDCTextField } from '@material/textfield/index';
+import { MDCTextFieldHelperText } from '@material/textfield/helper-text';
+import { MDCNotchedOutline } from '@material/notched-outline/index';
+import { MDCRipple } from '@material/ripple/index';
 import axios from '../base/axios';
+import { getIns, setState } from '../base/c';
+import { Router } from '../base/router';
 
 const style = require('./addAlbum.scss').toString();
 
 @customElement('xcy-album-add')
 export class AddAlbum extends LitElement {
+  @property ({type: Boolean}) pedding = false;
+
   render () {
+    if (this.pedding) {
+      getIns('linear-progress').setAttribute('show', 'true');
+      return html ``;
+    }
+    getIns('linear-progress').removeAttribute('show');
     return html `
       ${this.myStyles}
       <div class="text-field-row">
@@ -44,8 +53,8 @@ export class AddAlbum extends LitElement {
           </p>
         </div>
         <div class="text-field-container button-group">
-          <a href="javascript:;" class="mdc-fab mdc-fab--extended">
-            <span class="material-icons mdc-fab__icon">cancel</span>
+          <a href="javascript:;" class="mdc-fab mdc-fab--extended" @click=${() => window.history.back()}>
+            <span class="material-icons mdc-fab__icon">close</span>
             <span class="mdc-fab__label">取消</span>
           </a>
           <a href="javascript:;" class="mdc-fab mdc-fab--extended" @click=${this.save}>
@@ -59,9 +68,8 @@ export class AddAlbum extends LitElement {
 
   updated () {
     this.shadowRoot.querySelectorAll('.mdc-text-field').forEach(o => new MDCTextField(o));
-    const helperText = new MDCTextFieldHelperText(this.shadowRoot.querySelector('.mdc-text-field-helper-text'));
-    const notchedOutline = new MDCNotchedOutline(this.shadowRoot.querySelector('.mdc-notched-outline'));
-
+    this.shadowRoot.querySelectorAll('.mdc-text-field-helper-text').forEach(o => new MDCTextFieldHelperText(o));
+    this.shadowRoot.querySelectorAll('.mdc-notched-outline').forEach(o => new MDCNotchedOutline(o));
     this.shadowRoot.querySelectorAll('.mdc-fab').forEach(o => new MDCRipple(o));
   }
 
@@ -80,19 +88,30 @@ export class AddAlbum extends LitElement {
     return {title, description};
   }
 
-  save () {
+  async save () {
     const data = this.validate();
     if (!data) {
       return;
     }
-    axios({
-      method: 'post',
-      url: '/albums',
-      data: data
-    })
-    .then(response => {
-      console.log(response);
-    })
-    .catch(err => console.log(err));
+    try {
+      this.pedding = true;
+      const code = await axios({
+        method: 'post',
+        url: '/albums',
+        data: data
+      })
+      .then(response => {
+        return response.data.code;
+      })
+      if (code === 0) {
+        // 清除缓存
+        setState('albums', null);
+        Router.replace('/albums');
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.pedding = false;
+    }
   }
 }

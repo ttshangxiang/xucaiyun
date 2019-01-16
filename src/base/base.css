@@ -6,4 +6,5 @@ html, body, h1, h2, h3, h4, h5, h6, p, ul, li {
 body, html {
   width: 100%;
   height: 100%;
+  --mdc-theme-secondary: #6200ee;
 }

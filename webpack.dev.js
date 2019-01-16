@@ -16,8 +16,12 @@ module.exports = merge(common, {
     historyApiFallback: true, // 配合BrowserRouter
     proxy: {
       '/t2': {
-          target: 'http://localhost:3000',
-          secure: false
+        target: 'http://localhost:3000',
+        secure: false
+      },
+      '/upload': {
+        target: 'http://localhost:3000',
+        secure: false
       }
     }
   },

@@ -1,5 +1,5 @@
 import { LitElement, html, property, customElement } from 'lit-element';
-import c, {setIns} from '../base/c';
+import {setIns} from '../base/c';
 
 
 import '../common/linear-progress'
@@ -19,9 +19,12 @@ export class Drawer extends LitElement {
   @property()
   mode: ('modal' | 'fixed') = 'fixed';
 
+  mdcList: any;
+  mdcDrawer: any;
+
   constructor () {
     super();
-    setIns(this, this.id);
+    setIns(this.id, this);
     this.resize();
     window.onresize = () => {
       this.resize()
@@ -35,8 +38,8 @@ export class Drawer extends LitElement {
       <aside class="mdc-drawer mdc-drawer--dismissible ${classMap[this.mode]}"
         style="position: fixed${this.mode === 'modal' ? ';z-index: 9;': ';'}">
         <div class="mdc-drawer__header">
-          <h3 class="mdc-drawer__title">Mail</h3>
-          <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+          <h3 class="mdc-drawer__title">Xcy</h3>
+          <h6 class="mdc-drawer__subtitle">ttshangxiang@qq.com</h6>
         </div>
         <div class="mdc-drawer__content">
           <nav class="mdc-list">
@@ -64,7 +67,7 @@ export class Drawer extends LitElement {
       <!-- mdc-drawer-scrim的点击事件库报错，复制样式自己写事件，等待修复 -->
       ${this.mode === 'modal' ? html`
           <div class="mdc-drawer-scrim" style="display: none;"></div>
-          <div class="mdc-drawer-scrim-fake" @click=${() => c.drawer.open = false}></div>` : ''}
+          <div class="mdc-drawer-scrim-fake" @click=${() => this.mdcDrawer.open = false}></div>` : ''}
       <!-- end -->
       <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
         <main class="main-content">
@@ -78,9 +81,9 @@ export class Drawer extends LitElement {
 
   updated () {
     // Instantiation
-    c.list = MDCList.attachTo(this.shadowRoot.querySelector('.mdc-list'));
-    c.list.wrapFocus = true;
-    c.drawer = MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'));
+    this.mdcList = MDCList.attachTo(this.shadowRoot.querySelector('.mdc-list'));
+    this.mdcList.wrapFocus = true;
+    this.mdcDrawer = MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'));
   }
 
   resize () {

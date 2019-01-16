@@ -5,31 +5,22 @@ const style = require('./style').toString();
 
 @customElement('xcy-linear-progress')
 export class LinearProgress extends LitElement {
-  @property()
-  bbbb = true;
+  @property({
+    type: Boolean,
+    reflect: true
+  })
+  show = false;
 
   constructor () {
     super();
-  }
-
-  xix () {
-    this.bbbb = !this.bbbb;
-    console.log(this.bbbb)
+    setIns(this.id, this);
   }
 
   render () {
-    console
-    return html `
-      <div @click=${this.xix}>
-        ${this.bbbb ? 'true' : 'false'}
-      </div>
-    `
-
-
     return html `
       ${this.myStyles}
-      ${this.bbbb ? html`
-        <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" @click=${this.xix}>
+      ${this.show ? html`
+        <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
           <div class="mdc-linear-progress__buffering-dots"></div>
           <div class="mdc-linear-progress__buffer"></div>
           <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
