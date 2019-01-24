@@ -20,8 +20,6 @@
   },
   "homepage": "https://github.com/ttshangxiang/xucaiyun#readme",
   "dependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.2.3",
-    "@babel/plugin-proposal-decorators": "^7.2.3",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/runtime-corejs2": "^7.2.0",
@@ -44,7 +42,6 @@
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "autoprefixer": "^9.4.4",
     "axios": "^0.18.0",
-    "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "copy-webpack-plugin": "^4.6.0",
     "extract-loader": "^3.1.0",
     "lit-element": "^2.0.0-rc.2",
@@ -57,9 +54,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-typescript": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
-    "@babel/preset-typescript": "^7.1.0",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^1.0.0",
     "css-loader": "^2.1.0",

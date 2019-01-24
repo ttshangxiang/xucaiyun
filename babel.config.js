@@ -7,14 +7,9 @@ module.exports = function (api) {
       useBuiltIns: 'usage',
       exclude: ['babel-plugin-transform-classes']
     }],
-    // '@babel/preset-typescript'
   ];
   const plugins = [
-    'dynamic-import-webpack',
-    // '@babel/plugin-syntax-dynamic-import',
-    // '@babel/plugin-syntax-typescript',
-    // ['@babel/plugin-proposal-decorators', { 'legacy': true }],
-    // ['@babel/plugin-proposal-class-properties', { 'loose' : true }],
+    '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-transform-classes',
     ['@babel/plugin-transform-runtime', {
       corejs: 2

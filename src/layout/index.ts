@@ -41,6 +41,10 @@ export class Layout extends LitElement {
     Router.after = (route) => {
       const button = route.getAttribute('button') || 'menu';
       getIns('header-7').button = button;
+      const drawer = getIns('drawer-7');
+      if (drawer.mode === 'modal') {
+        drawer.mdcDrawer.open = false;
+      }
     }
   }
 
