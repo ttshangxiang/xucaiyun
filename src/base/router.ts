@@ -78,7 +78,6 @@ function matchPath (path: string, routes: Route[]): {route: Route, params: any} 
       max = heavy;
     }
   });
-  console.log(result)
   return result;
 }
 
@@ -106,16 +105,20 @@ class Router extends LitElement {
   static unique: number;
   // activeClass
   static activeClass: string = 'actived';
+  static before: (path: string) => boolean = () => true;
+  static after: (route: Route) => any = () => null;
 
   firstUpdated () {
     Router.renderRoute();
   }
   static push (path: string, title: string = '') {
+    if (!this.before(path)) return;
     if (path === this.path) return;
     window.history.pushState(null, title, path);
     this.renderRoute();
   }
   static replace (path: string, title: string = '') {
+    if (!this.before(path)) return;
     if (path === this.path) return;
     window.history.replaceState(null, title, path);
     this.renderRoute();
@@ -163,6 +166,7 @@ class Router extends LitElement {
     }
     this.root.route = result;
     this.selected();
+    this.after(route);
   }
   static selected () {
     // 路由选中状态修改
@@ -236,122 +240,3 @@ class Link extends LitElement {
 }
 
 export default Router;
-
-// export class Router {
-
-//   /**保存路由标签 */
-//   static routes: Route[] = [];
-//   /**路由的query */
-//   static query: {[index: string]: string | string[]} = {};
-//   /**路由的params */
-//   static params: {[index: string]: string} = {};
-//   /**path */
-//   static path: string = '/';
-//   /**paths */
-//   static paths: string[] = [];
-//   /**conf */
-//   private static conf: conf;
-//   /**oldPath */
-//   static oldPath: string;
-//   /**title */
-//   private static _title: string;
-//   static set title (title: string) {
-//     new CustomEvent('titlechange', {detail: {title}});
-//     getIns('xcy-header').setAttribute('mytitle', title);
-//     this._title = title;
-//   }
-//   static get title () {
-//     return this._title;
-//   }
-
-//   /**初始化 */
-//   static init (conf: conf) {
-//     this.conf = conf;
-//     window.onpopstate = e => {
-//       if (window.location.pathname === this.oldPath) {
-//         return;
-//       }
-//       this.render();
-//     }
-//     setTimeout(() => this.render(), 0);
-//   }
-
-//   /**添加路由 */
-//   static push (path: string, title: string = '') {
-//     if (path === this.path) return;
-//     window.history.pushState(null, title, path);
-//     this.render();
-//   }
-
-//   /**覆盖路由 */
-//   static replace (path: string, title: string = '') {
-//     if (path === this.path) return;
-//     window.history.replaceState(null, title, path);
-//     this.render();
-//   }
-
-//   /**加载页面 */
-//   static render () {
-//     const {search, pathname} = window.location;
-//     this.oldPath = pathname;
-//     this.path = pathname;
-//     this.query = queryString(search);
-//     this.paths = splitPath(pathname);
-//     const {route: matchRoute, params} = matchPath(this.paths, this.conf.routes);
-//     this.params = params;
-//     const ins = getIns('xcy-drawer');
-//     if (!matchRoute) {
-//       console.log('路由错误');
-//       ins.innerHTML = '路由错误';
-//       return;
-//     }
-//     this.title = matchRoute.title;
-//     getIns('xcy-header').setAttribute('button', matchRoute.button || 'menu');
-//     if (typeof matchRoute.component === 'function') {
-//       matchRoute.component().then(() => {
-//         ins.innerHTML = `<${matchRoute.tag} hidden></${matchRoute.tag}>`;
-//       });
-//     } else {
-//       ins.innerHTML = matchRoute.component;
-//     }
-//     // 路由选中状态修改
-//     this.routes.forEach(o => {
-//       if (o.getAttribute('role') !== 'nav') return;
-//       const n = o.href.length;
-//       if (pathname === o.href || (o.href !== '/' && pathname.slice(0, n) === o.href)) {
-//         o.classList.add('mdc-list-item--activated');
-//         o.setAttribute('aria-selected', 'true');
-//         o.focus();
-//       } else {
-//         o.classList.remove('mdc-list-item--activated');
-//         o.setAttribute('aria-selected', 'false');
-//         o.blur();
-//       }
-//     });
-//   }
-// }
-
-// /**路由标签 */
-// @customElement('xcy-link')
-// export class link extends LitElement {
-
-//   @property({type: String}) href = '/';
-
-//   constructor () {
-//     super();
-//     Router.routes.push(this);
-//     this.addEventListener('click', e => {
-//       const scrim = getIns('xcy-drawer').shadowRoot
-//       .querySelector('.mdc-drawer-scrim-fake');
-//       if (scrim) {
-//         const event = document.createEvent('mouseevents');
-//         event.initEvent("click", true, true);
-//         scrim.dispatchEvent(event);
-//       }
-//       Router.push(this.href, this.title);
-//     });
-//   }
-//   render () {
-//     return html `<slot></slot>`;
-//   }
-// }

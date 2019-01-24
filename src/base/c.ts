@@ -1,6 +1,6 @@
 
 // 缓存Element实体
-const Ins: {[index: string]: HTMLElement} = {};
+const Ins: {[index: string]: any} = {};
 export function getIns (id: string) {
   return Ins[id];
 }

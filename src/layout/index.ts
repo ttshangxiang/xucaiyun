@@ -6,6 +6,7 @@ import './drawer';
 import './header';
 import './content';
 import '../home';
+import { getIns } from '../base/c';
 const style = require('./style').toString();
 
 
@@ -36,6 +37,10 @@ export class Layout extends LitElement {
       'photo-7': () => import('../albums'),
       'album-add-7': () => import('../albums/addAlbum'),
       'photo-add-7': () => import('../albums/addPhoto')
+    };
+    Router.after = (route) => {
+      const button = route.getAttribute('button') || 'menu';
+      getIns('header-7').button = button;
     }
   }
 
@@ -43,11 +48,19 @@ export class Layout extends LitElement {
     return html `
       <router-7 id="router-7">
         <route-7 path="/" tag="home-7"></route-7>
-        <route-7 path="/albums" tag="albums-7" exact></route-7>
-        <route-7 path="/albums/:albumId" tag="album-7" exact></route-7>
-        <route-7 path="/albums/:albumId/:photoId" tag="photo-7" exact></route-7>
-        <route-7 path="/albums/add" tag="album-add-7" exact></route-7>
-        <route-7 path="/albums/:albumId/add" tag="photo-add-7" exact></route-7>
+        <route-7 path="/albums" tag="albums-7"></route-7>
+        <route-7 path="/albums/:albumId"
+          tag="album-7"
+          button="back"></route-7>
+        <route-7 path="/albums/:albumId/:photoId"
+          tag="photo-7"
+          button="back"></route-7>
+        <route-7 path="/albums/add"
+          tag="album-add-7"
+          button="back"></route-7>
+        <route-7 path="/albums/:albumId/add"
+          tag="photo-add-7"
+          button="back"></route-7>
       </router-7>
     `;
   }
