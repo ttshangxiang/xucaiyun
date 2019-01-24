@@ -44,6 +44,7 @@
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "autoprefixer": "^9.4.4",
     "axios": "^0.18.0",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "copy-webpack-plugin": "^4.6.0",
     "extract-loader": "^3.1.0",
     "lit-element": "^2.0.0-rc.2",

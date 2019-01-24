@@ -10,7 +10,8 @@ module.exports = function (api) {
     // '@babel/preset-typescript'
   ];
   const plugins = [
-    '@babel/plugin-syntax-dynamic-import',
+    'dynamic-import-webpack',
+    // '@babel/plugin-syntax-dynamic-import',
     // '@babel/plugin-syntax-typescript',
     // ['@babel/plugin-proposal-decorators', { 'legacy': true }],
     // ['@babel/plugin-proposal-class-properties', { 'loose' : true }],
