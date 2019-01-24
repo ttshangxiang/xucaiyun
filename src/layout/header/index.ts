@@ -1,6 +1,6 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import { MDCTopAppBar } from '@material/top-app-bar/index';
-import { getIns, setIns } from '../base/c';
+import { getIns, setIns } from '../../base/c';
 
 const style = require('./style').toString();
 
@@ -28,11 +28,11 @@ export class Header extends LitElement {
           ` : ''}
           <span class="mdc-top-app-bar__title">${this.mytitle}</span>
         </section>
-        <!-- <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
           <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
           <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page" alt="Print this page">print</a>
           <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
-        </section> -->
+        </section>
       </div>
     </header>
     `;

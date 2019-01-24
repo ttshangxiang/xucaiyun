@@ -14,5 +14,5 @@ window.WebComponents = window.WebComponents || {
   waitFor(cb: any){ addEventListener('WebComponentsReady', cb) }
 } 
 WebComponents.waitFor(async () => { 
-  import('./main');
+  import('./layout');
 });

@@ -4,7 +4,7 @@ import { MDCTextField } from '@material/textfield/index';
 import { MDCRipple } from '@material/ripple/index';
 import axios from '../base/axios';
 import { getIns, setState } from '../base/c';
-import { Router } from '../base/router';
+import Router from '../base/router';
 import './preview';
 
 const style = require('./addPhoto.scss').toString();
@@ -18,12 +18,20 @@ interface photo {
   pedding: boolean
 }
 
-@customElement('xcy-photo-add')
+@customElement('photo-add-7')
 export class AddPhoto extends LitElement {
   @property ({type: Array}) list: photo[] = [];
 
   @query('xcy-photo-preview') preview: HTMLElement;
   @query('#file-input') fileInput: HTMLInputElement;
+
+  getProcess (o: photo) {
+    return html`
+      <div class="percent-progress" style="width:${o.percent}%;"></div>
+      <div class="percent-text">${o.percent}%</div>
+    `;
+  }
+  
   render () {
     return html `
       ${this.myStyles}
@@ -57,10 +65,7 @@ export class AddPhoto extends LitElement {
               </div>
             </div>
             <!-- 进度 -->
-            ${o.percent ? html`
-              <div class="percent-progress" style="width:${o.percent}%;"></div>
-              <div class="percent-text">${o.percent}%</div>
-            ` : ''}
+            ${o.percent ? this.getProcess(o) : ''}
             <!-- 删除按钮，提交时不显示 -->
             ${!o.pedding ? html`
               <a class="mdc-icon-button material-icons update-delete" href="javascript:;" @click=${() => this.removePhoto(o)}>close</a>

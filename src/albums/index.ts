@@ -1,7 +1,7 @@
 
 import { LitElement, html, property, customElement } from 'lit-element';
 import {MDCRipple} from '@material/ripple/index';
-import { Router } from '../base/router';
+import Router from '../base/router';
 import axios from '../base/axios';
 import { getIns, setState, getState } from '../base/c';
 
@@ -29,7 +29,7 @@ interface photo {
   _id: string
 }
 
-@customElement('xcy-albums')
+@customElement('albums-7')
 export class Albums extends LitElement {
 
   @property ({type: Array}) list: album[] = []
@@ -128,7 +128,7 @@ export class Albums extends LitElement {
   }
 }
 
-@customElement('xcy-album')
+@customElement('album-7')
 export class Album extends LitElement {
   @property ({type: Array}) list: photo[] = []
   @property ({type: String}) error = '';
@@ -228,7 +228,7 @@ export class Album extends LitElement {
   }
 }
 
-@customElement('xcy-photo')
+@customElement('photo-7')
 export class Photo extends LitElement {
   @property ({type: Object}) data: photo = null;
   @property ({type: String}) error = '';
@@ -239,6 +239,14 @@ export class Photo extends LitElement {
   render () {
     return html `
       ${this.myStyles}
+      <style>
+        .my-mdc-image-detail .mdc-image-list__image {
+          display: block;
+          width: auto;
+          margin: 0 auto;
+          max-width: 100%;
+        }
+      </style>
       ${this.data ? html`
         <div style="padding: 8px; position: relative;">
           <ul class="mdc-image-list my-mdc-image-detail">

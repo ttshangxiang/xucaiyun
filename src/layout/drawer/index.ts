@@ -1,8 +1,8 @@
 import { LitElement, html, property, customElement } from 'lit-element';
-import {setIns} from '../base/c';
+import {setIns} from '../../base/c';
 
 
-import '../common/linear-progress'
+import '../../common/linear-progress';
 import {MDCList} from '@material/list/index';
 import {MDCDrawer} from '@material/drawer/index';
 
@@ -44,22 +44,22 @@ export class Drawer extends LitElement {
         <div class="mdc-drawer__content">
           <nav class="mdc-list">
             <a href="javascript:;">
-              <xcy-route class="mdc-list-item " href="/"  role="nav">
+              <link-7 class="mdc-list-item " path="/" role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
                 <span class="mdc-list-item__text">Inbox</span>
-              </xcy-route>
+              </link-7>
             </a>
-            <a href="javascript:;">
-              <xcy-route class="mdc-list-item" href="/jj" role="nav">
+            <a href="//blog.ttshangxiang.com">
+              <link-7 class="mdc-list-item" path="outside">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-                <span class="mdc-list-item__text">Outgoing</span>
-              </xcy-route>
+                <span class="mdc-list-item__text">博客</span>
+              </link-7>
             </a>
             <a href="javascript:;">
-              <xcy-route class="mdc-list-item" href="/albums" role="nav">
+              <link-7 class="mdc-list-item" path="/albums" role="nav">
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo</i>
                 <span class="mdc-list-item__text">我的相册</span>
-              </xcy-route>
+              </link-7>
             </a>
           </nav>
         </div>

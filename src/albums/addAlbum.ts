@@ -6,11 +6,11 @@ import { MDCNotchedOutline } from '@material/notched-outline/index';
 import { MDCRipple } from '@material/ripple/index';
 import axios from '../base/axios';
 import { getIns, setState } from '../base/c';
-import { Router } from '../base/router';
+import Router from '../base/router';
 
 const style = require('./addAlbum.scss').toString();
 
-@customElement('xcy-album-add')
+@customElement('album-add-7')
 export class AddAlbum extends LitElement {
   @property ({type: Boolean}) pedding = false;
 
