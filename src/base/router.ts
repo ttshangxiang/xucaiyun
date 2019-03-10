@@ -199,6 +199,7 @@ class Route extends LitElement {
   @property({type: Boolean}) exact = false;
   @property({type: String, reflect: true}) base = '';
   @property({type: Boolean}) dynamic = false;
+  @property({type: String}) name = '';
   // 最终url
   url = '';
   constructor () {

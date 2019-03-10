@@ -1,0 +1,137 @@
+
+@import '../../base/base.css';
+
+aside {
+  width: 256px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  transform: translateX(0);
+
+  padding-top: 64px;
+  border-color: rgba(0, 0, 0, 0.12);
+  background-color: #fff;
+  border-radius: 0 0 0 0;
+  box-sizing: border-box;
+  height: 100%;
+  border-right-width: 1px;
+  border-right-style: solid;
+  overflow: hidden;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.2s;
+  
+  display: flex;
+  flex-flow: column nowrap;
+
+  @media (max-width: 599px) {
+    z-index: 14;
+    padding-top: 0;
+  }
+}
+
+.drawer-header {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  min-height: 64px;
+  padding: 16px 16px 4px;
+}
+
+.drawer-title {
+  font-size: 20px;
+  color: #333;
+}
+
+.drawer-subtitle {
+  font-size: 14px;
+  color: #666;
+}
+
+.drawer-content {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.nav-list {
+  padding: 8px 0;
+}
+
+.nav-item {
+  display: block;
+  line-height: 40px;
+  margin: 2px 8px 0;
+  padding: 0 8px;
+  text-decoration: none;
+  color: #444;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 4px;
+  overflow: hidden;
+
+  i {
+    margin-left: 0;
+    margin-right: 32px;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  i, span {
+    position: relative;
+    z-index: 2;
+  }
+
+  &.active {
+    color: #6200ee;
+    color: var(--theme-primary, #6200ee);
+  }
+
+  &:after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #000;
+    opacity: 0;
+    transition: opacity 150ms linear;
+  }
+
+  &:hover:after {
+    background-color: #000;
+    opacity: .04;
+  }
+
+  &.active:after {
+    background-color: #6200ee;
+    background-color: var(--mdc-theme-primary, #6200ee);
+    opacity: .12;
+  }
+
+  &:active:after {
+    opacity: .28;
+  }
+}
+
+.drawer-scrim {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 13;
+  background-color: rgba(0, 0, 0, 0.32);
+
+  @media (min-width: 600px) {
+    display: none;
+  }
+}

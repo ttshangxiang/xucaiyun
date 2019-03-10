@@ -1,101 +1,69 @@
-import { LitElement, html, property, customElement } from 'lit-element';
-import {setIns} from '../../base/c';
 
+import { LitElement, html, customElement, property, query } from 'lit-element';
 
-import '../../common/linear-progress';
-import {MDCList} from '@material/list/index';
-import {MDCDrawer} from '@material/drawer/index';
+const styles = require('./style').toString();
 
-const style = require('./style').toString();
+@customElement('drawer-7')
+export class Drawer7 extends LitElement {
+  
+  @property({type: Boolean}) drawer = true;
+  
+  @query('.drawer-scrim') scrim: HTMLElement;
 
-const classMap: any = {
-  fixed: 'mdc-top-app-bar--fixed-adjust mdc-drawer--open',
-  modal: 'mdc-drawer--modal'
-}
-
-@customElement('xcy-drawer')
-export class Drawer extends LitElement {
-
-  @property()
-  mode: ('modal' | 'fixed') = 'fixed';
-
-  mdcList: any;
-  mdcDrawer: any;
-
-  constructor () {
-    super();
-    setIns(this.id, this);
-    this.resize();
-    window.onresize = () => {
-      this.resize()
-    };
+  closeDrawer() {
+    var style = window.getComputedStyle ?
+      window.getComputedStyle(this.scrim, '') : (<any>this.scrim).currentStyle;
+    if (style.display === 'none') {
+      return;
+    }
+    let myEvent = new CustomEvent('drawer', {
+      detail: { message: 'drawer' },
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(myEvent);
   }
 
-  render(){
+  render () {
     return html `
-    ${this.myStyles}
-    <div>
-      <aside class="mdc-drawer mdc-drawer--dismissible ${classMap[this.mode]}"
-        style="position: fixed${this.mode === 'modal' ? ';z-index: 9;': ';'}">
-        <div class="mdc-drawer__header">
-          <h3 class="mdc-drawer__title">Xcy</h3>
-          <h6 class="mdc-drawer__subtitle">ttshangxiang@qq.com</h6>
+      <style>${styles}</style>
+      <aside style="${this.drawer ? '' : 'transform: translateX(-100%);'}"
+        @click=${this.closeDrawer}>
+        <div class="drawer-header">
+          <div class="drawer-title">Xcy</div>
+          <div class="drawer-subtitle">ttshangxiang@qq.com</div>
         </div>
-        <div class="mdc-drawer__content">
-          <nav class="mdc-list">
+        <div class="drawer-content">
+          <nav class="nav-list">
             <a href="javascript:;">
-              <link-7 class="mdc-list-item " path="/" role="nav">
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-                <span class="mdc-list-item__text">Inbox</span>
-              </link-7>
-            </a>
-            <a href="//blog.ttshangxiang.com">
-              <link-7 class="mdc-list-item" path="outside">
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-                <span class="mdc-list-item__text">博客</span>
+              <link-7 class="nav-item" path="/" role="nav">
+                <i class="material-icons">inbox</i>
+                <span>首页</span>
               </link-7>
             </a>
             <a href="javascript:;">
-              <link-7 class="mdc-list-item" path="/albums" role="nav">
-                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">photo</i>
-                <span class="mdc-list-item__text">我的相册</span>
+              <link-7 class="nav-item" path="/words" role="nav">
+                <i class="material-icons">send</i>
+                <span>文章</span>
+              </link-7>
+            </a>
+            <a href="javascript:;">
+              <link-7 class="nav-item" path="/albums" role="nav">
+                  <i class="material-icons">photo</i>
+                  <span>相册</span>
+              </link-7>
+            </a>
+            <a href="javascript:;">
+              <link-7 class="nav-item" path="/res" role="nav">
+                <i class="material-icons">folder</i>
+                <span>资源</span>
               </link-7>
             </a>
           </nav>
         </div>
       </aside>
-      <!-- mdc-drawer-scrim的点击事件库报错，复制样式自己写事件，等待修复 -->
-      ${this.mode === 'modal' ? html`
-          <div class="mdc-drawer-scrim" style="display: none;"></div>
-          <div class="mdc-drawer-scrim-fake" @click=${() => this.mdcDrawer.open = false}></div>` : ''}
-      <!-- end -->
-      <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
-        <main class="main-content">
-          <xcy-linear-progress id="linear-progress"></xcy-linear-progress>
-          <slot></slot>
-        </main>
-      </div>
-    </div>
+      <div class="drawer-scrim" style="${this.drawer ? '' : 'display: none;'}"
+        @click=${this.closeDrawer}></div>
     `;
-  }
-
-  updated () {
-    // Instantiation
-    this.mdcList = MDCList.attachTo(this.shadowRoot.querySelector('.mdc-list'));
-    this.mdcList.wrapFocus = true;
-    this.mdcDrawer = MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'));
-  }
-
-  resize () {
-    const w = window.innerWidth;
-    if (w > 599) {
-      this.mode = 'fixed';
-    } else {
-      this.mode = 'modal';
-    }
-  }
-  
-  get myStyles () {
-    return html `<style>${style}</style>`;
   }
 }

@@ -3,5 +3,7 @@ module.exports = {
   parser: false,
   plugins: {
     'autoprefixer': {},
+    'postcss-nested': {},
+    'postcss-import': {}
   }
 }

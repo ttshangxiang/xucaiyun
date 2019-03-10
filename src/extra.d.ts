@@ -10,3 +10,8 @@ declare module '@material/drawer/index' {
     static attachTo(dom: any): any;
   }
 }
+
+interface Window {
+  $content: HTMLElement
+}
+declare var window: Window;

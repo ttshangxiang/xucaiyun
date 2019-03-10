@@ -1,0 +1,108 @@
+
+@import '../base/base.css';
+
+.albums {
+  padding: 8px;
+  position: relative;
+}
+
+.albums-list {
+  display: flex;
+  flex-flow: row wrap;
+  align-content: flex-start;
+}
+
+.albums-item {
+  position: relative;
+  width: 12.5%;
+  font-size: 16px;
+
+  @media (max-width: 1000px) {
+    width: 16.666%;
+  }
+
+  @media (max-width: 800px) {
+    width: 25%;
+  }
+
+  @media (max-width: 599px) {
+    width: 50%;
+    font-size: 20px;
+  }
+
+  .file-abs {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .centered {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translate(50%,50%);
+  }
+
+  img {
+    transform: translate(-50%,-50%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-height: 100%;
+    border: none;
+    vertical-align: bottom;
+    min-width: 100%;
+    min-height: 100%;
+  }
+
+  &.vertical img {
+    max-width: 100%;
+    max-height: none;
+  }
+
+  .file-wrap {
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2),
+      0 1px 1px 0 rgba(0,0,0,.14),
+      0 1px 3px 0 rgba(0,0,0,.12);
+
+    @media (max-width: 599px) {
+      margin-left: 2px;
+      margin-right: 2px;
+      margin-top: 4px;
+    }
+    &:after {
+      content: "";
+      display: block;
+      padding-top: 100%;
+    }
+  }
+
+  .albums-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+    background-color: rgba(0,0,0,0.5);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .albums-name {
+    text-align: center;
+    display: block;
+    width: 100%;
+    line-height: 1.5;
+  }
+}

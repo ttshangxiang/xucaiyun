@@ -1,55 +1,50 @@
+
 import { LitElement, html, customElement, property } from 'lit-element';
-import { MDCTopAppBar } from '@material/top-app-bar/index';
-import { getIns, setIns } from '../../base/c';
 
-const style = require('./style').toString();
+const styles = require('./style').toString();
 
-@customElement('xcy-header')
-export class Header extends LitElement {
-  @property({type: String,reflect: true}) mytitle = 'Xcy';
-  @property({type: String, reflect: true}) button: ('menu' | 'back') = 'menu';
+@customElement('header-7')
+export class Header7 extends LitElement {
 
-  constructor () {
+  @property({ type: Number }) top = 0;
+  @property({ type: String}) name = '';
+
+  constructor() {
     super();
-    setIns(this.id, this);
+    // 滚动隐藏/显示topbar功能
+    let scrollTop = window.scrollY;
+    window.addEventListener('scroll', e => {
+      const diff = window.scrollY - scrollTop;
+      const height = this.shadowRoot.querySelector('header').clientHeight;
+      let top = this.top - diff;
+      if (diff > 0) {
+        this.top = Math.max(-1 * height, top);
+      }
+      if (diff < 0) {
+        this.top = Math.min(0, top);
+      }
+      scrollTop = window.scrollY;
+    });
   }
 
-  render(){
-    return html `
-    ${this.myStyles}
-    <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
-      <div class="mdc-top-app-bar__row">
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          ${this.button === 'menu' ? html `
-            <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" @click=${this.drawer}>menu</a>
-          ` : ''}
-          ${this.button === 'back' ? html `
-            <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" @click=${() => window.history.back()}>arrow_back</a>
-          ` : ''}
-          <span class="mdc-top-app-bar__title">${this.mytitle}</span>
-        </section>
-        <!-- <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-          <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" aria-label="Download" alt="Download">file_download</a>
-          <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" aria-label="Print this page" alt="Print this page">print</a>
-          <a href="javascript:;" class="material-icons mdc-top-app-bar__action-item" aria-label="Bookmark this page" alt="Bookmark this page">bookmark</a>
-        </section> -->
-      </div>
-    </header>
+  toggleDrawer() {
+    let myEvent = new CustomEvent('drawer', {
+      detail: { message: 'drawer' },
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(myEvent);
+  }
+
+  render() {
+    return html`
+      <style>${styles}</style>
+      <header style="top: ${this.top}px;">
+        <div class="header-content">
+          <button-7 icon="menu" @click=${() => this.toggleDrawer()}></button-7>
+          <span>${this.name}</span>
+        </div>
+      </header>
     `;
-  }
-
-  updated () {
-    // Instantiation
-    const topAppBarElement = this.shadowRoot.querySelector('.mdc-top-app-bar');
-    const topAppBar = new MDCTopAppBar(topAppBarElement);
-  }
-
-  drawer () {
-    const drawer = (<any>getIns('drawer-7')).mdcDrawer;
-    drawer.open = !drawer.open;
-  }
-
-  get myStyles () {
-    return html`<style>${style}</style>`;
   }
 }

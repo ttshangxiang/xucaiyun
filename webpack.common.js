@@ -32,7 +32,7 @@ module.exports = {
   },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.js', '.scss'],
+    extensions: ['.ts', '.js', '.scss', '.css'],
     alias: {
       src: src
     }
@@ -70,7 +70,7 @@ module.exports = {
       // css
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: ['to-string-loader', 'css-loader', 'postcss-loader']
       },
       // scss
       {

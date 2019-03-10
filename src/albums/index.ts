@@ -1,301 +1,64 @@
 
-import { LitElement, html, property, customElement } from 'lit-element';
-import {MDCRipple} from '@material/ripple/index';
-import Router from '../base/router';
+import { LitElement, html, customElement, property } from 'lit-element';
 import axios from '../base/axios';
-import { getIns, setState, getState } from '../base/c';
+import Router from '../base/router';
+import './album';
 
-const style = require('./style').toString();
-
-interface album {
-  ctime: string
-  description: string
-  status: number
-  title: string
-  utime: string
-  _id: string
-}
-
-interface photo {
-  albumId: string
-  ctime: string
-  description: string
-  filename: string
-  normal: string
-  origin: string
-  status: number
-  thumb: string
-  utime: string
-  _id: string
-}
+const styles = require('./style').toString();
 
 @customElement('albums-7')
-export class Albums extends LitElement {
+export class Albums7 extends LitElement {
+  
+  @property({type: Array}) list: any = [];
 
-  @property ({type: Array}) list: album[] = []
-  @property ({type: String}) error = '';
-  @property ({type: Boolean}) pedding = false;
-
-  render () {
-    if (this.pedding) {
-      getIns('linear-progress').setAttribute('show', 'true');
-      return html ``;
-    }
-    getIns('linear-progress').removeAttribute('show');
-    return html `
-      ${this.myStyles}
-      <div style="padding: 8px; position: relative;">
-        ${this.error ? 
-        html `
-          ${this.error}
-        ` :
-        html `
-          <ul class="mdc-image-list my-image-list mdc-image-list--with-text-protection">
-            ${this.list.map((o, i) => html `
-              <li class="mdc-image-list__item" @click=${() => this.enterAlbum(o._id)}>
-                <div class="mdc-image-list__image-aspect-container">
-                  <img class="mdc-image-list__image" src="/assets/imgs/albums/1.jpg">
-                </div>
-                <div class="mdc-image-list__supporting">
-                  <span class="mdc-image-list__label">${o.title}</span>
-                </div>
-              </li>
-            `)}
-          </ul>
-        `}
-      </div>
-      <a class="mdc-fab app-fab--absolute" href="javascript:;" aria-label="Add" @click="${this.enterAddAlbum}">
-        <span class="mdc-fab__icon material-icons">add</span>
-      </a>
-    `;
+  firstUpdated () {
+    this.loadAblums();
   }
 
-  async firstUpdated () {
-    try {
-      this.pedding = true;
-      this.list = await this.loadAlbums();
-    } catch (err) {
-      this.error = err.message;
-    } finally {
-      this.pedding = false;
-    }
+  loadAblums () {
+    axios({
+      method: 'get',
+      url: '/albums'
+    }).then(res => {
+      if (res.data && res.data.code === 0) {
+        this.list = res.data.data || [];
+      }
+    });
   }
 
-  updated () {
-    const fab = this.shadowRoot.querySelector('.mdc-fab');
-    fab && new MDCRipple(fab);
-  }
-
-  get myStyles () {
-    return html`<style>${style}</style>`;
-  }
-
-  /**
-   * 进入相册
-   * @param i id
-   */
   enterAlbum (i: any) {
     Router.push(`/albums/${i}`);
   }
 
-  /**
-   * 进入新增相册页面
-   */
-  enterAddAlbum () {
-    Router.push(`/albums/add`);
-  }
-
-  /**
-   * 加载相册
-   */
-  async loadAlbums () {
-    if (getState('albums')) {
-      return getState('albums');
-    }
-    return axios({
-      url: '/albums'
-    })
-    .then(res => {
-      const { data = {} } = res;
-      if (data.code === 0) {
-        const result = data.data.data || [];
-        setState('albums', result);
-        return result;
-      } else {
-        throw Error(data.msg);
-      }
-    })
-  }
-}
-
-@customElement('album-7')
-export class Album extends LitElement {
-  @property ({type: Array}) list: photo[] = []
-  @property ({type: String}) error = '';
-  @property ({type: Boolean}) pedding = false;
-
-  constructor () {
-    super();
-  }
   render () {
-    if (this.pedding) {
-      getIns('linear-progress').setAttribute('show', 'true');
-      return html ``;
-    }
-    getIns('linear-progress').removeAttribute('show');
+    console.log(this.list)
     return html `
-      ${this.myStyles}
-      <div style="padding: 8px; position: relative;">
-        ${this.error ? 
-        html `
-          ${this.error}
-        ` :
-        html `
-          <ul class="mdc-image-list mdc-image-list--masonry my-masonry-image-list">
-            ${this.list.map((o, i) => {
-              return html `
-                <li class="mdc-image-list__item" @click=${() => this.enterPhoto(o)}>
-                  <img class="mdc-image-list__image" src="${o.thumb}">
-                  <div class="mdc-image-list__supporting">
-                    <span class="mdc-image-list__label">${o.description}</span>
+      <style>${styles}</style>
+      <div class="albums">
+        <ul class="albums-list">
+          ${this.list.map((item: any) => html `
+            <li class="albums-item" @click=${() => this.enterAlbum(item._id)}>
+              <div class="file-wrap">
+                <div class="file-abs">
+                  <div class="centered">
+                    <img src="${item.thumb}" />
                   </div>
-                </li>
-              `;
-            })}
-          </ul>
-        `}
-      </div>
-      <a class="mdc-fab app-fab--absolute" href="javascript:;" aria-label="Add" @click="${this.enterAddPhoto}">
-        <span class="mdc-fab__icon material-icons">add</span>
-      </a>
-    `;
-  }
-
-  async firstUpdated () {
-    try {
-      this.pedding = true;
-      this.list = await this.loadPhotos();
-    } catch (err) {
-      this.error = err.message;
-    } finally {
-      this.pedding = false;
-    }
-  }
-
-  /**进入照片 */
-  enterPhoto (o: photo) {
-    const {albumId} = Router.params;
-    const key = 'photo-' + o._id;
-    setState(key, o);
-    Router.push(`/albums/${albumId}/${o._id}`);
-  }
-
-  get myStyles () {
-    return html`<style>${style}</style>`;
-  }
-
-  /**
-   * 进入上传图片
-   */
-  enterAddPhoto () {
-    const {albumId} = Router.params;
-    Router.push(`/albums/${albumId}/add`);
-  }
-
-  /**
-   * 读取图片
-   */
-  async loadPhotos () {
-    const { albumId } = Router.params;
-    const key = 'photos-' + albumId;
-    const cache = getState(key);
-    if (cache) {
-      return cache;
-    }
-    return axios({
-      url: `/photos?albumId=${albumId}`
-    })
-    .then(res => {
-      const { data = {} } = res;
-      if (data.code === 0) {
-        const result = data.data.data || [];
-        setState(key, result);
-        return result;
-      } else {
-        throw Error(data.msg);
-      }
-    })
-  }
-}
-
-@customElement('photo-7')
-export class Photo extends LitElement {
-  @property ({type: Object}) data: photo = null;
-  @property ({type: String}) error = '';
-  @property ({type: Boolean}) pedding = false;
-  constructor () {
-    super();
-  }
-  render () {
-    return html `
-      ${this.myStyles}
-      <style>
-        .my-mdc-image-detail .mdc-image-list__image {
-          display: block;
-          width: auto;
-          margin: 0 auto;
-          max-width: 100%;
-        }
-      </style>
-      ${this.data ? html`
-        <div style="padding: 8px; position: relative;">
-          <ul class="mdc-image-list my-mdc-image-detail">
-            <li class="mdc-image-list__item">
-              <img class="mdc-image-list__image" src="${this.data.normal}">
-              <div class="mdc-image-list__supporting">
-                <span class="mdc-image-list__label">${this.data.description}</span>
+                </div>
+                <div class="albums-info">
+                  <span class="albums-name">${item.name}</span>
+                </div>
               </div>
             </li>
-          </ul>
-        </div>
-      ` : ``}
-    `;
-  }
-
-  async firstUpdated () {
-    try {
-      this.pedding = true;
-      this.data = await this.loadPhoto();
-    } catch (err) {
-      this.error = err.message;
-    } finally {
-      this.pedding = false;
-    }
-  }
-
-  loadPhoto () {
-    const { photoId } = Router.params;
-    const key = 'photo-' + photoId;
-    const cache = getState(key);
-    if (cache) {
-      return cache;
-    }
-    return axios({
-      url: `/photos/${photoId}`
-    })
-    .then(res => {
-      const { data = {} } = res;
-      if (data.code === 0) {
-        const result = data.data || {};
-        setState(key, result);
-        return result;
-      } else {
-        throw Error(data.msg);
-      }
-    })
-  }
-
-  get myStyles () {
-    return html`<style>${style}</style>`;
+          `)}
+        </ul>
+      </div>
+    `
   }
 }
+
+// let myEvent = new CustomEvent('drawer', {
+//   detail: { message: 'drawer' },
+//   bubbles: true,
+//   composed: true
+// });
+// this.dispatchEvent(myEvent);

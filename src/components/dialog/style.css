@@ -1,0 +1,72 @@
+@import '../../base/base.css';
+
+.dialog-scrim {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 13;
+  background-color: rgba(0, 0, 0, 0.32);
+}
+
+.dialog-box {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  right: 30px;
+  bottom: 30px;
+  z-index: 999;
+  background-color: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,.7);
+
+  display: flex;
+  flex-flow: column nowrap;
+
+  @media (max-width: 599px) {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+.dialog-header, .dialog-footer {
+  height: 48px;
+  line-height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  flex-flow: row nowrap;
+
+  .dialog-title {
+    flex-grow: 1;
+    padding: 0 12px;
+  }
+
+  .dialog-footer-text {
+    flex-grow: 1;
+  }
+
+  .dialog-btn {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    font-size: 28px;
+    line-height: 48px;
+    text-align: center;
+    color: #666;
+    border-left: 1px solid #ddd;
+  }
+}
+
+.dialog-content {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  flex-grow: 1;
+}
+
+.dialog-footer {
+}

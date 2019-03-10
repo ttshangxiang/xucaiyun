@@ -1,0 +1,34 @@
+
+@import '../../base/base.css';
+
+header {
+  background-color: #6200ee;
+  background-color: var(--theme-primary,#6200ee);
+  color: #fff;
+  height: 64px;
+  position: fixed;
+  z-index: 13;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  @media (max-width: 599px) {
+    height: 56px;
+  }
+
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+
+  @media (max-width: 599px) {
+    padding: 4px;
+  }
+}
+
+button-7 {
+  margin: 0 8px;
+}
+
