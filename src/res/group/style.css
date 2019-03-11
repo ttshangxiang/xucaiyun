@@ -1,11 +1,16 @@
 @import '../../base/base.css';
 
 .group-details {
-  margin-top: 20px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-flow: column nowrap;
+  overflow: auto;
+  border-bottom: 1px solid #ccc;
 
   .group-item {
+    margin-top: 20px;
     display: flex;
     flex-flow: row nowrap;
     width: 100%;

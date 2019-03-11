@@ -1,6 +1,14 @@
 
 @import '../base/base.css';
 
+.res-main {
+  padding: 8px;
+  position: relative;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .top-btn {
   display: inline-block;
   position: relative;
@@ -30,29 +38,9 @@
 
 .file-item {
   position: relative;
-  width: 11.1111%;
+  width: 12.5%;
 
-  @media (max-width: 1400px) {
-    width: 12.5%;
-  }
-
-  @media (max-width: 1300px) {
-    width: 12.5%;
-  }
-
-  @media (max-width: 1200px) {
-    width: 14.285%;
-  }
-
-  @media (max-width: 1000px) {
-    width: 16.666%;
-  }
-
-  @media (max-width: 900px) {
-    width: 20%;
-  }
-
-  @media (max-width: 599px) {
+  @media (max-width: 1280px) {
     width: 25%;
   }
 
@@ -82,6 +70,8 @@
     max-height: 100%;
     border: none;
     vertical-align: bottom;
+    min-width: 100%;
+    min-height: 100%;
   }
 
   &.vertical img {

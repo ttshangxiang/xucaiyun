@@ -6,7 +6,7 @@ const styles = require('./style').toString();
 @customElement('drawer-7')
 export class Drawer7 extends LitElement {
   
-  @property({type: Boolean}) drawer = true;
+  @property({type: Boolean}) drawer = false;
   
   @query('.drawer-scrim') scrim: HTMLElement;
 

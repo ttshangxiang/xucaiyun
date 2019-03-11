@@ -2,6 +2,7 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import axios from '../base/axios';
 import Router from '../base/router';
+import { file } from '../res/interface';
 import './album';
 
 const styles = require('./style').toString();
@@ -9,7 +10,7 @@ const styles = require('./style').toString();
 @customElement('albums-7')
 export class Albums7 extends LitElement {
   
-  @property({type: Array}) list: any = [];
+  @property({type: Array}) list: file[] = [];
 
   firstUpdated () {
     this.loadAblums();
@@ -31,7 +32,6 @@ export class Albums7 extends LitElement {
   }
 
   render () {
-    console.log(this.list)
     return html `
       <style>${styles}</style>
       <div class="albums">
@@ -55,10 +55,3 @@ export class Albums7 extends LitElement {
     `
   }
 }
-
-// let myEvent = new CustomEvent('drawer', {
-//   detail: { message: 'drawer' },
-//   bubbles: true,
-//   composed: true
-// });
-// this.dispatchEvent(myEvent);

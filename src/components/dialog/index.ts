@@ -7,10 +7,16 @@ const styles = require('./style').toString();
 export class Dialog7 extends LitElement {
 
   @property({type: Boolean, reflect: true}) isShow = false;
-  @property({type: String}) title = '标题';
+  @property({type: String}) text = '标题';
   
   close () {
     this.isShow = false;
+    let myEvent = new CustomEvent('close', {
+      detail: { message: 'close' },
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(myEvent);
   }
 
   show () {
@@ -30,19 +36,23 @@ export class Dialog7 extends LitElement {
     return html `
       <style>${styles}</style>
       <div class="dialog-main" style="${this.isShow ? '': 'display: none;'}">
-        <div class="dialog-scrim"></div>
+        <div class="dialog-scrim" @click=${this.close}></div>
         <div class="dialog-box">
           <div class="dialog-header">
-            <span class="dialog-title">${this.title}</span>
-            <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.close}>close</a>
+            <slot name="header">
+              <span class="dialog-title" title=${this.text}>${this.text}</span>
+              <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.close}>close</a>
+            </slot>
           </div>
           <div class="dialog-content">
             <slot></slot>
           </div>
           <div class="dialog-footer">
-            <span class="dialog-footer-text"></span>
-            <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.close}>close</a>
-            <a href="javascript:;" class="material-icons dialog-btn" style="width: 96px;" @click=${this.done}>done</a>
+            <slot name="footer">
+              <span class="dialog-footer-text"></span>
+              <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.close}>close</a>
+              <a href="javascript:;" class="material-icons dialog-btn" style="width: 96px;" @click=${this.done}>done</a>
+            </slot>
           </div>
         </div>
       </div>

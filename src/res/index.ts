@@ -2,31 +2,17 @@ import { LitElement, html, customElement, property, query } from 'lit-element';
 import axios from '../base/axios';
 import './edit';
 import './group';
+import { ResEdit7 } from './edit';
+import { GroupEdit7 } from './group';
 import '../components/pager';
 
 const styles = require('./style').toString();
 
-export interface file {
-  type: string,
-  filename: string,
-  size: string,
-  path: string,
-  ctime?: string,
-  utime?: string,
-  description?: string,
-  percent?: number,
-  file?: File,
-  thumb?: string,
-  normal?: string,
-  _id?: string,
-  groups?: string,
-  width?: number,
-  height?: number
-}
+import { file, ufile } from './interface';
 
 @customElement('res-7')
 export class Res7 extends LitElement {
-  @property ({type: Array}) list: file[] = [];
+  @property ({type: Array}) list: ufile[] = [];
   @property ({type: Array}) res: file[] = [];
   @property ({type: Number}) currentIndex = -1;
   @property ({type: Number}) total = 0;
@@ -35,17 +21,17 @@ export class Res7 extends LitElement {
   @property ({type: Array}) groupList: [] = [];
 
   @query('#file-input') $fileInput: HTMLInputElement;
-  @query('#res-edit') $resEdit: LitElement;
+  @query('#res-edit') $resEdit: ResEdit7;
   @query('#grouping-select') $groupingSelect: HTMLSelectElement;
   @query('#filter-type') $filterType: HTMLSelectElement;
   @query('#filter-group') $filterGroup: HTMLSelectElement;
-  @query('#group-edit') $groupEdit: any;
+  @query('#group-edit') $groupEdit: GroupEdit7;
 
   // 常量
   pagesize = 32;
 
   async loadFiles () {
-    let fileList: file[] = [];
+    let fileList: ufile[] = [];
     for (const f of this.$fileInput.files) {
       let img = '';
       if (f.type.slice(0, 5) === 'image') {
@@ -85,15 +71,15 @@ export class Res7 extends LitElement {
   }
 
   upload () {
-    this.list.forEach((item, index) => {
+    this.list.forEach((item) => {
       if (item.percent === 100) {
         return;
       }
-      this.uploadOne(item, index);
+      this.uploadOne(item);
     });
   }
 
-  uploadOne (o: file, index: number) {
+  uploadOne (o: ufile) {
     const formData = new FormData;
     formData.append('file', o.file);
     formData.append('filename', o.filename);
@@ -111,7 +97,9 @@ export class Res7 extends LitElement {
     .then(res => {
       const data = res.data;
       data.insert._id = data._id;
-      this.list[index] = Object.assign(o, data.insert);
+      const index = this.list.indexOf(o);
+      this.list.splice(index, 1);
+      this.res.unshift(data.insert);
       this.requestUpdate();
     })
     .catch(function (error) {
@@ -260,7 +248,7 @@ export class Res7 extends LitElement {
 
   // 新建组信息
   newGroup () {
-    this.$groupEdit.current = {};
+    this.$groupEdit.current = null;
     this.$groupEdit.show();
   }
 
@@ -293,10 +281,9 @@ export class Res7 extends LitElement {
   }
 
   render () {
-    const list = this.list.concat(this.res);
     return html `
       <style>${styles}</style>
-      <div style="padding: 8px; position: relative;" class="${this.grouping ? 'grouping' : ''}">
+      <div class="res-main ${this.grouping ? 'grouping' : ''}">
         <div class="button-list">
           <a href="javascript:;" class="upload-btn top-btn">
             <i class="material-icons">add</i>
@@ -331,7 +318,7 @@ export class Res7 extends LitElement {
                 <option value="${item._id}">${item.name}</option>
               `)}
             </select>
-            <a href="javascript:;" class="group-btn" @click=${() => this.groupSelected = list}>全选</a>
+            <a href="javascript:;" class="group-btn" @click=${() => this.groupSelected = this.res}>全选</a>
             <a href="javascript:;" class="group-btn" @click=${this.newGroup}>新建</a>
             <a href="javascript:;" class="group-btn" @click=${this.editGroupDetail}>编辑</a>
             <a href="javascript:;" class="group-btn" @click=${this.saveGroupChange}>确定</a>
@@ -339,7 +326,28 @@ export class Res7 extends LitElement {
           </div>
         </div>
         <ul class="file-list">
-          ${list.map((item, index) => html `
+          <!-- 新添加的 -->
+          ${this.list.map((item, index) => html `
+            <li class="file-item" title="${item.filename}">
+              <div class="file-wrap">
+                <div class="file-abs">
+                  <div class="centered">
+                  ${item.type && item.type.slice(0, 5) === 'image' ? html `
+                    <img src="${item.path}">
+                  ` : html `
+                    <img style="min-height: auto;min-width: auto;" src="/assets/imgs/commons/file.png">
+                  `}
+                  </div>
+                </div>
+                ${item.type && item.type.slice(0, 5) === 'image' ? '' : html `
+                  <div class="file-name">${item.filename}</div>
+                `}
+                ${item.percent > 0 && item.percent < 100 ? this.renderPercent(item.percent) : ''}
+              </div>
+            </li>
+          `)}
+          <!-- 资源 -->
+          ${this.res.map((item, index) => html `
             <li class="file-item 
               ${this.groupSelected.includes(item) ? 'group-selected' : ' '}
               ${item.width && item.width < item.height ? 'vertical' : ' '}
@@ -350,14 +358,13 @@ export class Res7 extends LitElement {
                   ${item.type && item.type.slice(0, 5) === 'image' ? html `
                     <img src="${item.thumb || item.path}">
                   ` : html `
-                    <img src="/assets/imgs/commons/file.png">
+                    <img style="min-height: auto;min-width: auto;" src="/assets/imgs/commons/file.png">
                   `}
                   </div>
                 </div>
                 ${item.type && item.type.slice(0, 5) === 'image' ? '' : html `
                   <div class="file-name">${item.filename}</div>
                 `}
-                ${item.percent > 0 && item.percent < 100 ? this.renderPercent(item.percent) : ''}
               </div>
             </li>
           `)}
@@ -369,7 +376,7 @@ export class Res7 extends LitElement {
           style="padding: 12px 0;"
           class="${this.grouping ? 'hide': ' '}"></pager-7>
       </div>
-      <res-edit-7 id="res-edit" .file=${list[this.currentIndex]} @change=${this.changeFileIndex}></res-edit-7>
+      <res-edit-7 id="res-edit" .file=${this.res[this.currentIndex]} @change=${this.changeFileIndex}></res-edit-7>
       <group-edit-7 id="group-edit" @updateafter=${this.newGroupAfter}></group-edit-7>
     `;
   }

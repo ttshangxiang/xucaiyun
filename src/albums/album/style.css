@@ -1,6 +1,6 @@
 @import '../../base/base.css';
 
-.photo {
+.album {
   padding: 8px;
   position: relative;
 }
@@ -13,29 +13,9 @@
 
 .photo-item {
   position: relative;
-  width: 11.1111%;
-
-  @media (max-width: 1400px) {
     width: 12.5%;
-  }
 
-  @media (max-width: 1300px) {
-    width: 12.5%;
-  }
-
-  @media (max-width: 1200px) {
-    width: 14.285%;
-  }
-
-  @media (max-width: 1000px) {
-    width: 16.666%;
-  }
-
-  @media (max-width: 900px) {
-    width: 20%;
-  }
-
-  @media (max-width: 599px) {
+  @media (max-width: 1280px) {
     width: 25%;
   }
 

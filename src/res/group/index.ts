@@ -1,19 +1,21 @@
 
 import { LitElement, html, customElement, property, query } from 'lit-element';
 import '../../components/dialog';
+import { Dialog7 } from '../../components/dialog';
 import axios from '../../base/axios';
+import { group } from '../interface';
 
 const styles = require('./style').toString();
 
 @customElement('group-edit-7')
 export class GroupEdit7 extends LitElement {
 
-  @query('#dialog') dialog: any;
-  @property({type: Object}) current: any = {};
+  @query('#dialog') dialog: Dialog7;
+  @property({type: Object}) current: group = null;
 
-  @query('#group-name') $groupName: any;
-  @query('#group-type') $groupType: any;
-  @query('#group-description') $groupDescription: any;
+  @query('#group-name') $groupName: HTMLInputElement;
+  @query('#group-type') $groupType: HTMLSelectElement;
+  @query('#group-description') $groupDescription: HTMLTextAreaElement;
 
   getParam () {
     const param: any = {};
@@ -27,7 +29,7 @@ export class GroupEdit7 extends LitElement {
       param.description = this.$groupDescription.value
     }
     const radio = <any>(this.shadowRoot.querySelectorAll('input[name=ishidden]'))
-    radio.forEach((item: any) => {
+    radio.forEach((item: HTMLInputElement) => {
       if (item.checked) {
         param.status = +item.value;
       }
@@ -38,7 +40,7 @@ export class GroupEdit7 extends LitElement {
   async done () {
     const param = this.getParam();
     let message = 'add';
-    if (!this.current._id) {
+    if (!this.current || !this.current._id) {
       // 新建
       await axios({
         method: 'post',
@@ -64,6 +66,9 @@ export class GroupEdit7 extends LitElement {
   }
 
   async delete () {
+    if (!this.current || !this.current._id) {
+      return;
+    }
     await axios({
       method: 'delete',
       url: '/resgroup/' + this.current._id
@@ -80,14 +85,15 @@ export class GroupEdit7 extends LitElement {
   }
 
   render () {
-    const { type, _id, name, description, status } = this.current;
+    const obj: any = this.current || {};
+    const { type, _id, name, description, status } = obj;
     return html `
       <style>${styles}</style>
-      <dialog-7 id="dialog" title="${_id ? '修改分组信息-' + name : '新增分组'}" @done=${this.done}>
+      <dialog-7 id="dialog" header="${_id ? '修改分组信息-' + name : '新增分组'}" @done=${this.done}>
         <div class="group-details">
           <label class="group-item">
             <span class="name">名称</span>
-            <input type="text" id="group-name" value="${this.current.name || ''}"/>
+            <input type="text" id="group-name" value="${name || ''}"/>
           </label>
           <label class="group-item">
             <span class="name">类型</span>

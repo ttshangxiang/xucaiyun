@@ -1,7 +1,7 @@
 
 import { LitElement, html, customElement, property, query } from 'lit-element';
 import axios from '../../base/axios';
-import { file } from '../index';
+import { file } from '../interface';
 
 const styles = require('./style').toString();
 

@@ -1,16 +1,21 @@
 
-import { LitElement, html, customElement, property } from 'lit-element';
+import { LitElement, html, customElement, property, query } from 'lit-element';
 import axios from '../../base/axios';
 import Router from '../../base/router';
 import '../../components/pager';
+import '../photo';
+import { Photo7 } from '../photo';
+import { file } from '../../res/interface';
 const styles = require('./style').toString();
 
 @customElement('album-7')
 export class Album7 extends LitElement {
 
-  @property({type: Array}) list: any = [];
-  @property ({type: Number}) currentIndex = -1;
+  @property({type: Array}) list: file[] = [];
+  @property ({type: Number}) currentIndex = 0;
   @property ({type: Number}) total = 0;
+
+  @query('#photo') $photo: Photo7;
 
   // 常量
   pagesize = 32;
@@ -53,13 +58,19 @@ export class Album7 extends LitElement {
     });
   }
 
+  enterPhoto (item: file, index: number) {
+    window.history.pushState(null, '', `/albums/${Router.params.albumId}?p=${index}`);
+    this.currentIndex = index;
+    this.$photo.show();
+  }
+
   render () {
     return html `
       <style>${styles}</style>
-      <div class="photo">
+      <div class="album">
         <ul class="photo-list">
-          ${this.list.map((item: any) => html `
-            <li class="photo-item">
+          ${this.list.map((item: file, index: number) => html `
+            <li class="photo-item" @click=${() => this.enterPhoto(item, index)}>
               <div class="file-wrap">
                 <div class="file-abs">
                   <div class="centered">
@@ -76,6 +87,7 @@ export class Album7 extends LitElement {
           @change=${this.changePage}
           style="padding: 12px 0;"></pager-7>
       </div>
+      <photo-7 id="photo" .current=${this.currentIndex} .files=${this.list}></photo-7>
     `
   }
 }

@@ -11,7 +11,7 @@ const styles = require('./style').toString();
 @customElement('layout-7')
 export class Layout7 extends LitElement {
 
-  @property ({type: Boolean}) drawerOpen = true;
+  @property ({type: Boolean}) drawerOpen = document.body.clientWidth > 599;
   @property ({type: Object}) route = {content: ''};
   @property ({type: String}) routeName = '';
 

@@ -30,7 +30,12 @@ function splitPath (path: string): string[] {
   if (path[0] === '/') {
     path = path.slice(1);
   }
-  return path.split('/');
+  const paths = path.split('/');
+  // 以/结尾的抛弃掉
+  if (paths[paths.length - 1] === '') {
+    paths.pop();
+  }
+  return paths;
 }
 
 /**
@@ -99,6 +104,8 @@ class Router extends LitElement {
     const origin = window.location.origin;
     return href.replace(origin, '');
   }
+  // oldPath 
+  static oldpath = '';
   // dynamic
   static dynamic: {[index: string]: () => Promise<any>} = {};
   // unique
@@ -127,8 +134,10 @@ class Router extends LitElement {
     window.history.back();
   }
   static async renderRoute () {
+    // 记录起效果的旧path
+    this.oldpath = window.location.pathname;
     // 匹配路径
-    const {route, params} = matchPath(this.path, this.routes);
+    const {route, params} = matchPath(window.location.pathname, this.routes);
     if (!route) {
       this.root.route = {content: '404'};
       return;
@@ -188,7 +197,11 @@ class Router extends LitElement {
   }
 }
 // 监听popstate
-window.addEventListener('popstate', () => {
+window.addEventListener('popstate', (e) => {
+  // 当pathname没起变化时，使返回键无效
+  if (Router.oldpath === window.location.pathname) {
+    return;
+  }
   Router.renderRoute();
 });
 

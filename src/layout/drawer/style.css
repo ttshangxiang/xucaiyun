@@ -27,7 +27,7 @@ aside {
   flex-flow: column nowrap;
 
   @media (max-width: 599px) {
-    z-index: 14;
+    z-index: 999;
     padding-top: 0;
   }
 }
@@ -128,7 +128,7 @@ aside {
   height: 100%;
   transition-property: opacity;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 13;
+  z-index: 998;
   background-color: rgba(0, 0, 0, 0.32);
 
   @media (min-width: 600px) {
