@@ -12,6 +12,7 @@ export class GroupEdit7 extends LitElement {
 
   @query('#dialog') dialog: Dialog7;
   @property({type: Object}) current: group = null;
+  @property({type: Object}) showData: any = {};
 
   @query('#group-name') $groupName: HTMLInputElement;
   @query('#group-type') $groupType: HTMLSelectElement;
@@ -78,43 +79,47 @@ export class GroupEdit7 extends LitElement {
 
   show () {
     this.dialog.show();
+    this.showData = this.current || {};
   }
 
   close () {
     this.dialog.close();
   }
+  
+  afterClose () {
+    this.showData = {};
+  }
 
   render () {
-    const obj: any = this.current || {};
-    const { type, _id, name, description, status } = obj;
+    const { type, _id, name, description, status } = this.showData;
     return html `
       <style>${styles}</style>
-      <dialog-7 id="dialog" header="${_id ? '修改分组信息-' + name : '新增分组'}" @done=${this.done}>
+      <dialog-7 id="dialog" header="${_id ? '修改分组信息-' + name : '新增分组'}" @done=${this.done} @close=${this.afterClose}>
         <div class="group-details">
           <label class="group-item">
             <span class="name">名称</span>
-            <input type="text" id="group-name" value="${name || ''}"/>
+            <input type="text" id="group-name" .value="${name || ''}"/>
           </label>
           <label class="group-item">
             <span class="name">类型</span>
-            <select id="group-type">
+            <select id="group-type" .value="${type}">
               <option value="">无</option>
-              <option value="albums" ?selected="${type === 'albums'}">相册</option>
-              <option value="words" ?selected="${type === 'words'}">文章</option>
-              <option value="files" ?selected="${type === 'files'}">文件</option>
+              <option value="albums">相册</option>
+              <option value="words">文章</option>
+              <option value="files">文件</option>
             </select>
           </label>
           <label class="group-item">
             <span class="name">说明</span>
-            <textarea id="group-description">${description}</textarea>
+            <textarea id="group-description" .value="${description || ''}"></textarea>
           </label>
           <label class="group-item">
             <span class="name">是否展示</span>
             <label class="radio-label">
-              <span>是</span><input type="radio" name="ishidden" value="1" ?checked="${status === 1}">
+              <span>是</span><input type="radio" name="ishidden" value="1" .checked="${status == '1'}">
             </label>
             <label class="radio-label">
-              <span>否</span><input type="radio" name="ishidden" value="0" ?checked="${status === undefined || status === 0}">
+              <span>否</span><input type="radio" name="ishidden" value="0" .checked="${status != '1'}">
             </label>
           </label>
         </div>

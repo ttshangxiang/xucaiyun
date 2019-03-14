@@ -50,8 +50,7 @@ module.exports = {
         include: [
           resolve('src'),
           resolve('node_modules/lit-html'),
-          resolve('node_modules/lit-element'),
-          resolve('node_modules/@material')
+          resolve('node_modules/lit-element')
         ]
       },
       // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
@@ -71,21 +70,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['to-string-loader', 'css-loader', 'postcss-loader']
-      },
-      // scss
-      {
-        test: /\.scss$/,
-        use: [
-          { loader: 'to-string-loader' },
-          { loader: 'css-loader' },
-          { loader: 'postcss-loader' },
-          {
-            loader: 'sass-loader',
-            options: {
-              includePaths: ['./node_modules'],
-            }
-          }
-        ]
       },
       // images
       {

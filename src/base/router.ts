@@ -54,6 +54,11 @@ function matchPath (path: string, routes: Route[]): {route: Route, params: any} 
   let max = 0;
   routes.forEach(o => {
     const p = splitPath(o.url);
+    // home
+    if (p.length === 0 && paths.length === 0) {
+      result.route = o;
+      return;
+    }
     // 当前路径比路由长
     if (p.length > paths.length) {
       return;

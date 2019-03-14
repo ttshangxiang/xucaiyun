@@ -158,7 +158,7 @@ export class Res7 extends LitElement {
     }
     // 编辑的部分
     this.currentIndex = index;
-    this.$resEdit.setAttribute('show', 'show');
+    this.$resEdit.show();
   }
 
   changeFileIndex (e: any) {
@@ -177,6 +177,9 @@ export class Res7 extends LitElement {
       } else {
         this.currentIndex++;
       }
+    }
+    if (!isNaN(+message)) {
+      this.currentIndex = +message;
     }
   }
 

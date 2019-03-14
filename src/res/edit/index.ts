@@ -8,13 +8,18 @@ const styles = require('./style').toString();
 @customElement('res-edit-7')
 export class ResEdit7 extends LitElement {
 
-  @property ({type: Boolean, reflect: true}) show = false;
+  @property ({type: Boolean, reflect: true}) isshow = false;
   @property ({type: Object}) file: file;
   @query('#f-description') Fdescription: HTMLTextAreaElement;
   @query('#f-group') Fgroup: HTMLSelectElement;
 
-  closeEdit () {
-    this.show = false;
+  show () {
+    this.isshow = true;
+  }
+
+  close () {
+    this.isshow = false;
+    this.changeFile('-1');
   }
 
   changeFile (type: string) {
@@ -42,20 +47,20 @@ export class ResEdit7 extends LitElement {
       console.log(e);
       alert(e.message);
     });
-    this.closeEdit();
+    this.close();
   }
 
   render () {
     return html `
       <style>${styles}</style>
-      <div class="dialog-main" style="${this.show ? '': 'display: none;'}">
+      <div class="dialog-main" style="${this.isshow ? '': 'display: none;'}">
         <div class="dialog-scrim"></div>
         <div class="dialog-box">
           <div class="dialog-header">
             <span class="dialog-title">附件详情</span>
             <a href="javascript:;" class="material-icons dialog-btn" @click=${() => this.changeFile('prev')}>keyboard_arrow_left</a>
             <a href="javascript:;" class="material-icons dialog-btn" @click=${() => this.changeFile('next')}>keyboard_arrow_right</a>
-            <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.closeEdit}>close</a>
+            <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.close}>close</a>
           </div>
           ${this.file ? html `
           <div class="dialog-content file-info">
@@ -92,7 +97,7 @@ export class ResEdit7 extends LitElement {
               <div class="file-detail-writeable">
                 <label class="file-detail-item">
                   <span class="name">说明</span>
-                  <textarea id="f-description">${this.file.description}</textarea>
+                  <textarea id="f-description" .value="${this.file.description || ''}"></textarea>
                 </label>
               </div>
             </div>
@@ -103,7 +108,7 @@ export class ResEdit7 extends LitElement {
             <a href="${this.file && this.file.path ? this.file.path : 'javascript:;'}"
               target="_blank" download="${this.file && this.file.filename}"
               class="material-icons dialog-btn" style="font-size: 22px;">arrow_downward</a>
-            <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.closeEdit}>close</a>
+            <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;" @click=${this.close}>close</a>
             <a href="javascript:;" class="material-icons dialog-btn" style="width: 96px;" @click=${this.saveChange}>done</a>
           </div>
         </div>

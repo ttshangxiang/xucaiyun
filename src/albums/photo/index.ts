@@ -51,6 +51,7 @@ export class Photo7 extends LitElement {
 
   show () {
     this.$dialog.show();
+    setTimeout(() => this.resize, 1);
   }
 
   onClose () {
@@ -62,23 +63,29 @@ export class Photo7 extends LitElement {
   }
 
   resize () {
-    this.swipeImgs.forEach(item => {
+    const {clientWidth, clientHeight} = this.$photoShow;
+    if (clientWidth === 0 || clientHeight === 0) {
+      return;
+    }
+    this.files = this.files.map(item => {
       const {width, height} = item;
       if (!width || !height || !this.$photoShow) {
         item.imgStyle = '';
-        return;
+        return item;
       }
       const {clientWidth, clientHeight} = this.$photoShow;
       if (width < clientWidth && height < clientHeight) {
         item.imgStyle = '';
-        return;
+        return item;
       }
       if (width / height > clientWidth / clientHeight) {
         item.imgStyle = 'width: 100%;height: auto;';
       } else {
         item.imgStyle = 'width: auto;height: 100%;';
       }
+      return item;
     });
+    this.requestUpdate();
   }
 
   firstUpdated () {
@@ -188,7 +195,6 @@ export class Photo7 extends LitElement {
   }
 
   render () {
-    this.resize();
     let currentImg: any = this.files[this.current] || {};
     return html `
       <style>${styles}</style>
