@@ -85,9 +85,14 @@ export class Res7 extends LitElement {
     formData.append('filename', o.filename);
     formData.append('type', o.type);
     formData.append('size', o.size);
+    const id = this.$filterGroup.value;
+    let url = '/res';
+    if (id) {
+      url += '?groupId=' + id;
+    }
     axios({
       method: 'post',
-      url: '/res',
+      url: url,
       data: formData,
       onUploadProgress: (e: ProgressEvent) => {
         o.percent = +(e.loaded / e.total * 100).toFixed(2);
