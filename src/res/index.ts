@@ -26,6 +26,7 @@ export class Res7 extends LitElement {
   @query('#filter-type') $filterType: HTMLSelectElement;
   @query('#filter-group') $filterGroup: HTMLSelectElement;
   @query('#group-edit') $groupEdit: GroupEdit7;
+  @query('#file-form') $fileForm: HTMLFormElement;
 
   // 常量
   pagesize = 32;
@@ -48,11 +49,13 @@ export class Res7 extends LitElement {
         path: img,
         size: f.size + '',
         file: f,
-        percent: 0
+        percent: 0,
+        status: 0
       });
     }
     this.list = fileList.concat(this.list);
-    // 启动上传
+    // 重置input[file]
+    this.$fileForm.reset();
     this.upload();
   }
 
@@ -71,12 +74,21 @@ export class Res7 extends LitElement {
   }
 
   upload () {
-    this.list.forEach((item) => {
-      if (item.percent === 100) {
-        return;
-      }
-      this.uploadOne(item);
+    // 只支持同时上传1个文件，因为服务器垃圾，且可以维持顺序
+    const some = this.list.some(item => {
+      return item.status === 1;
     });
+    if (some) {
+      return;
+    }
+    for (let i = this.list.length - 1; i >= 0; i--) {
+      const item = this.list[i];
+      if (item.status === 0) {
+        item.status = 1;
+        this.uploadOne(item);
+        break;
+      }
+    }
   }
 
   uploadOne (o: ufile) {
@@ -100,16 +112,21 @@ export class Res7 extends LitElement {
       }
     })
     .then(res => {
+      o.status = 2;
       const data = res.data;
       data.insert._id = data._id;
       const index = this.list.indexOf(o);
       this.list.splice(index, 1);
       this.res.unshift(data.insert);
+      this.upload();
       this.requestUpdate();
     })
     .catch(function (error) {
       console.log(error);
-      alert(error.message);
+      o.status = -1;
+      o.error = error.message;
+      this.upload();
+      this.requestUpdate();
     });
   }
 
@@ -284,8 +301,18 @@ export class Res7 extends LitElement {
     });
   }
 
-  renderPercent (percent: any) {
-    return html `<div class="file-percent" style="width: ${percent}%"></div>`
+  renderPercent (item: ufile) {
+    const color = item.status === -1 ? 'color: red;' : '';
+    const style = `width: ${item.percent}%; ${color}`;
+    return html `
+      <div class="file-percent" style="${style}" title="${item.error || item.percent}">
+        ${item.status === 0 ? '等待...' : 
+          item.status === 1 ? item.percent + '%' : 
+          item.status === 2 ? '完成' : 
+          item.status === -1 ? '失败' + item.error : ''
+        }
+      </div>
+    `
   }
 
   render () {
@@ -296,7 +323,9 @@ export class Res7 extends LitElement {
           <a href="javascript:;" class="upload-btn top-btn">
             <i class="material-icons">add</i>
             <span>添加</span>
-            <input type="file" id="file-input" multiple="multiple" @change=${this.loadFiles}>
+            <form id="file-form">
+              <input type="file" id="file-input" multiple="multiple" @change=${this.loadFiles}>
+            </form>
           </a>
           <a href="javascript:;" class="top-btn" @click=${this.enterGroup}>
             <i class="material-icons">playlist_add</i>
@@ -350,7 +379,7 @@ export class Res7 extends LitElement {
                 ${item.type && item.type.slice(0, 5) === 'image' ? '' : html `
                   <div class="file-name">${item.filename}</div>
                 `}
-                ${item.percent > 0 && item.percent < 100 ? this.renderPercent(item.percent) : ''}
+                ${this.renderPercent(item)}
               </div>
             </li>
           `)}

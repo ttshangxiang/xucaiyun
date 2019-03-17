@@ -12,7 +12,7 @@ module.exports = merge(common, {
     port: 9000,
     hot: true,
     stats: {colors: true},
-    host: 'localhost',
+    host: '0.0.0.0', // 局域网可访问
     historyApiFallback: true, // 配合BrowserRouter
     proxy: {
       '/t2': {

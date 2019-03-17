@@ -10,8 +10,10 @@ export class ResEdit7 extends LitElement {
 
   @property ({type: Boolean, reflect: true}) isshow = false;
   @property ({type: Object}) file: file;
+  @property ({type: Boolean}) useThumb = false;
   @query('#f-description') Fdescription: HTMLTextAreaElement;
   @query('#f-group') Fgroup: HTMLSelectElement;
+  @query('#file-preview') $FilePreview: HTMLDivElement;
 
   show () {
     this.isshow = true;
@@ -23,6 +25,9 @@ export class ResEdit7 extends LitElement {
   }
 
   changeFile (type: string) {
+    // const img = this.shadowRoot.querySelector('.file-img img');
+    // img && img.setAttribute('src', '');
+    this.useThumb = true;
     let myEvent = new CustomEvent('change', {
       detail: { message: type },
       bubbles: true,
@@ -50,6 +55,32 @@ export class ResEdit7 extends LitElement {
     this.close();
   }
 
+  imgLoad (e: any) {
+    this.useThumb = false;
+  }
+
+  change (e: any) {
+    this.file.description = e.target.value;
+  }
+
+  getImgClass () {
+    if (!this.$FilePreview) {
+      return '';
+    }
+    const { width, height } = this.file;
+    if (!width || !height) {
+      return '';
+    }
+    const { clientWidth, clientHeight } = this.$FilePreview;
+    if (clientWidth > width && clientHeight > height) {
+      return 'small';
+    }
+    if (width < height) {
+      return 'vertical';
+    }
+    return '';
+  }
+
   render () {
     return html `
       <style>${styles}</style>
@@ -64,10 +95,11 @@ export class ResEdit7 extends LitElement {
           </div>
           ${this.file ? html `
           <div class="dialog-content file-info">
-            <div class="file-preview">
-              <div class="file-img ${this.file.width < this.file.height ? 'vertical' : ''}">
+            <div class="file-preview" id="file-preview">
+              <div class="file-img ${this.getImgClass()}">
                 ${this.file.type && this.file.type.slice(0, 5) === 'image' ? html `
-                  <img src="${this.file.normal || this.file.path}">
+                  <img src="${this.file.normal}" class="${this.useThumb ? 'hide' : ''}" @load=${this.imgLoad} alt="${this.file.filename}">
+                  <img src="${this.file.thumb}" class="thumb ${this.useThumb ? '' : 'hide'}" alt="${this.file.filename}">
                 ` : html `
                   <img src="/assets/imgs/commons/file.png" style="padding-top: 20px;">
                 `}
@@ -97,7 +129,7 @@ export class ResEdit7 extends LitElement {
               <div class="file-detail-writeable">
                 <label class="file-detail-item">
                   <span class="name">说明</span>
-                  <textarea id="f-description" .value="${this.file.description || ''}"></textarea>
+                  <textarea id="f-description" @change=${this.change} .value="${this.file.description || ''}"></textarea>
                 </label>
               </div>
             </div>

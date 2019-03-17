@@ -27,6 +27,13 @@ export class Photo7 extends LitElement {
   // 图片的偏移屏幕数量
   @property ({type: Number}) offset = 0;
 
+  @property ({type: Boolean}) mobile = window.innerWidth <= 599;
+
+  @property ({type: Number}) panImgY = 0;
+  @property ({type: Number}) panImgYoffset = 0;
+
+  @property ({type: Boolean}) useThumb = false;
+
   constructor () {
     super();
     // 用于监听/取消popstate
@@ -51,11 +58,19 @@ export class Photo7 extends LitElement {
 
   show () {
     this.$dialog.show();
-    setTimeout(() => this.resize, 1);
+    this.resetProp();
+    setTimeout(() => this.requestUpdate(), 1);
   }
 
   onClose () {
     window.history.back();
+  }
+
+  resetProp () {
+    this.hideDetail = false;
+    this.panImgY = 0;
+    this.panImgYoffset = 0;
+    this.useThumb = true;
   }
 
   toggleDetail () {
@@ -63,29 +78,7 @@ export class Photo7 extends LitElement {
   }
 
   resize () {
-    const {clientWidth, clientHeight} = this.$photoShow;
-    if (clientWidth === 0 || clientHeight === 0) {
-      return;
-    }
-    this.files = this.files.map(item => {
-      const {width, height} = item;
-      if (!width || !height || !this.$photoShow) {
-        item.imgStyle = '';
-        return item;
-      }
-      const {clientWidth, clientHeight} = this.$photoShow;
-      if (width < clientWidth && height < clientHeight) {
-        item.imgStyle = '';
-        return item;
-      }
-      if (width / height > clientWidth / clientHeight) {
-        item.imgStyle = 'width: 100%;height: auto;';
-      } else {
-        item.imgStyle = 'width: auto;height: 100%;';
-      }
-      return item;
-    });
-    this.requestUpdate();
+    this.mobile = window.innerWidth <= 599;
   }
 
   firstUpdated () {
@@ -98,13 +91,44 @@ export class Photo7 extends LitElement {
     const Pan = new Hammer.Pan();
     manager.add(Pan);
     let usePan = false; // 使用pan跳转时，swipe禁止
+    let lockLeft = false;
     manager.on('pan', (e: any) => {
+      this.panImgYoffset = e.deltaY;
+      // 如果上下偏差很大，则修正左右滑动
+      if (Math.abs(this.panImgYoffset) > 150 && this.mobile) {
+        lockLeft = true;
+      }
       if (this.files.length === 1) {
         return;
       }
-      this.panOffset = e.deltaX / this.$photoShow.clientWidth * 100;
+      if (lockLeft) {
+        this.panOffset = 0;
+      }
+      else {
+        this.panOffset = e.deltaX / this.$photoShow.clientWidth * 100;
+      }
+    });
+    let min = 0;
+    manager.on('panstart', (e: any) => {
+      const item = this.files[this.current];
+      if (item) {
+        const { width, height } = this.files[this.current];
+        const { clientWidth, clientHeight } = this.$photoShow;
+        const currentHeight = (clientWidth / width) * height
+        min = -1 * (currentHeight - clientHeight);
+      }
     });
     manager.on('panend', (e: any) => {
+      // 释放lockLeft
+      lockLeft = false;
+
+      // 控制界限
+      let temp = this.panImgY + this.panImgYoffset;
+      temp = temp < min ? min : temp;
+      temp = temp > 0 ? 0 : temp;
+      
+      this.panImgY = temp;
+      this.panImgYoffset = 0;
       if (this.files.length === 1) {
         return;
       }
@@ -119,7 +143,7 @@ export class Photo7 extends LitElement {
       this.panOffset = 0;
     });
     manager.add(Swipe);
-    manager.on('swipe', (e: any) => {
+    manager.on('swiperight', (e: any) => {
       if (this.files.length === 1) {
         return;
       }
@@ -127,13 +151,17 @@ export class Photo7 extends LitElement {
         usePan = false;
         return;
       }
-      const {clientWidth} = this.$photoShow;
-      if (e.deltaX > clientWidth / 2) {
-        this.prev();
+      this.prev();
+    })
+    manager.on('swipeleft', (e: any) => {
+      if (this.files.length === 1) {
+        return;
       }
-      if (e.deltaX < clientWidth / -2) {
-        this.next();
+      if (usePan) {
+        usePan = false;
+        return;
       }
+      this.next();
     });
     Swipe.recognizeWith(Pan);
 
@@ -171,6 +199,7 @@ export class Photo7 extends LitElement {
     } else {
       this.current --;
     }
+    this.resetProp();
   }
 
   next () {
@@ -180,6 +209,29 @@ export class Photo7 extends LitElement {
     } else {
       this.current ++;
     }
+    this.hideDetail = false;
+    this.resetProp();
+  }
+
+  getImgClass (file: file) {
+    if (!this.$photoShow) {
+      return '';
+    }
+    const { width, height } = file;
+    if (!width || !height) {
+      return '';
+    }
+    const { clientWidth, clientHeight } = this.$photoShow;
+    if (clientWidth > width && clientHeight > height) {
+      return 'small';
+    }
+    if (width < height && width / height < clientWidth / clientHeight && this.mobile) {
+      return 'vertical-overflow';
+    }
+    if (width < height) {
+      return 'vertical';
+    }
+    return '';
   }
 
   renderItem (item: _file, index: number) {
@@ -187,9 +239,19 @@ export class Photo7 extends LitElement {
     if (this.files.length === 1) {
       style = '';
     }
+    let imgStyle = '';
+    if (this.mobile && this.getImgClass(item) === 'vertical-overflow'
+      && this.$photoShow && this.$photoShow.clientHeight > 0) {
+      imgStyle = `top: ${this.panImgY + this.panImgYoffset}px`;
+    }
     return html `
-      <div class="photo-item" style="${style}">
-        <img @mousedown =${(e: any) => e.preventDefault()} style="${item.imgStyle}" src="${item.normal}" />
+      <div class="${'photo-item ' + this.getImgClass(item)}" style="${style}">
+        <img @mousedown =${(e: any) => e.preventDefault()} @load=${() => this.useThumb = false};
+          class="${this.useThumb ? ' hide' : ''}" src="${item.normal}"
+          style="${imgStyle}"/>
+        <img @mousedown =${(e: any) => e.preventDefault()}
+          class="${'thumb ' + (this.useThumb ? '' : ' hide')}" src="${item.thumb}"
+          style="${imgStyle}"/>
       </div>
     `;
   }
@@ -199,6 +261,13 @@ export class Photo7 extends LitElement {
     return html `
       <style>${styles}</style>
       <dialog-7 id="dialog" @close=${this.onClose} text="${currentImg.filename || ''}">
+        ${this.mobile ? html `
+          <div slot="header"></div>
+          <div class="header">
+            <a href="javascript:;" class="material-icons dialog-btn" style="font-size: 22px;"
+              @click=${() => this.$dialog.close()}>close</a>
+          </div>
+        `: ''}
         <div class="photo" id="photo">
           <div id="photo-show" class="photo-show">
             <div id="photo-wrap" class="photo-wrap"
@@ -216,9 +285,11 @@ export class Photo7 extends LitElement {
           </div>
           <div class="photo-detail ${this.hideDetail ? 'hide' : ''}">
             <ul class="photo-detail-readonly">
-              <li class="photo-detail-item">
-                <label>描述：</label><span>${currentImg.description}</span>
-              </li>
+              ${currentImg.description ? html `
+                <li class="photo-detail-item">
+                  <label>描述：</label><span>${currentImg.description}</span>
+                </li>
+              ` : ''}
             </ul>
           </div>
         </div>

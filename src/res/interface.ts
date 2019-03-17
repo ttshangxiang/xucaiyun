@@ -12,7 +12,8 @@ export interface file {
   width?: number
   height?: number
   utime: string
-  ctime: string,
+  ctime: string
+  loaded?: boolean
 }
 
 export interface ufile {
@@ -21,7 +22,9 @@ export interface ufile {
   size: string
   path: string
   percent: number
-  file: File
+  file: File,
+  status: (0/*未开始*/ | 1/*传输中*/ | 2/*已完成*/ | -1/*已失败*/),
+  error?: String
 }
 
 export interface group {

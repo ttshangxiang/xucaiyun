@@ -90,6 +90,16 @@ export class GroupEdit7 extends LitElement {
     this.showData = {};
   }
 
+  change (e: any, key: ('name' | 'description' | 'type' | 'status')) {
+    let value = e.target.value;
+    if (key === 'status') {
+      value = +value;
+    }
+    if (this.current) {
+      this.current[key] = value;
+    }
+  }
+
   render () {
     const { type, _id, name, description, status } = this.showData;
     return html `
@@ -98,11 +108,11 @@ export class GroupEdit7 extends LitElement {
         <div class="group-details">
           <label class="group-item">
             <span class="name">名称</span>
-            <input type="text" id="group-name" .value="${name || ''}"/>
+            <input type="text" @change=${(e: any) => this.change(e, 'name')} id="group-name" .value="${name || ''}"/>
           </label>
           <label class="group-item">
             <span class="name">类型</span>
-            <select id="group-type" .value="${type}">
+            <select id="group-type" @change=${(e: any) => this.change(e, 'type')} .value="${type}">
               <option value="">无</option>
               <option value="albums">相册</option>
               <option value="words">文章</option>
@@ -111,15 +121,17 @@ export class GroupEdit7 extends LitElement {
           </label>
           <label class="group-item">
             <span class="name">说明</span>
-            <textarea id="group-description" .value="${description || ''}"></textarea>
+            <textarea id="group-description" @change=${(e: any) => this.change(e, 'description')} .value="${description || ''}"></textarea>
           </label>
           <label class="group-item">
             <span class="name">是否展示</span>
             <label class="radio-label">
-              <span>是</span><input type="radio" name="ishidden" value="1" .checked="${status == '1'}">
+              <span>是</span><input type="radio" name="ishidden" value="1" .checked="${status == '1'}"
+                @change=${(e: any) => this.change(e, 'status')}>
             </label>
             <label class="radio-label">
-              <span>否</span><input type="radio" name="ishidden" value="0" .checked="${status != '1'}">
+              <span>否</span><input type="radio" name="ishidden" value="0" .checked="${status != '1'}"
+                @change=${(e: any) => this.change(e, 'status')}>
             </label>
           </label>
         </div>
