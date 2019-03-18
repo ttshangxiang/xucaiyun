@@ -267,6 +267,9 @@ export class Photo7 extends LitElement {
   }
 
   renderItem (item: _file, index: number) {
+    if (!item) {
+      return html ``;
+    }
     let style = 'left: ' + (this.offset + index - 1) * 100 + '%';
     if (this.files.length === 1) {
       style = '';
@@ -283,7 +286,7 @@ export class Photo7 extends LitElement {
     return html `
       <div id="${item === this.files[this.current] ? 'current-img' : 'current-img' + index}"
         class="photo-item ${top}" style="${style}">
-        <img-7 style="width: ${width}px" src="${item && item.normal || ''}" thumb="${item && item.thumb || ''}"></img-7>
+        <img-7 style="width: ${width}px" src="${item.normal || ''}" thumb="${item.thumb || ''}"></img-7>
       </div>
     `;
   }
