@@ -35,10 +35,10 @@ export class Example extends LitElement {
       clearInterval(this.timer);
       this.timer = setInterval(() => {
         // 等到image的宽度和缩略图的dom时，结束循环
-        if (image.naturalHeight > 0 && this.$thumb) {
+        if (image.naturalWidth > 0 && this.$thumb) {
           clearInterval(this.timer);
           this.shadowRoot.querySelectorAll('img').forEach(item => {
-            item.setAttribute('style', `width: ${image.naturalHeight}px`);
+            item.setAttribute('style', `width: ${image.naturalWidth}px`);
           });
         }
       }, 100);
