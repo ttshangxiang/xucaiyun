@@ -49,7 +49,7 @@ export class Example extends LitElement {
         return;
       }
       const image = document.createElement('img');
-      image.setAttribute('style', '');
+      image.setAttribute('style', 'width: 0;');
       image.src = value;
       image.onmousedown = e => e.preventDefault();
       this.$thumb.innerHTML = '';
