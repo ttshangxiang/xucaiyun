@@ -275,7 +275,7 @@ export class Photo7 extends LitElement {
       style = '';
     }
     const rate = item.width / item.height;
-    const width = Math.max(item.width / item.height * this.$photoShow.clientHeight, 480);
+    const width = Math.max(item.width / item.height * this.$photoShow.clientHeight, 420);
     const realWidth = Math.min(this.$photoShow.clientWidth, width);
     const realHeight = 1 / rate * realWidth;
     // 判断是否有滑动条
