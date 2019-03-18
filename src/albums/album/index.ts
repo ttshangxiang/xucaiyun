@@ -22,7 +22,7 @@ export class Album7 extends LitElement {
   @query('#pager') $pager: Pager7;
 
   // 常量
-  pagesize = 3;
+  pagesize = 32;
 
   async firstUpdated () {
     await this.reloadRes();
