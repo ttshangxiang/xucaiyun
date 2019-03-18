@@ -1,0 +1,29 @@
+
+:host {
+  display: block;
+}
+
+.img-7 {
+  position: relative;
+}
+
+.thumb, .normal {
+  text-align: center;
+  img {
+    vertical-align: middle;
+    max-width: 100%;
+    max-height: none;
+  }
+}
+
+.normal {
+  position: relative;
+}
+
+.thumb {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}

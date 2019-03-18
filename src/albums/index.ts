@@ -4,6 +4,7 @@ import axios from '../base/axios';
 import Router from '../base/router';
 import { file } from '../res/interface';
 import './album';
+import '../components/avatar';
 
 const styles = require('./style').toString();
 
@@ -37,13 +38,10 @@ export class Albums7 extends LitElement {
       <div class="albums">
         <ul class="albums-list">
           ${this.list.map((item: any) => html `
-            <li class="albums-item" @click=${() => this.enterAlbum(item._id)}>
+            <li class="albums-item${item.width && item.width < item.height ? ' vertical' : ' '}"
+              @click=${() => this.enterAlbum(item._id)}>
               <div class="file-wrap">
-                <div class="file-abs">
-                  <div class="centered">
-                    <img src="${item.thumb}" />
-                  </div>
-                </div>
+                <avatar-7 src="${item.thumb}"></avatar-7>
                 <div class="albums-info">
                   <span class="albums-name">${item.name}</span>
                 </div>

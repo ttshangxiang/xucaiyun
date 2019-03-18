@@ -19,6 +19,7 @@ export class Photo7 extends LitElement {
   @property ({type: Boolean}) hideDetail = false;
   @property ({type: String}) imgStyle = '';
   @property ({type: Number}) panOffset = 0;
+  @property ({type: Number}) pagesize = 0;
 
   @query('#dialog') $dialog: Dialog7;
   @query('#photo-show') $photoShow: HTMLDivElement;
@@ -26,13 +27,10 @@ export class Photo7 extends LitElement {
 
   // 图片的偏移屏幕数量
   @property ({type: Number}) offset = 0;
-
   @property ({type: Boolean}) mobile = window.innerWidth <= 599;
-
-  @property ({type: Number}) panImgY = 0;
-  @property ({type: Number}) panImgYoffset = 0;
-
-  @property ({type: Boolean}) useThumb = false;
+  
+  // 普通变量
+  offsetY = 0;
 
   constructor () {
     super();
@@ -58,6 +56,7 @@ export class Photo7 extends LitElement {
 
   show () {
     this.$dialog.show();
+    this.checkLoad(this.current);
     this.resetProp();
     setTimeout(() => this.requestUpdate(), 1);
   }
@@ -68,9 +67,7 @@ export class Photo7 extends LitElement {
 
   resetProp () {
     this.hideDetail = false;
-    this.panImgY = 0;
-    this.panImgYoffset = 0;
-    this.useThumb = true;
+    this.offsetY = 0;
   }
 
   toggleDetail () {
@@ -85,53 +82,69 @@ export class Photo7 extends LitElement {
     this.swiper();
   }
 
+  // 滑动部分
   swiper () {
     const manager = new Hammer.Manager(this.$photo);
     const Swipe = new Hammer.Swipe();
     const Pan = new Hammer.Pan();
     manager.add(Pan);
     let usePan = false; // 使用pan跳转时，swipe禁止
-    let lockLeft = false;
+    let direction: (null | 'horizontal' | 'vertical') = null;
+    let $currentImg: HTMLImageElement = null;
     manager.on('pan', (e: any) => {
-      this.panImgYoffset = e.deltaY;
-      // 如果上下偏差很大，则修正左右滑动
-      if (Math.abs(this.panImgYoffset) > 150 && this.mobile) {
-        lockLeft = true;
+      // 判断方向
+      const absx = Math.abs(e.deltaX);
+      const absy = Math.abs(e.deltaY);
+      if (!direction && absx + absy > 50) {
+        if (absx > absy) {
+          direction = 'horizontal';
+        } else {
+          direction = 'vertical';
+        }
       }
-      if (this.files.length === 1) {
-        return;
-      }
-      if (lockLeft) {
+
+      // 左右偏移
+      this.panOffset = e.deltaX / this.$photoShow.clientWidth * 100;
+
+      // 左右极限
+      if ((this.current === this.files.length - 1 && e.deltaX < 0) || (
+        this.current === 0 && e.deltaX > 0)) {
         this.panOffset = 0;
       }
-      else {
-        this.panOffset = e.deltaX / this.$photoShow.clientWidth * 100;
+
+      // 上下偏移
+      let offsetY = e.deltaY;
+
+      // 方向禁止
+      if (direction === 'horizontal') {
+        offsetY = 0;
       }
+      if (direction === 'vertical') {
+        this.panOffset = 0;
+      }
+
+      // 上下偏移
+      if ($currentImg && this.mobile) {
+        $currentImg.scrollTop = this.offsetY - offsetY;
+      }
+
     });
     let min = 0;
     manager.on('panstart', (e: any) => {
-      const item = this.files[this.current];
-      if (item) {
-        const { width, height } = this.files[this.current];
-        const { clientWidth, clientHeight } = this.$photoShow;
-        const currentHeight = (clientWidth / width) * height
-        min = -1 * (currentHeight - clientHeight);
-      }
+      $currentImg = this.shadowRoot.querySelector('#current-img')
     });
     manager.on('panend', (e: any) => {
-      // 释放lockLeft
-      lockLeft = false;
+      // 移动结束时重置direction;
+      direction = null;
+      // 移动结束时记录scrollTop
+      this.offsetY = $currentImg.scrollTop;
 
-      // 控制界限
-      let temp = this.panImgY + this.panImgYoffset;
-      temp = temp < min ? min : temp;
-      temp = temp > 0 ? 0 : temp;
-      
-      this.panImgY = temp;
-      this.panImgYoffset = 0;
-      if (this.files.length === 1) {
+
+      if ((this.current === this.files.length - 1 && e.deltaX < 0) || (
+        this.current === 0 && e.deltaX > 0)) {
         return;
       }
+
       const {clientWidth} = this.$photoShow;
       if (e.deltaX > clientWidth / 2) {
         this.prev();
@@ -144,7 +157,7 @@ export class Photo7 extends LitElement {
     });
     manager.add(Swipe);
     manager.on('swiperight', (e: any) => {
-      if (this.files.length === 1) {
+      if (this.current === 0) {
         return;
       }
       if (usePan) {
@@ -154,7 +167,7 @@ export class Photo7 extends LitElement {
       this.prev();
     })
     manager.on('swipeleft', (e: any) => {
-      if (this.files.length === 1) {
+      if (this.current === this.files.length - 1) {
         return;
       }
       if (usePan) {
@@ -194,44 +207,60 @@ export class Photo7 extends LitElement {
 
   prev () {
     this.offset --;
-    if (this.current === 0) {
-      this.current = this.files.length - 1;
-    } else {
+    if (this.current > 0) {
       this.current --;
+      this.resetProp();
+      this.checkLoad(this.current);
+      if (this.current % this.pagesize === this.pagesize - 1) {
+        this.changePage(this.current);
+      }
     }
-    this.resetProp();
   }
 
   next () {
     this.offset ++;
-    if (this.current === this.files.length - 1) {
-      this.current = 0;
-    } else {
+    if (this.current < this.files.length - 1) {
       this.current ++;
+      this.resetProp();
+      this.checkLoad(this.current);
+      if (this.current % this.pagesize === 0) {
+        this.changePage(this.current);
+      }
     }
-    this.hideDetail = false;
-    this.resetProp();
   }
 
-  getImgClass (file: file) {
-    if (!this.$photoShow) {
-      return '';
+  checkLoad (offset: number) {
+    // 缺货补充
+    if (offset % this.pagesize <= 1 && offset >= this.pagesize) {
+      this.loadPage(offset - 2);
     }
-    const { width, height } = file;
-    if (!width || !height) {
-      return '';
+    const lastPagePrev = this.files.length - this.files.length % this.pagesize - 1;
+    if (offset % this.pagesize >= this.pagesize - 2  && offset <= lastPagePrev) {
+      this.loadPage(offset + 2);
     }
-    const { clientWidth, clientHeight } = this.$photoShow;
-    if (clientWidth > width && clientHeight > height) {
-      return 'small';
-    }
-    if (width < height && width / height < clientWidth / clientHeight && this.mobile) {
-      return 'vertical-overflow';
-    }
-    if (width < height) {
-      return 'vertical';
-    }
-    return '';
+  }
+
+  loadPage (offset: number) {
+    let myEvent = new CustomEvent('loadpage', {
+      detail: { offset },
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(myEvent);
+  }
+
+  changePage (offset: number) {
+    const page = Math.floor(offset / this.pagesize) + 1;
+    let myEvent = new CustomEvent('changepage', {
+      detail: { message: page },
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(myEvent);
+  }
+
+  forceUpdate () {
+    this.requestUpdate();
   }
 
   renderItem (item: _file, index: number) {
@@ -239,25 +268,30 @@ export class Photo7 extends LitElement {
     if (this.files.length === 1) {
       style = '';
     }
-    let imgStyle = '';
-    if (this.mobile && this.getImgClass(item) === 'vertical-overflow'
-      && this.$photoShow && this.$photoShow.clientHeight > 0) {
-      imgStyle = `top: ${this.panImgY + this.panImgYoffset}px`;
-    }
     return html `
-      <div class="${'photo-item ' + this.getImgClass(item)}" style="${style}">
-        <img @mousedown =${(e: any) => e.preventDefault()} @load=${() => this.useThumb = false};
-          class="${this.useThumb ? ' hide' : ''}" src="${item.normal}"
-          style="${imgStyle}"/>
-        <img @mousedown =${(e: any) => e.preventDefault()}
-          class="${'thumb ' + (this.useThumb ? '' : ' hide')}" src="${item.thumb}"
-          style="${imgStyle}"/>
+      <div id="${item === this.files[this.current] ? 'current-img' : 'current-img' + index}"
+        class="photo-item" style="${style}">
+        <img-7 src="${item && item.normal || ''}" thumb="${item && item.thumb || ''}"></img-7>
       </div>
     `;
   }
 
+  updated () {
+    this.shadowRoot.querySelectorAll('.photo-item').forEach(item => {
+      if (item.scrollHeight > item.clientHeight) {
+        item.classList.add('top');
+      } else {
+        item.classList.remove('top');
+      }
+    });
+  }
+
   render () {
     let currentImg: any = this.files[this.current] || {};
+    let offsetStyle = 'transform: translateX(' + (this.offset * -100 + this.panOffset) + '%)';
+    if (this.files.length === 1) {
+      offsetStyle = '';
+    }
     return html `
       <style>${styles}</style>
       <dialog-7 id="dialog" @close=${this.onClose} text="${currentImg.filename || ''}">
@@ -271,7 +305,7 @@ export class Photo7 extends LitElement {
         <div class="photo" id="photo">
           <div id="photo-show" class="photo-show">
             <div id="photo-wrap" class="photo-wrap"
-              style=${'transform: translateX(' + (this.offset * -100 + this.panOffset) + '%)'}>
+              style=${offsetStyle}>
               ${this.swipeImgs.map((item, index) => this.renderItem(item, index))}
             </div>
             <div class="prev-btn">

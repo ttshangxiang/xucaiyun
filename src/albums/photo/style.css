@@ -36,50 +36,6 @@
   position: relative;
   height: 100%;
   overflow: hidden;
-
-  .photo-item {
-    img {
-      max-width: 100%;
-      max-height: none;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      &.hide {
-        display: none;
-      }
-    }
-    @media (min-width: 600px) {
-      &.vertical img {
-        max-width: none;
-        max-height: 100%;
-      }
-    }
-    @media (max-width: 599px) {
-      &.vertical-overflow img {
-        left: 0;
-        top: 0;
-        transform: none;
-      }
-    }
-    .thumb {
-      min-width: 100%;
-      min-height: auto;
-    }
-
-    &.vertical {
-      .thumb {
-        min-width: auto;
-        min-height: 100%;
-      }
-    }
-    &.small {
-      .thumb {
-        min-width: auto;
-        min-height: auto;
-      }
-    }
-  }
 }
 
 .photo-detail {
@@ -146,8 +102,15 @@
   left: 0;
   top: 0;
   display: flex;
-  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
+  &.top {
+    display: block;
+  }
+  @media (min-width: 600px) {
+    overflow: auto;
+  }
 }
 
 .prev-btn, .next-btn {

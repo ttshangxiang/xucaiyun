@@ -3,7 +3,9 @@ import { LitElement, html, customElement, property, query } from 'lit-element';
 import axios from '../../base/axios';
 import Router from '../../base/router';
 import '../../components/pager';
+import { Pager7 } from '../../components/pager';
 import '../photo';
+import '../../components/avatar';
 import { Photo7 } from '../photo';
 import { file } from '../../res/interface';
 const styles = require('./style').toString();
@@ -14,11 +16,13 @@ export class Album7 extends LitElement {
   @property({type: Array}) list: file[] = [];
   @property ({type: Number}) currentIndex = 0;
   @property ({type: Number}) total = 0;
+  @property ({type: Array}) all: file[] = [];
 
   @query('#photo') $photo: Photo7;
+  @query('#pager') $pager: Pager7;
 
   // 常量
-  pagesize = 32;
+  pagesize = 3;
 
   async firstUpdated () {
     await this.reloadRes();
@@ -45,9 +49,33 @@ export class Album7 extends LitElement {
   }
 
   async reloadRes (page = 1) {
-    const data = await this.loadRes(page);
-    this.list = data.data || [];
-    this.total = data.total;
+    const offset = (page - 1) * this.pagesize;
+    if (!this.all[offset]) {
+      const data = await this.loadRes(page);
+      this.list = data.data || [];
+      this.list.forEach((item, index) => {
+        this.all[(page - 1) * this.pagesize + index] = item;
+      });
+      this.total = data.total;
+      this.all.length = this.total;
+      this.$photo.forceUpdate();
+    } else {
+      this.list = this.all.slice(offset, offset + this.pagesize);
+    }
+  }
+
+  async preloadRes (page = 1) {
+    const offset = (page - 1) * this.pagesize;
+    if (!this.all[offset]) {
+      const data = await this.loadRes(page);
+      const list: file[] = data.data || [];
+      list.forEach((item, index) => {
+        this.all[(page - 1) * this.pagesize + index] = item;
+      });
+      this.total = data.total;
+      this.all.length = this.total;
+      this.$photo.forceUpdate();
+    }
   }
 
   async changePage (e: CustomEvent) {
@@ -58,10 +86,18 @@ export class Album7 extends LitElement {
     });
   }
 
+  async loadPage (e: CustomEvent) {
+    const offset = e.detail.offset;
+    const page = Math.floor(offset / this.pagesize) + 1;
+    await this.preloadRes(page);
+  }
+
   enterPhoto (item: file, index: number) {
     window.history.pushState(null, '', `/albums/${Router.params.albumId}?p=${index}`);
-    this.currentIndex = index;
-    this.$photo.show();
+    this.currentIndex = index + this.pagesize * (this.$pager.current - 1);
+    setTimeout(() => {
+      this.$photo.show();
+    }, 1);
   }
 
   render () {
@@ -70,24 +106,23 @@ export class Album7 extends LitElement {
       <div class="album">
         <ul class="photo-list">
           ${this.list.map((item: file, index: number) => html `
-            <li class="photo-item" @click=${() => this.enterPhoto(item, index)}>
+            <li class="photo-item${item.width && item.width < item.height ? ' vertical' : ' '}"
+              @click=${() => this.enterPhoto(item, index)}>
               <div class="file-wrap">
-                <div class="file-abs">
-                  <div class="centered">
-                    <img src="${item.thumb}" />
-                  </div>
-                </div>
+                <avatar-7 src="${item.thumb}"></avatar-7>
               </div>
             </li>
           `)}
         </ul>
-        <pager-7 current="1"
+        <pager-7 id="pager" current="1"
           total="${this.total}"
           pagesize="${this.pagesize}"
           @change=${this.changePage}
           style="padding: 12px 0;"></pager-7>
       </div>
-      <photo-7 id="photo" .current=${this.currentIndex} .files=${this.list}></photo-7>
+      <photo-7 id="photo" pagesize="${this.pagesize}" .current=${this.currentIndex} .files=${this.all}
+        @loadpage=${this.loadPage}
+        @changepage=${this.changePage}></photo-7>
     `
   }
 }

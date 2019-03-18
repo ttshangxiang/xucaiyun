@@ -5,6 +5,7 @@ import '../components/button';
 
 import './header';
 import './drawer';
+import '../home';
 
 const styles = require('./style').toString();
 

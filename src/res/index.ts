@@ -5,6 +5,8 @@ import './group';
 import { ResEdit7 } from './edit';
 import { GroupEdit7 } from './group';
 import '../components/pager';
+import { Pager7 } from '../components/pager';
+import '../components/avatar';
 
 const styles = require('./style').toString();
 
@@ -27,6 +29,7 @@ export class Res7 extends LitElement {
   @query('#filter-group') $filterGroup: HTMLSelectElement;
   @query('#group-edit') $groupEdit: GroupEdit7;
   @query('#file-form') $fileForm: HTMLFormElement;
+  @query('#pager') $pager: Pager7;
 
   // 常量
   pagesize = 32;
@@ -183,19 +186,25 @@ export class Res7 extends LitElement {
     this.$resEdit.show();
   }
 
-  changeFileIndex (e: any) {
+  async changeFileIndex (e: any) {
     const message = e.detail.message;
-    const max = this.list.length + this.res.length - 1;
     if (message === 'prev') {
       if (this.currentIndex === 0) {
-        this.currentIndex = max;
+        if (this.$pager.current > 1) {
+          await this.changePage(this.$pager.current - 1);
+        }
+        this.currentIndex = this.res.length - 1;
       } else {
         this.currentIndex--;
       }
     }
     if (message === 'next') {
-      if (this.currentIndex === max) {
-        this.currentIndex = 0;
+      if (this.currentIndex === this.res.length - 1) {
+        const maxPage = Math.ceil(this.pagesize / this.total);
+        if (this.$pager.current < maxPage) {
+          await this.changePage(this.$pager.current + 1);
+          this.currentIndex = 0;
+        }
       } else {
         this.currentIndex++;
       }
@@ -205,11 +214,10 @@ export class Res7 extends LitElement {
     }
   }
 
-  async changePage (e: CustomEvent) {
-    const newpage = e.detail.message;
+  async changePage (newpage: number) {
     await this.reloadRes(newpage);
     this.shadowRoot.querySelectorAll('pager-7').forEach(o => {
-      o.setAttribute('current', newpage);
+      o.setAttribute('current', newpage + '');
     });
   }
 
@@ -367,16 +375,10 @@ export class Res7 extends LitElement {
           ${this.list.map((item, index) => html `
             <li class="file-item" title="${item.filename}">
               <div class="file-wrap">
-                <div class="file-abs">
-                  <div class="centered">
-                  ${item.type && item.type.slice(0, 5) === 'image' ? html `
-                    <img src="${item.path}">
-                  ` : html `
-                    <img style="min-height: auto;min-width: auto;" src="/assets/imgs/commons/file.png">
-                  `}
-                  </div>
-                </div>
-                ${item.type && item.type.slice(0, 5) === 'image' ? '' : html `
+                ${item.type && item.type.slice(0, 5) === 'image' ? html `
+                  <avatar-7 src="${item.path}"></avatar-7>
+                ` : html `
+                  <avatar-7 src="/assets/imgs/commons/file.png" isicon></avatar-7>
                   <div class="file-name">${item.filename}</div>
                 `}
                 ${this.renderPercent(item)}
@@ -386,30 +388,24 @@ export class Res7 extends LitElement {
           <!-- 资源 -->
           ${this.res.map((item, index) => html `
             <li class="file-item 
-              ${this.groupSelected.includes(item) ? 'group-selected' : ' '}
-              ${item.width && item.width < item.height ? 'vertical' : ' '}
+              ${this.groupSelected.includes(item) ? ' group-selected' : ' '}
+              ${item.width && item.width < item.height ? ' vertical' : ' '}
             " title="${item.filename}" @click=${() => this.editRes(item, index)}>
               <div class="file-wrap">
-                <div class="file-abs">
-                  <div class="centered">
-                  ${item.type && item.type.slice(0, 5) === 'image' ? html `
-                    <img src="${item.thumb || item.path}">
-                  ` : html `
-                    <img style="min-height: auto;min-width: auto;" src="/assets/imgs/commons/file.png">
-                  `}
-                  </div>
-                </div>
-                ${item.type && item.type.slice(0, 5) === 'image' ? '' : html `
+                ${item.type && item.type.slice(0, 5) === 'image' ? html `
+                  <avatar-7 src="${item.thumb}"></avatar-7>
+                ` : html `
+                  <avatar-7 src="/assets/imgs/commons/file.png" isicon></avatar-7>
                   <div class="file-name">${item.filename}</div>
                 `}
               </div>
             </li>
           `)}
         </ul>
-        <pager-7 current="1"
+        <pager-7 id="pager" current="1"
           total="${this.total}"
           pagesize="${this.pagesize}"
-          @change=${this.changePage}
+          @change=${(e: any) => this.changePage(e.detail.message)}
           style="padding: 12px 0;"
           class="${this.grouping ? 'hide': ' '}"></pager-7>
       </div>
