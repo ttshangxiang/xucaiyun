@@ -14,7 +14,7 @@ const styles = require('./style').toString();
 export class Album7 extends LitElement {
 
   @property({type: Array}) list: file[] = [];
-  @property ({type: Number}) currentIndex = 0;
+  @property ({type: Number}) currentIndex = -1;
   @property ({type: Number}) total = 0;
   @property ({type: Array}) all: file[] = [];
 

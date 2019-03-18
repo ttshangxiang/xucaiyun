@@ -107,6 +107,10 @@
   overflow: hidden;
   &.top {
     display: block;
+    img-7 {
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
   @media (min-width: 600px) {
     overflow: auto;

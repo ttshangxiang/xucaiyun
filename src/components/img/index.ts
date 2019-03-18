@@ -31,14 +31,15 @@ export class Example extends LitElement {
       this.$normal.innerHTML = '';
       this.$normal.appendChild(image);
 
-      // 保持thumb和normal一样大，不知道哪张图的顺序优先，两种情况都考虑
+      // 保持thumb和normal一样大
       clearInterval(this.timer);
       this.timer = setInterval(() => {
         // 等到image的宽度和缩略图的dom时，结束循环
         if (image.width > 0 && this.$thumb) {
           clearInterval(this.timer);
-          const thumb = this.$thumb.querySelector('img')
-          thumb && thumb.setAttribute('style', `width: ${image.width}px`);
+          this.querySelectorAll('img').forEach(item => {
+            item.setAttribute('style', `width: ${image.width}px`);
+          });
         }
       }, 100);
     }

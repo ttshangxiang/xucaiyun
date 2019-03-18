@@ -1,6 +1,7 @@
 
 :host {
   display: block;
+  max-width: 100%;
 }
 
 .img-7 {
@@ -10,7 +11,7 @@
 .thumb, .normal {
   text-align: center;
   img {
-    vertical-align: middle;
+    vertical-align: bottom;
     max-width: 100%;
     max-height: none;
   }

@@ -4,6 +4,7 @@ import '../../components/dialog';
 import { Dialog7 } from '../../components/dialog';
 import * as Hammer from 'hammerjs';
 import { file } from '../../res/interface';
+import '../../components/img';
 
 const styles = require('./style').toString();
 
@@ -24,6 +25,7 @@ export class Photo7 extends LitElement {
   @query('#dialog') $dialog: Dialog7;
   @query('#photo-show') $photoShow: HTMLDivElement;
   @query('#photo') $photo: HTMLDivElement;
+  @query('#current-img') $currentImg: HTMLImageElement;
 
   // 图片的偏移屏幕数量
   @property ({type: Number}) offset = 0;
@@ -68,6 +70,8 @@ export class Photo7 extends LitElement {
   resetProp () {
     this.hideDetail = false;
     this.offsetY = 0;
+    const $img = this.shadowRoot.querySelector('#current-img');
+    $img && ($img.scrollTop = 0);
   }
 
   toggleDetail () {
@@ -90,7 +94,6 @@ export class Photo7 extends LitElement {
     manager.add(Pan);
     let usePan = false; // 使用pan跳转时，swipe禁止
     let direction: (null | 'horizontal' | 'vertical') = null;
-    let $currentImg: HTMLImageElement = null;
     manager.on('pan', (e: any) => {
       // 判断方向
       const absx = Math.abs(e.deltaX);
@@ -124,21 +127,18 @@ export class Photo7 extends LitElement {
       }
 
       // 上下偏移
-      if ($currentImg && this.mobile) {
-        $currentImg.scrollTop = this.offsetY - offsetY;
+      if (this.$currentImg && this.mobile) {
+        this.$currentImg.scrollTop = this.offsetY - offsetY;
       }
 
     });
-    let min = 0;
     manager.on('panstart', (e: any) => {
-      $currentImg = this.shadowRoot.querySelector('#current-img')
     });
     manager.on('panend', (e: any) => {
       // 移动结束时重置direction;
       direction = null;
       // 移动结束时记录scrollTop
-      this.offsetY = $currentImg.scrollTop;
-
+      this.offsetY = this.$currentImg.scrollTop;
 
       if ((this.current === this.files.length - 1 && e.deltaX < 0) || (
         this.current === 0 && e.deltaX > 0)) {
@@ -187,6 +187,9 @@ export class Photo7 extends LitElement {
 
   // 供滚动的图片，三张
   get swipeImgs () {
+    if (this.current === -1) {
+      return [];
+    }
     if (this.files.length < 2) {
       return this.files;
     }
@@ -206,8 +209,8 @@ export class Photo7 extends LitElement {
   }
 
   prev () {
-    this.offset --;
     if (this.current > 0) {
+      this.offset --;
       this.current --;
       this.resetProp();
       this.checkLoad(this.current);
@@ -218,8 +221,8 @@ export class Photo7 extends LitElement {
   }
 
   next () {
-    this.offset ++;
     if (this.current < this.files.length - 1) {
+      this.offset ++;
       this.current ++;
       this.resetProp();
       this.checkLoad(this.current);
@@ -268,22 +271,21 @@ export class Photo7 extends LitElement {
     if (this.files.length === 1) {
       style = '';
     }
+    const rate = item.width / item.height;
+    const width = Math.max(item.width / item.height * this.$photoShow.clientHeight, 480);
+    const realWidth = Math.min(this.$photoShow.clientWidth, width);
+    const realHeight = 1 / rate * realWidth;
+    // 判断是否有滑动条
+    let top = '';
+    if (realHeight > this.$photoShow.clientHeight) {
+      top = 'top';
+    }
     return html `
       <div id="${item === this.files[this.current] ? 'current-img' : 'current-img' + index}"
-        class="photo-item" style="${style}">
-        <img-7 src="${item && item.normal || ''}" thumb="${item && item.thumb || ''}"></img-7>
+        class="photo-item ${top}" style="${style}">
+        <img-7 style="width: ${width}px" src="${item && item.normal || ''}" thumb="${item && item.thumb || ''}"></img-7>
       </div>
     `;
-  }
-
-  updated () {
-    this.shadowRoot.querySelectorAll('.photo-item').forEach(item => {
-      if (item.scrollHeight > item.clientHeight) {
-        item.classList.add('top');
-      } else {
-        item.classList.remove('top');
-      }
-    });
   }
 
   render () {
