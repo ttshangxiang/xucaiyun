@@ -7,7 +7,7 @@ export class Home7 extends LitElement {
     return html `
       ${this.myStyles}
       <div>
-        稍候
+        建设中
       </div>
     `;
   }

@@ -36,6 +36,10 @@ export class Pager7 extends LitElement {
   }
 
   render () {
+    const pagenum = Math.ceil(this.total / this.pagesize);
+    if (pagenum <= 1) {
+      return html``;
+    }
     return html `
       <style>${styles}</style>
       <div class="pager" style="${this.total ? '' : 'display: none;'}">
@@ -43,7 +47,7 @@ export class Pager7 extends LitElement {
           <li class="page-btn" @click=${() => this.change('prev')}>
             <a href="javascript:;"><</a>
           </li>
-          ${'a'.repeat(Math.ceil(this.total / this.pagesize)).split('').map((item, index) => {
+          ${'a'.repeat(pagenum).split('').map((item, index) => {
             return html `
               <li class="page-btn ${this.current === index + 1 ? 'active' : ''}"
                 @click=${() => this.change(index + 1)}>

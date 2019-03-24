@@ -117,20 +117,18 @@ class Router extends LitElement {
   static unique: number;
   // activeClass
   static activeClass: string = 'actived';
-  static before: (path: string) => boolean = () => true;
+  static before: (path: string) => boolean | Promise<boolean> = () => true;
   static after: (route: Route) => any = () => null;
 
   firstUpdated () {
     Router.renderRoute();
   }
-  static push (path: string, title: string = '') {
-    if (!this.before(path)) return;
+  static async push (path: string, title: string = '') {
     if (path === this.path) return;
     window.history.pushState(null, title, path);
     this.renderRoute();
   }
   static replace (path: string, title: string = '') {
-    if (!this.before(path)) return;
     if (path === this.path) return;
     window.history.replaceState(null, title, path);
     this.renderRoute();
@@ -139,6 +137,11 @@ class Router extends LitElement {
     window.history.back();
   }
   static async renderRoute () {
+    // 某些url需要验证
+    if (!await this.before(window.location.pathname)) {
+      this.push('/403');
+      return;
+    };
     // 记录起效果的旧path
     this.oldpath = window.location.pathname;
     // 匹配路径

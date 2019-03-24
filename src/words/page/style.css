@@ -1,0 +1,9 @@
+@import '../../base/base.css';
+
+.page7 {
+  padding: 24px;
+  
+  @media (max-width: 599px) {
+    padding: 24px 12px;
+  }
+}

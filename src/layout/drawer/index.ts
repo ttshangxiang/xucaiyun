@@ -53,12 +53,6 @@ export class Drawer7 extends LitElement {
                   <span>相册</span>
               </link-7>
             </a>
-            <a href="javascript:;">
-              <link-7 class="nav-item" path="/res" role="nav">
-                <i class="material-icons">folder</i>
-                <span>资源</span>
-              </link-7>
-            </a>
           </nav>
         </div>
       </aside>

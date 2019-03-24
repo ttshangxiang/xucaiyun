@@ -6,6 +6,7 @@ import '../components/button';
 import './header';
 import './drawer';
 import '../home';
+import axios from '../base/axios';
 
 const styles = require('./style').toString();
 
@@ -22,8 +23,27 @@ export class Layout7 extends LitElement {
     Router.dynamic = {
       'albums-7': () => import('../albums'),
       'album-7': () => import('../albums'),
-      'res-7': () => import('../res')
+      'res-7': () => import('../res'),
+      'words-7': () => import('../words'),
+      'page-7': () => import('../words/page')
     };
+    Router.before = (path) => {
+      if (path === '/res') {
+        return new Promise(resolve => {
+          const password = prompt('密码');
+          axios({
+            method: 'post',
+            url: '/res/password',
+            data: {password}
+          }).then(res => {
+            resolve(res.data.code === 0);
+          }).catch(e => {
+            resolve(false);
+          });
+        });
+      }
+      return true;
+    }
     Router.after = (route) => {
       this.routeName = route.name;
     }
@@ -39,6 +59,7 @@ export class Layout7 extends LitElement {
           button="back" name="相册"></route-7>
         <route-7 path="/res" tag="res-7" name="资源"></route-7>
         <route-7 path="/words" tag="words-7" name="文章"></route-7>
+        <route-7 path="/words/:wordsId" tag="page-7" name="文章"></route-7>
       </router-7>
     `;
   }
