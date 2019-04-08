@@ -21,11 +21,11 @@ export class Layout7 extends LitElement {
     Router.root = this;
     Router.activeClass = 'active';
     Router.dynamic = {
-      'albums-7': () => import('../albums'),
-      'album-7': () => import('../albums'),
-      'res-7': () => import('../res'),
-      'words-7': () => import('../words'),
-      'page-7': () => import('../words/page')
+      'albums-7': () => import(/* webpackChunkName: "albums" */'../albums'),
+      'album-7': () => import(/* webpackChunkName: "albums" */'../albums'),
+      'res-7': () => import(/* webpackChunkName: "res" */'../res'),
+      'words-7': () => import(/* webpackChunkName: "words" */'../words'),
+      'page-7': () => import(/* webpackChunkName: "page" */'../words/page')
     };
     Router.before = (path) => {
       if (path === '/res') {

@@ -17,7 +17,7 @@ module.exports = merge(common, {
     splitChunks: {
       cacheGroups: {
         vendor: {
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/](lit-element|lit-html|axios)[\\/]/,
           name: 'vendors',
           chunks: 'all'
         }
