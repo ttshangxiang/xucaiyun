@@ -7,12 +7,6 @@ import { Pager7 } from '../components/pager';
 const styles = require('./style').toString();
 
 const storageKey = 'ttsx_reply_info';
-let local = {nickname: '', email: ''};
-try {
-  const json = JSON.parse(localStorage.getItem(storageKey));
-  json && (local = json);
-} catch (error) {
-}
 
 interface comment {
   _id?: string
@@ -27,8 +21,8 @@ interface comment {
 
 @customElement('message-7')
 export class Message7 extends LitElement {
-  @property({type: String}) nickname = local.nickname || '';
-  @property({type: String}) email = local.email || '';
+  @property({type: String}) nickname = '';
+  @property({type: String}) email = '';
   @property({type: String}) message = '';
   @property({type: String}) error = '';
   @property({type: Array}) list: comment[] = [];
@@ -43,6 +37,14 @@ export class Message7 extends LitElement {
   page = 1;
 
   async firstUpdated () {
+    try {
+      const json = JSON.parse(localStorage.getItem(storageKey));
+      if (json) {
+        this.nickname = json.nickname;
+        this.email = json.email;
+      }
+    } catch (error) {
+    }
     await this.reloadMsg();
   }
 
