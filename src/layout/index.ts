@@ -49,6 +49,9 @@ export class Layout7 extends LitElement {
     Router.after = (route) => {
       this.routeName = route.name;
     }
+
+    // 提前加载
+    import(/* webpackChunkName: "page" */'../words/page');
   }
 
   get router () {
