@@ -39,6 +39,20 @@ aside {
   padding: 16px 16px 4px;
 }
 
+.drawer-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 62px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  text-indent: 2em;
+  @media (max-width: 599px) {
+    display: none;
+  }
+}
+
 .drawer-title {
   font-size: 20px;
   color: #333;

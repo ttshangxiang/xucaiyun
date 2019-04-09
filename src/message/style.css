@@ -1,0 +1,159 @@
+@import '../base/base.css';
+
+:host {
+  position: relative;
+}
+
+.message {
+  margin: 0 auto;
+  max-width: 680px;
+  padding-bottom: 20px;
+}
+
+.card {
+  box-shadow: rgba(60, 64, 67, .3) 0 1px 2px 0, rgba(60, 64, 67, .15) 0 1px 3px 1px;
+  background-color: white;
+  border-radius: 4px;
+  margin: 0 4px;
+}
+
+.post {
+  margin-top: 12px;
+  .input-item {
+    display: block;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    display: flex;
+    flex-flow: row nowrap;
+    input {
+      border: none;
+      outline: none;
+      padding: 6px 10px;
+      line-height: 26px;
+      font-size: 14px;
+      display: block;
+      box-sizing: border-box;
+      flex-grow: 1;
+    }
+    span {
+      padding: 0 10px;
+      line-height: 38px;
+      text-align: right;
+      color: #333;
+      font-size: 14px;
+    }
+  }
+  textarea {
+    border: none;
+    outline: none;
+    padding: 6px 10px;
+    line-height: 20px;
+    font-size: 14px;
+    flex-grow: 1;
+  }
+  .input-right {
+    width: 100px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .input-btn {
+    margin-top: 10px;
+    background-color: #6200ee;
+    background-color: var(--mdc-theme-primary, #6200ee);
+    color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 8px 16px;
+    line-height: 16px;
+    font-size: 14px;
+  }
+  .cancel-btn{
+    line-height: 26px;
+    height: 26px;
+    font-size: 12px;
+    color: #333;
+    margin-top: 3px;
+    text-decoration: underline;
+  }
+  .input-error {
+    font-size: 13px;
+    color: red;
+    padding: 0 10px;
+  }
+}
+
+.msg-list {
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
+
+.msg-item {
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  flex-flow: row nowrap;
+  font-size: 14px;
+
+  .msg-index {
+    padding: 0 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    font-weight: normal;
+  }
+
+  .msg-main {
+    flex-grow: 1;
+    padding: 10px 10px 0;
+  }
+
+  .msg-user {
+    font-weight: bold;
+    color: #333;
+  }
+  .msg-content {
+    color: #666;
+  }
+  .msg-more {
+    line-height: 28px;
+    padding-bottom: 6px;
+  }
+  .msg-date {
+    color: #999;
+    font-size: 12px;
+    margin-right: 12px;
+  }
+  .msg-reply {
+    color: #999;
+    font-size: 12px;
+  }
+}
+
+.reply {
+  font-size: 14px;
+  margin-left: 12px;
+
+  .reply-user {
+    color: #333;
+  }
+  .reply-content {
+    color: #666;
+  }
+  .reply-more {
+    line-height: 28px;
+    padding-bottom: 6px;
+  }
+  .reply-date {
+    color: #999;
+    font-size: 12px;
+    margin-right: 12px;
+  }
+  .reply-reply {
+    color: #999;
+    font-size: 12px;
+  }
+  .reply-to {
+    color: #444;
+    font-size: 12px;
+  }
+}

@@ -6,7 +6,7 @@ export class Home7 extends LitElement {
   render () {
     return html `
       ${this.myStyles}
-      <div>
+      <div class="home">
         建设中
       </div>
     `;

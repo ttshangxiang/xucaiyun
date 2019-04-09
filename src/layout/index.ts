@@ -25,7 +25,9 @@ export class Layout7 extends LitElement {
       'album-7': () => import(/* webpackChunkName: "albums" */'../albums'),
       'res-7': () => import(/* webpackChunkName: "res" */'../res'),
       'words-7': () => import(/* webpackChunkName: "words" */'../words'),
-      'page-7': () => import(/* webpackChunkName: "page" */'../words/page')
+      'page-7': () => import(/* webpackChunkName: "page" */'../words/page'),
+      'message-7': () => import(/* webpackChunkName: "message" */'../message'),
+      'me-7': () => import(/* webpackChunkName: "me" */'../me')
     };
     Router.before = (path) => {
       if (path === '/res') {
@@ -60,6 +62,8 @@ export class Layout7 extends LitElement {
         <route-7 path="/res" tag="res-7" name="资源"></route-7>
         <route-7 path="/words" tag="words-7" name="文章"></route-7>
         <route-7 path="/words/:wordsId" tag="page-7" name="文章"></route-7>
+        <route-7 path="/message" tag="message-7" name="留言"></route-7>
+        <route-7 path="/me" tag="me-7" name="我"></route-7>
       </router-7>
     `;
   }
@@ -69,7 +73,7 @@ export class Layout7 extends LitElement {
     return html `
       <style>${styles}</style>
       <header-7 class="header" @drawer=${() => this.drawerOpen = !this.drawerOpen} name="${this.routeName}"></header-7>
-      <drawer-7 ?drawer="${this.drawerOpen}" @drawer=${() => this.drawerOpen = !this.drawerOpen}></drawer-7>
+      <drawer-7 ?drawer="${this.drawerOpen}" @drawer=${() => this.drawerOpen = !this.drawerOpen} name="${this.routeName}"></drawer-7>
       <div id="content" class="content ${this.drawerOpen ? 'drawer' : ''}">
         ${route.error ? html `错误：${route.error.message}` : route.content}
       </div>

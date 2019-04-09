@@ -191,7 +191,9 @@ class Router extends LitElement {
       if (!o.path || o.getAttribute('role') !== 'nav') return;
       const n = o.path.length;
       const pathname = window.location.pathname;
-      if (pathname === o.path || (o.path !== '/' && pathname.slice(0, n) === o.path)) {
+      const a1 = o.path.split('/');
+      const a2 = pathname.split('/');
+      if (pathname === o.path || (o.path !== '/' && a1[1] === a2[1])) {
         o.classList.add(Router.activeClass);
         o.focus();
       } else {
