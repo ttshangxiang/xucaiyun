@@ -62,7 +62,8 @@ export class Shengya7 extends LitElement {
       offset: (page - 1) * this.pagesize,
       count: this.pagesize,
       'order.order': -1,
-      type: this.selectType
+      type: this.selectType,
+      status: 1
     };
     if (this.selectStage) {
       params.stage = this.selectStage;
