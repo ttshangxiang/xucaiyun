@@ -1,0 +1,115 @@
+@import '../../base/base.css';
+
+.tool-top {
+  padding: 8px;
+}
+
+.tool-btn {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  color: #333;
+  padding: 0 8px;
+  & > * {
+    vertical-align: middle;
+  }
+}
+
+.sy-list {
+  padding: 8px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.sy-item {
+  max-width: 100%;
+  width: 50%;
+  padding: 6px;
+  box-sizing: border-box;
+  @media (max-width: 1023px) {
+    width: 100%;
+  }
+  @media (min-width: 1367px) {
+    width: 33.3%;
+  }
+}
+
+.item-spacing {
+  display: flex;
+  flex-flow: row nowrap;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+  border-radius: 4px;
+
+  .text-area {
+    flex-grow: 1;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #666;
+    min-width: 0;
+    height: 86px;
+    .name {
+      color: #333;
+    }
+    .stage {
+      color: #666;
+      margin-left: 6px;
+      font-size: 12px;
+    }
+    .type {
+      font-size: 12px;
+      color: #999;
+      padding-bottom: 6px;
+    }
+    .progress {
+      color: #666;
+      font-size: 12px;
+    }
+    .description, .progress {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  .avatar-area {
+    width: 120px;
+    flex-shrink: 0;
+    min-height: 90px;
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+    img {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
+}
+
+.filter {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 6px 0;
+}
+
+.filter-item {
+  input, textarea, select {
+    width: 120px;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    line-height: 16px;
+
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+    background-color: #fff;
+    color: #32373c;
+    outline: 0;
+  }
+}
+
+.filter {
+  padding-left: 16px;
+}

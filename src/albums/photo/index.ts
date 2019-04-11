@@ -5,6 +5,7 @@ import { Dialog7 } from '../../components/dialog';
 import * as Hammer from 'hammerjs';
 import { file } from '../../res/interface';
 import '../../components/img';
+// import '../../components/comment';
 
 const styles = require('./style').toString();
 
@@ -330,6 +331,7 @@ export class Photo7 extends LitElement {
                 </li>
               ` : ''}
             </ul>
+            <!-- <comment-7 affiliated="message"></comment-7> -->
           </div>
         </div>
         <div slot="footer"></div>

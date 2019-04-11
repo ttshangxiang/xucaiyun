@@ -1,0 +1,32 @@
+@import '../../base/base.css';
+
+.sy-page {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #666;
+  min-width: 0;
+  .name {
+    color: #333;
+  }
+  .stage {
+    color: #666;
+    margin-left: 6px;
+    font-size: 12px;
+  }
+  .type {
+    font-size: 12px;
+    color: #999;
+    padding-bottom: 6px;
+  }
+  .progress {
+    color: #666;
+    font-size: 12px;
+  }
+  .avatar {
+    text-align: center;
+    padding: 12px 0;
+    img {
+      max-width: 100%;
+    }
+  }
+}

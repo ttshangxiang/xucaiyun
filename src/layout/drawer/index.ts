@@ -39,8 +39,8 @@ export class Drawer7 extends LitElement {
           <nav class="nav-list">
             <a href="javascript:;">
               <link-7 class="nav-item" path="/" role="nav">
-                <i class="material-icons">home</i>
-                <span>主页</span>
+                <i class="material-icons">public</i>
+                <span>生涯</span>
               </link-7>
             </a>
             <a href="javascript:;">
@@ -51,8 +51,8 @@ export class Drawer7 extends LitElement {
             </a>
             <a href="javascript:;">
               <link-7 class="nav-item" path="/albums" role="nav">
-                  <i class="material-icons">photo</i>
-                  <span>相册</span>
+                <i class="material-icons">photo</i>
+                <span>相册</span>
               </link-7>
             </a>
             <a href="javascript:;">

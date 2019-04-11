@@ -2,6 +2,7 @@
 import { LitElement, html, customElement, property } from 'lit-element';
 import axios from '../../base/axios';
 import '../../components/markdown';
+import '../../components/comment';
 import Router from '../../base/router';
 
 const styles = require('./style').toString();
@@ -46,9 +47,12 @@ export class Page7 extends LitElement {
   render () {
     return html `
       <style>${styles}</style>
+      ${this.content ? html `
       <div class="page7">
         <markdown-7 content=${this.content}></markdown-7>
       </div>
+      <comment-7 affiliated="words-${Router.params.wordsId}"></comment-7>
+      `: ''}
     `
   }
 }

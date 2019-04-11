@@ -104,7 +104,7 @@ export class GroupEdit7 extends LitElement {
     const { type, _id, name, description, status } = this.showData;
     return html `
       <style>${styles}</style>
-      <dialog-7 id="dialog" header="${_id ? '修改分组信息-' + name : '新增分组'}" @done=${this.done} @close=${this.afterClose}>
+      <dialog-7 id="dialog" text="${_id ? '修改分组信息-' + name : '新增分组'}" @done=${this.done} @close=${this.afterClose}>
         <div class="group-details">
           <label class="group-item">
             <span class="name">名称</span>

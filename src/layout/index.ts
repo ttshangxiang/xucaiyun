@@ -27,10 +27,14 @@ export class Layout7 extends LitElement {
       'words-7': () => import(/* webpackChunkName: "words" */'../words'),
       'page-7': () => import(/* webpackChunkName: "page" */'../words/page'),
       'message-7': () => import(/* webpackChunkName: "message" */'../message'),
-      'me-7': () => import(/* webpackChunkName: "me" */'../me')
+      'me-7': () => import(/* webpackChunkName: "me" */'../me'),
+      'shengya-7': () => import(/* webpackChunkName: "shengya" */'../shengya'),
+      'shengyap-7': () => import(/* webpackChunkName: "shengyap" */'../shengya/page'),
+      'shengyaa-7': () => import(/* webpackChunkName: "shengyaa" */'../shengya/manage')
     };
     Router.before = (path) => {
-      if (path === '/res') {
+      // 加锁
+      if (path === '/res' || path === '/shengyaa') {
         return new Promise(resolve => {
           const password = prompt('密码');
           axios({
@@ -51,13 +55,15 @@ export class Layout7 extends LitElement {
     }
 
     // 提前加载
-    import(/* webpackChunkName: "page" */'../words/page');
+    setTimeout(() => {
+      import(/* webpackChunkName: "page" */'../words/page');
+    }, 500);
   }
 
   get router () {
     return html `
       <router-7 id="router-7">
-        <route-7 path="/" tag="home-7" name="T_T"></route-7>
+        <route-7 path="/" tag="shengya-7" name="T_T"></route-7>
         <route-7 path="/albums" tag="albums-7" name="相册"></route-7>
         <route-7 path="/albums/:albumId"
           tag="album-7"
@@ -67,6 +73,9 @@ export class Layout7 extends LitElement {
         <route-7 path="/words/:wordsId" tag="page-7" name="文章"></route-7>
         <route-7 path="/message" tag="message-7" name="留言"></route-7>
         <route-7 path="/me" tag="me-7" name="我"></route-7>
+        <route-7 path="/shengya" tag="shengya-7" name="生涯"></route-7>
+        <route-7 path="/shengya/:shengyaId" tag="shengyap-7" name="生涯"></route-7>
+        <route-7 path="/shengyaa" tag="shengyaa-7" name="生涯a"></route-7>
       </router-7>
     `;
   }

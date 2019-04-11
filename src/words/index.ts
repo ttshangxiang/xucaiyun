@@ -82,7 +82,9 @@ export class Words extends LitElement {
         <ul class="word-list">
           ${this.list.map((item: file, index: number) => html `
             <li class="word-item">
-              <a href="/words/${item._id}">${item.filename}</a>
+              <a href="javascript:;">
+                <link-7 path="/words/${item._id}">${item.filename}</link-7>
+              </a>
             </li>
           `)}
         </ul>
