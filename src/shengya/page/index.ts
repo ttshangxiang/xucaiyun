@@ -47,7 +47,7 @@ export class Shengyap7 extends LitElement {
           <div class="type">${(<any>typeMap)[item.type] + (item.subType ? ' - ' + item.subType : '')}</div>
           ${item.progress ? html `<div class="progress">进度：${item.progress}</div>` : ''}
           ${item.avatar ? html `<div class="avatar"><img src=${item.avatar}></div>` : ''}
-          <div class="description">${item.description || '...'}</div>
+          <div class="description">${(item.description + '').split('\n').map(ii => html `<div class="p">${ii}</div>`)}</div>
           ${item.link ? html `<a href=${item.link} class="link">链接：${item.link}</a>` : ''}
         </div>
         <comment-7 affiliated="shengya-${Router.params.shengyaId}" maxw="960"></comment-7>
