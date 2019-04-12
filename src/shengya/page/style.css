@@ -32,7 +32,7 @@
       max-width: 100%;
     }
   }
-  .description p {
+  .description .p {
     min-height: 21px;
   }
 }
