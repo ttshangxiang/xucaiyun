@@ -2,6 +2,9 @@
 
 .words7 {
   padding: 24px;
+  max-width: 980px;
+  margin: 0 auto;
+  box-sizing: border-box;
   
   @media (max-width: 599px) {
     padding: 24px 12px;

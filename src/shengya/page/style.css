@@ -5,6 +5,9 @@
   font-size: 14px;
   color: #666;
   min-width: 0;
+  max-width: 980px;
+  margin: 0 auto;
+  box-sizing: border-box;
   .name {
     color: #333;
   }

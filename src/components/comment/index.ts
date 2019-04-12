@@ -31,6 +31,8 @@ export class Comment7 extends LitElement {
   @property({type: Number}) total = 0;
   @property({type: Object}) replyParam: any = {};
 
+  @property({type: String}) maxw = '';
+
   @query('#pager') $pager: Pager7;
   @query('#message') $message: HTMLTextAreaElement;
 
@@ -177,7 +179,7 @@ export class Comment7 extends LitElement {
   render () {
     return html `
       <style>${styles}</style>
-      <div class="message">
+      <div class="message" style=${this.maxw ? 'max-width: ' + this.maxw + 'px;' : ''}>
         <div class="post card">
           <label class="input-item">
             <span>昵称</span>

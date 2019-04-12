@@ -51,7 +51,7 @@ export class Page7 extends LitElement {
       <div class="page7">
         <markdown-7 content=${this.content}></markdown-7>
       </div>
-      <comment-7 affiliated="words-${Router.params.wordsId}"></comment-7>
+      <comment-7 affiliated="words-${Router.params.wordsId}" maxw="940"></comment-7>
       `: ''}
     `
   }

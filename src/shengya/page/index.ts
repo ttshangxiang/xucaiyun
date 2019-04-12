@@ -50,7 +50,7 @@ export class Shengyap7 extends LitElement {
           <div class="description">${item.description || '...'}</div>
           ${item.link ? html `<a href=${item.link} class="link">链接：${item.link}</a>` : ''}
         </div>
-        <comment-7 affiliated="shengya-${Router.params.shengyaId}"></comment-7>
+        <comment-7 affiliated="shengya-${Router.params.shengyaId}" maxw="960"></comment-7>
       ` : ''}
     `
   }
