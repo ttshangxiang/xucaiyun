@@ -69,7 +69,7 @@ export class Shengya7 extends LitElement {
       params.stage = this.selectStage;
     }
     if (this.selectSubType) {
-      params.subtype = this.selectSubType;
+      params.subType = this.selectSubType;
     }
     return await axios({
       method: 'get',
