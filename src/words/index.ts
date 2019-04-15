@@ -11,9 +11,23 @@ export class Words extends LitElement {
   @property ({type: Array}) list: file[] = [];
   @property ({type: Number}) total = 0;
   @property ({type: String}) wordsId = '';
+  @property ({type: Object}) selectOne: file = null;
 
   // 常量
   pagesize = 7;
+
+  constructor () {
+    super();
+    // 用于监听/取消popstate
+    this.closeDetail = this.closeDetail.bind(this);
+    // 监听popstate
+    window.addEventListener('popstate', this.closeDetail);
+  }
+
+  disconnectedCallback () {
+    // 取消监听popstate
+    window.removeEventListener('popstate', this.closeDetail);
+  }
 
   async firstUpdated () {
     const list = await this.loadWords();
@@ -71,29 +85,38 @@ export class Words extends LitElement {
     });
   }
 
-  enterPhoto (item: file, index: number) {
+  // 不使用router，自己控制页面展示，为了返回时还是原来的状态
+  enterWord (item: file) {
+    window.history.pushState(null, '', '/words/' + item._id);
+    this.selectOne = item;
+  }
 
+  // 自己控制返回键
+  closeDetail (e: any) {
+    this.selectOne = null;
   }
 
   render () {
     return html `
       <style>${styles}</style>
-      <div class="words7">
-        <ul class="word-list">
-          ${this.list.map((item: file, index: number) => html `
-            <li class="word-item">
-              <a href="javascript:;">
-                <link-7 path="/words/${item._id}">${item.filename}</link-7>
-              </a>
-            </li>
-          `)}
-        </ul>
-        <pager-7 id="pager" current="1"
-          total="${this.total}"
-          pagesize="${this.pagesize}"
-          @change=${this.changePage}
-          style="padding: 12px 0;"></pager-7>
-      </div>
+      ${this.selectOne ? html `
+        <page-7 .current=${this.selectOne}></page-7>
+      ` : html `
+        <div class="words7">
+          <ul class="word-list">
+            ${this.list.map((item: file, index: number) => html `
+              <li class="word-item">
+                <a href="javascript:;" @click=${() => this.enterWord(item)}>${item.filename}</a>
+              </li>
+            `)}
+          </ul>
+          <pager-7 id="pager" current="1"
+            total="${this.total}"
+            pagesize="${this.pagesize}"
+            @change=${this.changePage}
+            style="padding: 12px 0;"></pager-7>
+        </div>
+      `}
     `
   }
 }

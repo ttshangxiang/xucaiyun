@@ -8,6 +8,7 @@ import '../components/pager';
 import { Pager7 } from '../components/pager';
 import '../components/avatar';
 import Router from '../base/router';
+import './page';
 
 const stageFilter = [
   {text: '全部', value: ''},
@@ -41,6 +42,8 @@ export class Shengya7 extends LitElement {
   @property({type: String}) selectStage = '';
   @property({type: String}) selectSubType = '';
 
+  @property({type: Object}) selectOne: shengya = null;
+
   @property({type: Object}) list: shengya[] = [];
   @property({type: Number}) total = 0;
   @query('#pager') $pager: Pager7;
@@ -51,6 +54,19 @@ export class Shengya7 extends LitElement {
   // 常量
   pagesize = 20;
   page = 1;
+
+  constructor () {
+    super();
+    // 用于监听/取消popstate
+    this.closeDetail = this.closeDetail.bind(this);
+    // 监听popstate
+    window.addEventListener('popstate', this.closeDetail);
+  }
+
+  disconnectedCallback () {
+    // 取消监听popstate
+    window.removeEventListener('popstate', this.closeDetail);
+  }
 
   async firstUpdated () {
     await this.reloadData();
@@ -114,14 +130,24 @@ export class Shengya7 extends LitElement {
     this.reloadData();
   }
 
+  // 不使用router，自己控制页面展示，为了返回时还是原来的状态
   enterShengya (item: shengya) {
-    Router.push('/shengya/' + item._id);
+    window.history.pushState(null, '', '/shengya/' + item._id);
+    this.selectOne = item;
+  }
+
+  // 自己控制返回键
+  closeDetail (e: any) {
+    this.selectOne = null;
   }
 
   render () {
     const subTypeList = (<any>subTypeFilter)[this.selectType] || [];
     return html `
       ${this.myStyles}
+      ${this.selectOne ? html `
+      <shengyap-7 .current=${this.selectOne}></shengyap-7>
+    ` : html `
       <div class="home">
         <div class="classes">
           ${['life', 'game', 'video', 'read'].map(item => html `
@@ -171,8 +197,9 @@ export class Shengya7 extends LitElement {
           @change=${this.changePage}
           style="padding: 12px 0;"></pager-7>
       </div>
-    `;
+    `}`;
   }
+
   get myStyles () {
     return html`<style>${style}</style>`;
   }

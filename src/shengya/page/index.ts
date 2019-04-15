@@ -9,12 +9,18 @@ import { shengya, typeMap, stageMap } from '../edit';
 @customElement('shengyap-7')
 export class Shengyap7 extends LitElement {
   @property({type: Object}) current: shengya;
+  @property({type: String}) shengyaId = '';
 
   async firstUpdated () {
-    const result = await this.loadShengya(Router.params.shengyaId);
-    const {data = [], total = 0} = result;
-    if (total > 0 && data[0]) {
-      this.current = data[0];
+    if (this.current) {
+      this.shengyaId = this.current._id;
+    } else {
+      const result = await this.loadShengya(Router.params.shengyaId);
+      this.shengyaId = Router.params.shengyaId;
+      const {data = [], total = 0} = result;
+      if (total > 0 && data[0]) {
+        this.current = data[0];
+      }
     }
   }
 
@@ -50,7 +56,7 @@ export class Shengyap7 extends LitElement {
           <div class="description">${(item.description + '').split('\n').map(ii => html `<div class="p">${ii}</div>`)}</div>
           ${item.link ? html `<a href=${item.link} class="link">链接：${item.link}</a>` : ''}
         </div>
-        <comment-7 affiliated="shengya-${Router.params.shengyaId}" maxw="960"></comment-7>
+        <comment-7 affiliated="shengya-${this.shengyaId}" maxw="960"></comment-7>
       ` : ''}
     `
   }
