@@ -21,7 +21,6 @@ interface comment {
 
 @customElement('comment-7')
 export class Comment7 extends LitElement {
-  @property({type: String}) affiliated = '';
 
   @property({type: String}) nickname = '';
   @property({type: String}) email = '';
@@ -36,15 +35,34 @@ export class Comment7 extends LitElement {
   @query('#pager') $pager: Pager7;
   @query('#message') $message: HTMLTextAreaElement;
 
+  @property({type: Boolean}) show = false;
+
   // 常量
   pagesize = 7;
   page = 1;
 
+  _affiliated = '';
+  static get properties() {
+    return {
+      affiliated: { type: String }
+    };
+  }
+  set affiliated (value) {
+    if (this._affiliated !== value) {
+      this._affiliated = value;
+      this.firstUpdated();
+    }
+  }
+
+  get affiliated () {
+    return this._affiliated;
+  }
+
   async firstUpdated () {
-    if (!this.affiliated) {
-      alert('评论未设置从属，无法使用');
+    if (!this.affiliated || this.affiliated[this.affiliated.length - 1] === '-') {
       return;
     }
+
     try {
       const json = JSON.parse(localStorage.getItem(storageKey));
       if (json) {
@@ -54,6 +72,7 @@ export class Comment7 extends LitElement {
     } catch (error) {
     }
     await this.reloadMsg();
+    this.show = true;
   }
 
   async loadMsg (page = 1) {
@@ -179,6 +198,7 @@ export class Comment7 extends LitElement {
   render () {
     return html `
       <style>${styles}</style>
+      ${this.show ? html `
       <div class="message" style=${this.maxw ? 'max-width: ' + this.maxw + 'px;' : ''}>
         <div class="post card">
           <label class="input-item">
@@ -236,6 +256,7 @@ export class Comment7 extends LitElement {
           @change=${this.changePage}
           style="padding: 12px 0;"></pager-7>
       </div>
+      ` : ''}
     `
   }
 }
