@@ -91,7 +91,7 @@ export class ShengyaEdit7 extends LitElement {
       param[item] = this[item];
     });
     if (!param.order) {
-      param.order = new Date().getTime();
+      param.order = new Date().getTime() + '';
     }
     if (param.name === '') {
       return false;
@@ -156,7 +156,7 @@ export class ShengyaEdit7 extends LitElement {
 
   change (e: any, key: inKeys) {
     let value = e.target.value;
-    if (key === 'status' || key === 'order') {
+    if (key === 'status') {
       value = +value;
     }
     this[key] = value;
