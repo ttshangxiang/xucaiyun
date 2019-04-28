@@ -26,7 +26,7 @@ const subTypeFilter = {
   ],
   video: [
     {text: '全部', value: ''},
-    {text: '动画', value: '动画'},
+    {text: '动漫', value: '动漫'},
     {text: '国产', value: '国产'},
     {text: '日剧', value: '日剧'},
     {text: '韩剧', value: '韩剧'},
