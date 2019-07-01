@@ -3,8 +3,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const src = path.resolve(__dirname, './src');
-const dist = path.resolve(__dirname, './dist');
+const src = path.resolve(__dirname, '../src');
+const dist = path.resolve(__dirname, '../dist');
 
 const babelLoader = {
   loader: 'babel-loader',
@@ -34,12 +34,17 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: [babelLoader]
+        use: [babelLoader],
+        include: [
+          src,
+          path.resolve(__dirname, '../node_modules/lit-html'),
+          path.resolve(__dirname, '../node_modules/lit-element')
+        ]
       },
       {
         test: /\.ts$/,
-        exclude: /node_modules/,
-        use: [babelLoader]
+        use: [babelLoader],
+        exclude: /node_modules/
       },
       {
         enforce: 'pre',
