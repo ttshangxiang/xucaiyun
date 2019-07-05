@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
     "experimentalDecorators": true
   }
 }

@@ -11,7 +11,8 @@ module.exports = function (api) {
   ];
   const plugins = [
     '@babel/plugin-transform-typescript',
-    ['@babel/plugin-proposal-decorators', { 'legacy': true }],
+    '@babel/plugin-syntax-dynamic-import',
+    ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
     ['@babel/plugin-proposal-class-properties', { 'loose' : true }],
     ['@babel/plugin-transform-runtime', { corejs: 2, useESModules: true }]
   ];

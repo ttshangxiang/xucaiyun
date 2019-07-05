@@ -1,4 +1,6 @@
 
+// declare var window: Window & { isWeixin: boolean }
+
 // declare namespace MyLibrary {
 //   interface Window {
 //     isWeixin: Boolean
@@ -22,4 +24,3 @@
 // export interface LitElement {
 //   $page: PageJS.Static;
 // }
-
