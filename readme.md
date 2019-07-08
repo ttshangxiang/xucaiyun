@@ -10,7 +10,7 @@
 ```
 
 2. 在js中激活css高亮。  
-安装插件vscode-styled-components，点击右侧输入搜索，或者CTRL+P输入：
+点击右侧扩展输入搜索"vscode-styled-components"，或者CTRL+P输入：
 ```
   ext install vscode-styled-components
 ```

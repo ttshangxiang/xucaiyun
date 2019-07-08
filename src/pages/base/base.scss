@@ -1,0 +1,57 @@
+
+:host {
+  display: block;
+}
+
+body, html, ul, li, p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+input, textarea {
+  font-family: "Helvetica Neue","Arial","PingFang SC","Hiragino Sans GB","STHeiti",
+    "Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.hide {
+  display: none;
+}
+
+// 主题
+// $mdc-theme-primary: #344955;
+// $mdc-theme-secondary: #f9aa33;
+// $mdc-theme-on-primary: #ffffff;
+// $mdc-theme-on-secondary: #000000;
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}

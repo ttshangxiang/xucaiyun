@@ -24,8 +24,7 @@ module.exports = {
     publicPath: '/'
   },
   resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.js', '.scss', '.css'],
+    extensions: ['.js', '.ts', '.scss', '.css'],
     alias: {
       src: src
     }
@@ -38,7 +37,8 @@ module.exports = {
         include: [
           src,
           path.resolve(__dirname, '../node_modules/lit-html'),
-          path.resolve(__dirname, '../node_modules/lit-element')
+          path.resolve(__dirname, '../node_modules/lit-element'),
+          path.resolve(__dirname, '../node_modules/@material')
         ]
       },
       {
@@ -49,12 +49,27 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.js$/,
-        loader: 'source-map-loader'
+        loader: 'source-map-loader',
+        exclude: /node_modules/
       },
       // css
       {
         test: /\.css$/,
-        use: ['to-string-loader', 'css-loader', 'postcss-loader']
+        use: ['to-string-loader', 'css-loader']
+      },
+      // sass
+      {
+        test: /\.scss$/,
+        use: [
+          'to-string-loader',
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              includePaths: [path.resolve(__dirname, '../node_modules/')]
+            }
+          }
+        ]
       },
       // images
       {
@@ -81,6 +96,8 @@ module.exports = {
       template: './src/index.html'
     }),
     new CopyWebpackPlugin([
+      {from: 'src/assets/fonts', to: path.resolve(dist, 'assets', 'fonts'), toType: 'dir'},
+      {from: 'src/assets/styles', to: path.resolve(dist, 'assets', 'styles'), toType: 'dir'},
     ])
   ]
 };

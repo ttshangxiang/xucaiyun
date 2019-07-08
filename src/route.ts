@@ -25,7 +25,7 @@ export class Route extends LitElement {
   firstUpdated() {
     // 路由表
     const routes = [{
-      path: '/app', component: require('./pages/app'), wrapper: layout
+      path: '/', component: require('./pages/app'), wrapper: layout
     }, {
       path: '/page2', component: import('./pages/page2')
     }, {
