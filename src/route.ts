@@ -75,7 +75,7 @@ export class Route extends LitElement {
             if (!this.wrappers[wrapper.name]) {
               this.wrappers[wrapper.name] = new wrapper()
             }
-            if (!this.shadowRoot.querySelector(wrapper.name)) {
+            if (!this.shadowRoot.querySelector(this.wrappers[wrapper.name].tagName)) {
               this.setContent(this.wrappers[wrapper.name])
             }
             this.wrappers[wrapper.name].setContent(element)

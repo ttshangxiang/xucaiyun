@@ -14,3 +14,6 @@
 ```
   ext install vscode-styled-components
 ```
+
+### node-sass安装真麻烦，老是失败
+npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/

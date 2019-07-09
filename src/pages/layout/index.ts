@@ -11,7 +11,6 @@ interface link {
   path: string;
   name: string;
   icon: string;
-  active: boolean;
 }
 
 @customElement('layout-7')
@@ -29,6 +28,7 @@ export default class Layout extends LitElement {
       this.$content.removeChild(value)
     })
     this.$content.appendChild(element)
+    this.matchLinks()
   }
 
   static get styles() {
@@ -48,10 +48,10 @@ export default class Layout extends LitElement {
     })
 
     const drawer = MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'))
+    drawer.list.wrapFocus = false
     drawer.open = this.isShow
     this.drawer = drawer
 
-    this.matchLinks()
   }
 
   toggleDrawer () {
@@ -68,13 +68,13 @@ export default class Layout extends LitElement {
   @property()
   links: link[] = [
     {
-      path: '/', name: 'T_T', icon: 'inbox', active: false
+      path: '/', name: 'T_T', icon: 'inbox'
     }, {
-      path: '/life', name: '生涯', icon: 'inbox', active: false
+      path: '/life', name: '生涯', icon: 'inbox'
     }, {
-      path: '/words', name: '发言', icon: 'inbox', active: false
+      path: '/words', name: '发言', icon: 'inbox'
     }, {
-      path: '/abouts', name: '关于', icon: 'inbox', active: false
+      path: '/abouts', name: '关于', icon: 'inbox'
     }
   ]
 
@@ -95,12 +95,15 @@ export default class Layout extends LitElement {
       temps[index] = result ? result[0].length : 0
     })
     const iii = temps.indexOf(Math.max(...temps))
-    if (iii > -1) {
-      this.links = this.links.map((item, index) => {
-        item.active = index === iii
-        return item
-      })
-    }
+    const $list = this.shadowRoot.querySelectorAll('.mdc-list-item')
+    const activeClass = 'mdc-list-item--activated'
+    iii > -1 && this.links.forEach((item, index) => {
+      const classList = $list[index].classList;
+      classList.contains(activeClass) && classList.remove(activeClass)
+      if (index === iii) {
+        classList.add(activeClass)
+      }
+    })
   }
 
   render () {
@@ -113,7 +116,7 @@ export default class Layout extends LitElement {
         <div class="mdc-drawer__content">
           <div class="mdc-list">
             ${this.links.map(item => html `
-              <a class="mdc-list-item ${item.active ? 'mdc-list-item--activated' : ''}" href="javascript:;" @click=${() => page(item.path)}>
+              <a class="mdc-list-item" href="javascript:;" @click=${() => page(item.path)}>
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">${item.icon}</i>
                 <span class="mdc-list-item__text">${item.name}</span>
               </a>
