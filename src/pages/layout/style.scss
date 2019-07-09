@@ -1,5 +1,5 @@
 
-@import '../base/base.scss';
+@import '../../base/base.scss';
 @import "@material/icon-button/mdc-icon-button";
 @import "@material/top-app-bar/mdc-top-app-bar";
 
@@ -18,4 +18,8 @@
 .mdc-drawer.mdc-drawer--open:not(.mdc-drawer--closing)+.mdc-drawer-app-content {
   margin-left: 256px;
   margin-right: 0;
+}
+
+.mdc-drawer .mdc-list-item--activated, .mdc-drawer .mdc-list-item--activated .mdc-list-item__graphic {
+  color: var(--mdc-theme-secondary, #6200ee);
 }

@@ -7,8 +7,8 @@ body {
   font-family: "Helvetica Neue","Arial","PingFang SC","Hiragino Sans GB","STHeiti",
     "Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
 
-  --mdc-theme-primary: #344955;
-  --mdc-theme-secondary: #f9aa33;
+  --mdc-theme-primary: #455A64;
+  --mdc-theme-secondary: #009688;
   --mdc-theme-error: #f5222d;
   --mdc-theme-surface: #ffffff;
   --mdc-theme-on-primary: #ffffff;

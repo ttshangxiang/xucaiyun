@@ -1,8 +1,18 @@
 import { LitElement, customElement, html, css, unsafeCSS, query, property } from 'lit-element'
+import { MDCRipple } from '@material/ripple'
+import page from 'page'
+import * as pathToRegexp from 'path-to-regexp'
 
 import { MDCTopAppBar } from '@material/top-app-bar'
 import { MDCDrawer } from '@material/drawer'
 const styles = require('./style')
+
+interface link {
+  path: string;
+  name: string;
+  icon: string;
+  active: boolean;
+}
 
 @customElement('layout-7')
 export default class Layout extends LitElement {
@@ -11,6 +21,7 @@ export default class Layout extends LitElement {
 
   @property({type: Boolean}) isModal = window.innerWidth <= 720;
   @property({type: Boolean, reflect: true}) isShow = !this.isModal;
+  @property({type: Object}) ctx: PageJS.Context
 
   async setContent (element: HTMLElement) {
     await this.updateComplete;
@@ -26,15 +37,21 @@ export default class Layout extends LitElement {
     `
   }
 
-  drawer: MDCDrawer;
+  drawer: MDCDrawer
 
   firstUpdated () {
     const topAppBarElement = this.shadowRoot.querySelector('.mdc-top-app-bar')
     MDCTopAppBar.attachTo(topAppBarElement)
 
+    this.shadowRoot.querySelectorAll('.mdc-list-item').forEach(el => {
+      new MDCRipple(el).unbounded = true;
+    })
+
     const drawer = MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'))
     drawer.open = this.isShow
     this.drawer = drawer
+
+    this.matchLinks()
   }
 
   toggleDrawer () {
@@ -48,27 +65,59 @@ export default class Layout extends LitElement {
     super.attributeChangedCallback(name, oldval, newval);
   }
 
+  @property()
+  links: link[] = [
+    {
+      path: '/', name: 'T_T', icon: 'inbox', active: false
+    }, {
+      path: '/life', name: '生涯', icon: 'inbox', active: false
+    }, {
+      path: '/words', name: '发言', icon: 'inbox', active: false
+    }, {
+      path: '/abouts', name: '关于', icon: 'inbox', active: false
+    }
+  ]
+
+  matchLinks () {
+    const temps: any = []
+    this.links.forEach((item, index) => {
+      let path = item.path
+      let ii = item.path.indexOf('?')
+      if (ii > -1) {
+        path = path.substr(0, ii)
+      }
+      ii = item.path.indexOf('#')
+      if (ii > -1) {
+        path = path.substr(0, ii)
+      }
+      const re = pathToRegexp(path, [], {end: false})
+      const result = this.ctx.canonicalPath.match(re)
+      temps[index] = result ? result[0].length : 0
+    })
+    const iii = temps.indexOf(Math.max(...temps))
+    if (iii > -1) {
+      this.links = this.links.map((item, index) => {
+        item.active = index === iii
+        return item
+      })
+    }
+  }
+
   render () {
     return html `
       <aside class="mdc-drawer ${this.isModal ? 'mdc-drawer--modal' : 'mdc-drawer--dismissible'}">
         <div class="mdc-drawer__header">
-          <h3 class="mdc-drawer__title">Mail</h3>
-          <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+          <h3 class="mdc-drawer__title">tsx</h3>
+          <h6 class="mdc-drawer__subtitle">ttshangxiang@qq.com</h6>
         </div>
         <div class="mdc-drawer__content">
           <div class="mdc-list">
-            <a class="mdc-list-item mdc-list-item--activated" href="#" aria-current="page">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">inbox</i>
-              <span class="mdc-list-item__text">Inbox</span>
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">send</i>
-              <span class="mdc-list-item__text">Outgoing</span>
-            </a>
-            <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">drafts</i>
-              <span class="mdc-list-item__text">Drafts</span>
-            </a>
+            ${this.links.map(item => html `
+              <a class="mdc-list-item ${item.active ? 'mdc-list-item--activated' : ''}" href="javascript:;" @click=${() => page(item.path)}>
+                <i class="material-icons mdc-list-item__graphic" aria-hidden="true">${item.icon}</i>
+                <span class="mdc-list-item__text">${item.name}</span>
+              </a>
+            `)}
           </div>
           <!-- Uncaught Error: You can't have a focus-trap without at least one focusable element -->
           <a href="#"></a>
