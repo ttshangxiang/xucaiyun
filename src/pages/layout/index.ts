@@ -17,8 +17,9 @@ interface link {
 export default class Layout extends LitElement {
 
   @query('#content') $content: HTMLElement
+  @query('#my-mdc-drawer') $drawer: HTMLElement
 
-  @property({type: Boolean}) isModal = window.innerWidth <= 720;
+  @property({type: Boolean, reflect: true}) isModal = window.innerWidth <= 840;
   @property({type: Boolean, reflect: true}) isShow = !this.isModal;
   @property({type: Object}) ctx: PageJS.Context
 
@@ -48,7 +49,7 @@ export default class Layout extends LitElement {
     })
 
     const drawer = MDCDrawer.attachTo(this.shadowRoot.querySelector('.mdc-drawer'))
-    drawer.list.wrapFocus = false
+    // drawer.list.wrapFocus = false
     drawer.open = this.isShow
     this.drawer = drawer
 
@@ -61,6 +62,15 @@ export default class Layout extends LitElement {
   attributeChangedCallback (name: string, oldval: string, newval: string) {
     if (name === 'isshow' && this.drawer) {
       this.drawer.open = newval !== null;
+    }
+    if (name === 'ismodal' && this.$drawer) {
+      if (newval === null) {
+        this.$drawer.classList.remove('mdc-drawer--modal')
+        this.$drawer.classList.add('mdc-drawer--dismissible')
+      } else {
+        this.$drawer.classList.remove('mdc-drawer--dismissible')
+        this.$drawer.classList.add('mdc-drawer--modal')
+      }
     }
     super.attributeChangedCallback(name, oldval, newval);
   }
@@ -108,9 +118,25 @@ export default class Layout extends LitElement {
     })
   }
 
+  resizeEvent = () => {
+    this.isModal = window.innerWidth <= 840;
+    this.isShow = !this.isModal
+  }
+
+  connectedCallback () {
+    super.connectedCallback()
+    window.addEventListener('resize', this.resizeEvent)
+  }
+
+  disconnectedCallback () {
+    window.removeEventListener('resize', this.resizeEvent)
+    super.disconnectedCallback()
+  }
+
   render () {
+    console.log('2')
     return html `
-      <aside class="mdc-drawer ${this.isModal ? 'mdc-drawer--modal' : 'mdc-drawer--dismissible'}">
+      <aside class="mdc-drawer mdc-drawer--dismissible" id="my-mdc-drawer">
         <div class="mdc-drawer__header">
           <h3 class="mdc-drawer__title">tsx</h3>
           <h6 class="mdc-drawer__subtitle">ttshangxiang@qq.com</h6>

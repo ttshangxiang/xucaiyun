@@ -24,6 +24,15 @@ export default class Album extends LitElement {
           <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
             <word-card-7></word-card-7>
           </div>
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+            <word-card-7></word-card-7>
+          </div>
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+            <word-card-7></word-card-7>
+          </div>
+          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+            <word-card-7></word-card-7>
+          </div>
         </div>
       </div>
     `

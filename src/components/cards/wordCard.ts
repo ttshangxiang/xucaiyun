@@ -1,6 +1,7 @@
 import { LitElement, customElement, html, css, unsafeCSS } from 'lit-element'
 import { MDCRipple } from '@material/ripple'
 import '../menus/cardMenu'
+import CardMenu from '../menus/cardMenu'
 const styles = require('./style')
 
 @customElement('word-card-7')
@@ -52,8 +53,10 @@ export default class WordCard extends LitElement {
     });
   }
 
-  showMenu (e: any) {
-    console.log(e)
+  showMenu (event: MouseEvent) {
+    const btn = <HTMLElement>event.composedPath()[0]
+    const card = <CardMenu>(btn.nextElementSibling)
+    card.menu.open = !card.menu.open
   }
 
   render () {
@@ -78,7 +81,7 @@ export default class WordCard extends LitElement {
         <div class="mdc-card__actions">
           <div class="mdc-card__action-buttons">
             <button class="mdc-button mdc-card__action mdc-card__action--button">
-              <span class="mdc-button__label">开箱</span>
+              <span class="mdc-button__label">进入</span>
             </button>
             <button class="mdc-button mdc-card__action mdc-card__action--button">
               <span class="mdc-button__label">指点</span>
