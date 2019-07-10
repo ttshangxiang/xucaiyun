@@ -74,6 +74,8 @@ export default class Layout extends LitElement {
     }, {
       path: '/words', name: '发言', icon: 'inbox'
     }, {
+      path: '/album', name: '相册', icon: 'inbox'
+    }, {
       path: '/abouts', name: '关于', icon: 'inbox'
     }
   ]

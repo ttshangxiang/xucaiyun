@@ -44,6 +44,8 @@ export class Route extends LitElement {
     }, {
       path: '/words', component: import('./pages/words')
     }, {
+      path: '/album', component: import('./pages/album')
+    }, {
       path: '/abouts', component: import('./pages/abouts')
     }, {
       path: '*', component: require('./pages/404')

@@ -2,5 +2,6 @@
   "emmet.includeLanguages": {
     "typescript": "html",
     "javascript": "html"
-  }
+  },
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": true
 }

@@ -17,3 +17,6 @@
 
 ### node-sass安装真麻烦，老是失败
 npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+
+### lit-html中多层${}嵌套时，使用style属性提示错误“} expectedts-styled-plugin(9999)”，看着难受
+使用.style
