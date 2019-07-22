@@ -11,19 +11,25 @@ export default class Words extends LitElement {
     `
   }
 
+  list = [{
+    title: '哈哈哈',
+    subTitle: '茜茜',
+    profile: '大苏打大所'
+  }, {
+    title: '哈哈哈',
+    subTitle: '茜茜',
+    profile: '大苏打大所'
+  }]
+
   render() {
     return html`
       <div class="mdc-layout-grid">
         <div class="mdc-layout-grid__inner">
-          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
-            <word-card-7></word-card-7>
-          </div>
-          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
-            <word-card-7></word-card-7>
-          </div>
-          <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
-            <word-card-7></word-card-7>
-          </div>
+          ${this.list.map(item => html `
+            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4">
+              <word-card-7 title=${item.title} subTitle=${item.subTitle} profile=${item.profile}></word-card-7>
+            </div>
+          `)}
         </div>
       </div>
     `

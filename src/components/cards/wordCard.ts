@@ -1,4 +1,4 @@
-import { LitElement, customElement, html, css, unsafeCSS } from 'lit-element'
+import { LitElement, customElement, html, css, unsafeCSS, property } from 'lit-element'
 import { MDCRipple } from '@material/ripple'
 import '../menus/cardMenu'
 import CardMenu from '../menus/cardMenu'
@@ -6,6 +6,11 @@ const styles = require('./style')
 
 @customElement('word-card-7')
 export default class WordCard extends LitElement {
+
+  @property() title: string = ''
+  @property() subTitle: string = ''
+  @property() profile: string = ''
+  @property() img: string = ''
   
   static get styles() {
     return css`
@@ -62,20 +67,20 @@ export default class WordCard extends LitElement {
   render () {
     return html `
       <div class="mdc-card demo-card-shaped">
-        ${ true ? html `
-          <div class="mdc-card__primary-action" .style="${`background-image: url("https://material-components.github.io/material-components-web-catalog/static/media/photos/3x2/2.jpg");`}">
+        ${ this.img ? html `
+          <div class="mdc-card__primary-action" .style="${`background-image: url("${this.img}");`}">
             <div style="width:100%;height:100%;position:absolute;top:0;left:0;background: rgba(0,0,0,0.5);"></div>
             <div class="demo-card__primary" style="position:relative;">
-              <h2 class="demo-card__title mdc-typography mdc-typography--headline6" style="color:#eee;">Our Changing Planet</h2>
-              <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2" style="color:#eee;">by Kurt Wagner</h3></div>
-            <div class="demo-card__secondary mdc-typography mdc-typography--body2" style="position:relative;color:#eee;">Visit ten places on our planet that are undergoing the biggest changes today.</div>
+              <h2 class="demo-card__title mdc-typography mdc-typography--headline6" style="color:#eee;">${this.title}</h2>
+              <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2" style="color:#eee;">${this.subTitle}</h3></div>
+            <div class="demo-card__secondary mdc-typography mdc-typography--body2" style="position:relative;color:#eee;">${this.profile}</div>
           </div>
         ` : html `
           <div class="mdc-card__primary-action">
             <div class="demo-card__primary">
-              <h2 class="demo-card__title mdc-typography mdc-typography--headline6">Our Changing Planet</h2>
-              <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">by Kurt Wagner</h3></div>
-            <div class="demo-card__secondary mdc-typography mdc-typography--body2">Visit ten places on our planet that are undergoing the biggest changes today.</div>
+              <h2 class="demo-card__title mdc-typography mdc-typography--headline6">${this.title}</h2>
+              <h3 class="demo-card__subtitle mdc-typography mdc-typography--subtitle2">${this.subTitle}</h3></div>
+            <div class="demo-card__secondary mdc-typography mdc-typography--body2">${this.profile}</div>
           </div>
         `}
         <div class="mdc-card__actions">
