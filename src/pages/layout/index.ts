@@ -123,6 +123,11 @@ export default class Layout extends LitElement {
     this.isShow = !this.isModal
   }
 
+  switchPage (item: link) {
+    page(item.path)
+    this.resizeEvent()
+  }
+
   connectedCallback () {
     super.connectedCallback()
     window.addEventListener('resize', this.resizeEvent)
@@ -134,7 +139,6 @@ export default class Layout extends LitElement {
   }
 
   render () {
-    console.log('2')
     return html `
       <aside class="mdc-drawer mdc-drawer--dismissible" id="my-mdc-drawer">
         <div class="mdc-drawer__header">
@@ -144,7 +148,7 @@ export default class Layout extends LitElement {
         <div class="mdc-drawer__content">
           <div class="mdc-list">
             ${this.links.map(item => html `
-              <a class="mdc-list-item" href="javascript:;" @click=${() => page(item.path)}>
+              <a class="mdc-list-item" href="javascript:;" @click=${() => this.switchPage(item)}>
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">${item.icon}</i>
                 <span class="mdc-list-item__text">${item.name}</span>
               </a>
