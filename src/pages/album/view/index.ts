@@ -125,9 +125,9 @@ export default class albumView7 extends LitElement {
         @change=${(e: CustomEvent) => this.changePage(e.detail.message) }
         style="padding: 12px 0;"></pager-7>
       ${this.imgDetailItem ? html `
-        <div class="img-detail" id="img-detail">
-          <img src=${this.imgDetailItem.normal} alt="">
-          <div class="img-detail-buttons">
+        <div class="img-detail" id="img-detail" @click=${() => {this.imgDetailItem = null}}>
+          <img src=${this.imgDetailItem.normal} alt="" @click=${(e: any) => e.stopPropagation()}>
+          <div class="img-detail-buttons" @click=${(e: any) => e.stopPropagation()}>
             <a href=${this.imgDetailItem.path} target="_blank">原图</a>
             <button class="mdc-icon-button material-icons" @click=${() => {this.imgDetailItem = null}}>close</button>
           </div>
