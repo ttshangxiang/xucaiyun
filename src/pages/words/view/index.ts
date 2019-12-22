@@ -13,6 +13,8 @@ const styles = require('./style').toString();
 
 @customElement('article-view-7')
 export default class ArticleView7 extends LitElement {
+  static tagName = 'ArticleView7'
+
   @property ({type: Object}) current: res = null;
   @property ({type: String}) wordsId = '';
   @property ({type: String}) content = '';

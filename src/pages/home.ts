@@ -3,7 +3,7 @@ import page from 'page'
 
 @customElement('app-7')
 export default class Home7 extends LitElement {
-
+  static tagName = 'Home7'
   @property()
   foo = 'foo'
   

@@ -17,6 +17,7 @@ interface res {
 
 @customElement('album-view-7')
 export default class albumView7 extends LitElement {
+  static tagName = 'albumView7'
 
   @property({ type: Array }) list: res[] = [];
   @property({ type: Number }) total = 0;

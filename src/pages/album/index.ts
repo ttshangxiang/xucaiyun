@@ -6,6 +6,7 @@ const styles = require('./style')
 
 @customElement('album-7')
 export default class Album extends LitElement {
+  static tagName = 'Album'
 
   @property({ type: Array }) list: any[] = [];
 

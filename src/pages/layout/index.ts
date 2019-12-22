@@ -15,6 +15,7 @@ interface link {
 
 @customElement('layout-7')
 export default class Layout extends LitElement {
+  static tagName = 'Layout'
 
   @query('#content') $content: HTMLElement
   @query('#my-mdc-drawer') $drawer: HTMLElement

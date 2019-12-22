@@ -5,6 +5,7 @@ const styles = require('./style').toString();
 
 @customElement('me-7')
 export default class Me7 extends LitElement {
+  static tagName = 'Me7'
   render () {
     return html `
       <style>${styles}</style>

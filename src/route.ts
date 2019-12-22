@@ -4,6 +4,7 @@ import layout from './pages/layout'
 import ErrorPage from './pages/error'
 
 interface Constructable<T> {
+  tagName: any
   new() : T;
 }
 
@@ -39,7 +40,7 @@ export class Route extends LitElement {
   firstUpdated() {
     // 路由表
     const routes: route[] = [{
-      path: '/', component: require('./pages/words')
+      path: '/', component: import('./pages/words')
     }, {
       path: '/words', component: import('./pages/words')
     }, {
@@ -70,10 +71,10 @@ export class Route extends LitElement {
             resolve(component.default)
           }
         }).then((Ele: Constructable<LitElementE>) => {
-          if (noCache || !this.caches[Ele.name]) {
-            this.caches[Ele.name] = new Ele()
+          if (noCache || !this.caches[Ele.tagName]) {
+            this.caches[Ele.tagName] = new Ele()
           }
-          const element = this.caches[Ele.name]
+          const element = this.caches[Ele.tagName]
           // 传入路由对象
           element.ctx = ctx
           // 默认包裹
@@ -81,14 +82,14 @@ export class Route extends LitElement {
             wrapper = layout;
           }
           if (wrapper) {
-            if (!this.wrappers[wrapper.name]) {
-              this.wrappers[wrapper.name] = new wrapper()
+            if (!this.wrappers[wrapper.tagName]) {
+              this.wrappers[wrapper.tagName] = new wrapper()
             }
-            if (!this.shadowRoot.querySelector(this.wrappers[wrapper.name].tagName)) {
-              this.setContent(this.wrappers[wrapper.name])
+            if (!this.shadowRoot.querySelector(this.wrappers[wrapper.tagName].tagName)) {
+              this.setContent(this.wrappers[wrapper.tagName])
             }
-            this.wrappers[wrapper.name].setContent(element)
-            this.wrappers[wrapper.name].ctx = ctx
+            this.wrappers[wrapper.tagName].setContent(element)
+            this.wrappers[wrapper.tagName].ctx = ctx
           } else {
             this.setContent(element)
           }

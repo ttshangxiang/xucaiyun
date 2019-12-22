@@ -13,7 +13,7 @@ interface res {
 
 @customElement('words-7')
 export default class Words7 extends LitElement {
-
+  static tagName = 'Words7'
   @property({ type: Array }) list: res[] = [];
   @property({ type: Number }) total = 0;
   @property({ type: String }) wordsId = '';
