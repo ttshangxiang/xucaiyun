@@ -98,6 +98,8 @@ module.exports = {
     new CopyWebpackPlugin([
       {from: 'src/assets/fonts', to: path.resolve(dist, 'assets', 'fonts'), toType: 'dir'},
       {from: 'src/assets/styles', to: path.resolve(dist, 'assets', 'styles'), toType: 'dir'},
+      {from: 'src/manifest', to: path.resolve(dist, 'manifest'), toType: 'dir'},
+      {from: 'src/manifest.json', to: dist},
     ])
   ]
 };
