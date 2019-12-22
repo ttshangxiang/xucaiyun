@@ -22,6 +22,7 @@ export default class Layout extends LitElement {
   @property({type: Boolean, reflect: true}) isModal = window.innerWidth <= 840;
   @property({type: Boolean, reflect: true}) isShow = !this.isModal;
   @property({type: Object}) ctx: PageJS.Context
+  @property({type: Object}) currentLink: link = null;
 
   async setContent (element: HTMLElement) {
     await this.updateComplete;
@@ -78,13 +79,15 @@ export default class Layout extends LitElement {
   @property()
   links: link[] = [
     {
-      path: '/', name: 'T_T', icon: 'inbox'
+    //   path: '/', name: 'T_T', icon: 'inbox'
+    // }, {
+      path: '/words', name: '文章', icon: 'insert_drive_file'
     }, {
-      path: '/life', name: '生涯', icon: 'inbox'
+      path: '/album', name: '相册', icon: 'photo'
     }, {
-      path: '/words', name: '发言', icon: 'inbox'
+      path: '/life', name: '趣味', icon: 'tag_faces'
     }, {
-      path: '/album', name: '相册', icon: 'inbox'
+      path: '/messages', name: '留言', icon: 'message'
     }, {
       path: '/abouts', name: '关于', icon: 'inbox'
     }
@@ -103,7 +106,8 @@ export default class Layout extends LitElement {
         path = path.substr(0, ii)
       }
       const re = pathToRegexp(path, [], {end: false})
-      const result = this.ctx.canonicalPath.match(re)
+      const str = this.ctx.canonicalPath.split('?')[0]
+      const result = str.match(re)
       temps[index] = result ? result[0].length : 0
     })
     const iii = temps.indexOf(Math.max(...temps))
@@ -114,6 +118,7 @@ export default class Layout extends LitElement {
       classList.contains(activeClass) && classList.remove(activeClass)
       if (index === iii) {
         classList.add(activeClass)
+        this.currentLink = item
       }
     })
   }
@@ -142,7 +147,7 @@ export default class Layout extends LitElement {
     return html `
       <aside class="mdc-drawer mdc-drawer--dismissible" id="my-mdc-drawer">
         <div class="mdc-drawer__header">
-          <h3 class="mdc-drawer__title">tsx</h3>
+          <h3 class="mdc-drawer__title">tts</h3>
           <h6 class="mdc-drawer__subtitle">ttshangxiang@qq.com</h6>
         </div>
         <div class="mdc-drawer__content">
@@ -165,7 +170,7 @@ export default class Layout extends LitElement {
           <div class="mdc-top-app-bar__row">
             <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
               <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" @click=${this.toggleDrawer}>menu</button>
-              <span class="mdc-top-app-bar__title">Dismissible Drawer</span>
+              <span class="mdc-top-app-bar__title">${this.currentLink ? this.currentLink.name : ''}</span>
             </section>
           </div>
         </header>

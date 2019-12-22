@@ -20,7 +20,8 @@ interface route {
   path: string;
   component: requireElement | Promise<requireElement>;
   wrapper?: Constructable<LitElementE>;
-  noWapper?: Boolean
+  noWapper?: Boolean;
+  noCache?: boolean;
 }
 
 @customElement('route-7')
@@ -38,15 +39,19 @@ export class Route extends LitElement {
   firstUpdated() {
     // 路由表
     const routes: route[] = [{
-      path: '/', component: require('./pages/app')
-    }, {
-      path: '/life', component: import('./pages/life')
+      path: '/', component: require('./pages/words')
     }, {
       path: '/words', component: import('./pages/words')
     }, {
-      path: '/words/:id/edit', component: import('./pages/words/edit')
+      path: '/words/:id', component: import('./pages/words/view'), noCache: true
     }, {
       path: '/album', component: import('./pages/album')
+    }, {
+      path: '/album/:id', component: import('./pages/album/view'),
+    }, {
+      path: '/life', component: import('./pages/life')
+    }, {
+      path: '/messages', component: import('./pages/messages')
     }, {
       path: '/abouts', component: import('./pages/abouts')
     }, {
@@ -54,7 +59,7 @@ export class Route extends LitElement {
     }]
 
     // 遍历路由
-    routes.forEach(({path, component, wrapper, noWapper}) => {
+    routes.forEach(({path, component, wrapper, noWapper, noCache}) => {
       page(path, ctx => {
         new Promise((resolve, reject) => {
           if (component instanceof Promise) {
@@ -65,7 +70,7 @@ export class Route extends LitElement {
             resolve(component.default)
           }
         }).then((Ele: Constructable<LitElementE>) => {
-          if (!this.caches[Ele.name]) {
+          if (noCache || !this.caches[Ele.name]) {
             this.caches[Ele.name] = new Ele()
           }
           const element = this.caches[Ele.name]

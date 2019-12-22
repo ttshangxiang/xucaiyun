@@ -1,0 +1,82 @@
+
+@import '../../../base/base.scss';
+@import "@material/icon-button/mdc-icon-button";
+@import "@material/image-list/mdc-image-list";
+
+:host {
+  display: block;
+}
+
+.album-view7 {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.mdc-image-list__item {
+  min-height: 80px;
+  background: #ddd;
+}
+
+.mdc-image-list__supporting {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 28px;
+  padding: 0 12px;
+  background: rgba(0,0,0,.6);
+  color: #fff;
+  
+  .mdc-image-list__label {
+    font-weight: normal;
+    font-size: 12px;
+  }
+}
+
+.my-masonry-image-list {
+  @include mdc-image-list-masonry-columns(4);
+}
+
+@media (max-width: 799px) {
+  .my-masonry-image-list {
+    @include mdc-image-list-masonry-columns(2);
+  }
+}
+
+.img-detail {
+  position: fixed;
+  background: rgba(0,0,0,.9);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1001;
+  overflow-y: auto;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+    display: inline-block;
+    line-height: 48px;
+    margin-right: 12px;
+  }
+  
+  .img-detail-buttons {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    z-index: 1002;
+    color: #fff;
+    & > * {
+      vertical-align: middle;
+    }
+  }
+}

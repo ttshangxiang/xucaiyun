@@ -1,0 +1,26 @@
+
+@import '../../base/base.scss';
+
+.pager {
+  font-size: 16px;
+  line-height: 32px;
+}
+
+.page-btn-list {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.page-btn {
+  a {
+    padding: 0 12px;
+    display: block;
+    color: #333;
+  }
+  &.active {
+    background: #666;
+    a {
+      color: #fff;
+    }
+  }
+}

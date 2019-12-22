@@ -16,11 +16,11 @@ module.exports = merge(common, {
     historyApiFallback: true, // 配合BrowserRouter
     proxy: {
       '/t2': {
-        target: 'http://localhost:3000',
+        target: 'http://ttshangxiang.com:3000',
         secure: false
       },
       '/upload': {
-        target: 'http://localhost:3000',
+        target: 'http://ttshangxiang.com:3000',
         secure: false
       }
     }

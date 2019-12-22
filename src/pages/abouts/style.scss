@@ -1,0 +1,16 @@
+@import '../../base/base.scss';
+
+:host {
+  position: relative;
+}
+
+.me {
+  padding: 16px;
+  font-size: 16px;
+  line-height: 32px;
+
+  a {
+    color: #6200ee;
+    color: var(--mdc-theme-primary, #6200ee);
+  }
+}

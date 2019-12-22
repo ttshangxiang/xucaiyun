@@ -23,3 +23,8 @@
 .mdc-drawer .mdc-list-item--activated, .mdc-drawer .mdc-list-item--activated .mdc-list-item__graphic {
   color: var(--mdc-theme-secondary, #6200ee);
 }
+
+#my-mdc-drawer {
+  position: fixed;
+  top: 0;
+}
