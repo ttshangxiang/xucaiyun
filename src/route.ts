@@ -62,13 +62,15 @@ export class Route extends LitElement {
     // 遍历路由
     routes.forEach(({path, component, wrapper, noWapper, noCache}) => {
       page(path, ctx => {
+        // edge中 component instanceof Promise == false ...
+        const anyComponent: any = component
         new Promise((resolve, reject) => {
-          if (component instanceof Promise) {
-            component.then(value => {
+          if (anyComponent && typeof anyComponent.then === 'function') {
+            anyComponent.then((value: any) => {
               resolve(value.default)
             })
           } else {
-            resolve(component.default)
+            resolve(anyComponent.default)
           }
         }).then((Ele: Constructable<LitElementE>) => {
           if (noCache || !this.caches[Ele.tagName]) {

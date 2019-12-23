@@ -1,15 +1,29 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+  <script>
+    window.WebComponents = window.WebComponents || {};
+    window.WebComponents.root = '/node_modules/@webcomponents/webcomponentsjs/';
+  </script>
+  <script src="/node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js"></script>
+  <!-- load the webcomponents loader, which injects the necessary polyfill bundle -->
+  <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+    
+  <!-- Change stuff here for your app -->
+  <meta name="description" content="xucaiyun">
+  <meta name="theme-color" content="#ffffff">
   <title>tts</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="/manifest/favicon.ico">
   <link rel="stylesheet" href="/assets/fonts/material-icons.css">
   <link rel="stylesheet" href="/assets/styles/main.css">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
 </head>
 <body>
   <div id="app"></div>
 </body>
-</html>
+
