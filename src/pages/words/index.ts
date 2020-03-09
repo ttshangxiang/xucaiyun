@@ -3,6 +3,7 @@ import axios from 'axios'
 import { MDCList } from '@material/list'
 import { MDCRipple } from '@material/ripple'
 import page from 'page'
+import '../../components/beian'
 const styles = require('./style')
 interface res {
   _id: string;
@@ -136,6 +137,8 @@ export default class Words7 extends LitElement {
         pagesize="${this.pagesize }"
         @change=${(e: CustomEvent) => this.changePage(e.detail.message) }
         style="padding: 12px 0;"></pager-7>
+
+      <beian-7></beian-7>
     </div>
     `
   }

@@ -22,3 +22,16 @@ body {
   --mdc-shape-large-component-radius: 0px;
   --mdc-typography--font-family: Roboto, sans-serif;
 }
+
+#beian-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  font-size: 14px;
+  line-height: 26px;
+  display: none;
+}
+#beian-fixed a {
+  color: var(--mdc-theme-secondary);
+  text-decoration: none;
+}
