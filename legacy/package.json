@@ -46,7 +46,7 @@
     "to-string-loader": "^1.1.5",
     "ts-loader": "^5.3.3",
     "typescript": "^3.2.2",
-    "url-parse": "^1.4.4"
+    "url-parse": "^1.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
